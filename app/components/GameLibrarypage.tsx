@@ -1,371 +1,347 @@
-/**
- * GameLibraryPage.tsx — RD Game Zone
- * SEO: JSON-LD ItemList + VideoGame schema, semantic HTML,
- *      aria roles, h1 heading, meta descriptions
- */
-
-import { useState, useEffect, useRef, useCallback } from "react";
-import GameCard   from "./GameCard";
+import { useEffect, useMemo, useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiFolder, FiSearch, FiX } from "react-icons/fi";
+import GameCard from "./GameCard";
 import VideoModal from "./VideoModal";
 import type { Game } from "./types";
-import { games }    from "../data/games";
-import { FiMenu, FiX, FiSearch } from "react-icons/fi";
+import { games } from "../data/games";
 
-/* ─── Constants ─────────────────────────────────────── */
 const CATEGORIES = [
-  "ALL", "SHOOTING", "ACTION", "RACING",
-  "SPORTS", "FIGHTING", "ADVENTURE", "OPEN WORLD",
+  "ALL",
+  "SHOOTING",
+  "ACTION",
+  "RACING",
+  "SPORTS",
+  "FIGHTING",
+  "ADVENTURE",
+  "OPEN WORLD",
 ] as const;
 
 const STATUSES = ["ALL", "AVAILABLE", "UPCOMING", "UNAVAILABLE"] as const;
+const PAGE_SIZE = 10;
 
 type Category = (typeof CATEGORIES)[number];
-type Status   = (typeof STATUSES)[number];
+type Status = (typeof STATUSES)[number];
 
-/* ─── SEO JSON-LD ────────────────────────────────────── */
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  totalItems: number;
+  onChange: (nextPage: number) => void;
+};
+
+function Pagination({
+  page,
+  totalPages,
+  totalItems,
+  onChange,
+}: PaginationProps) {
+  if (totalItems === 0) return null;
+  const itemsOnPage = Math.min(PAGE_SIZE, totalItems - (page - 1) * PAGE_SIZE);
+
+  return (
+    <nav className="library-pagination" aria-label="Game library pages">
+      <p className="library-pagination__summary" aria-live="polite">
+        <FiFolder aria-hidden="true" />
+        <span>Collection <strong>page {page}</strong></span>
+        <small>{itemsOnPage} {itemsOnPage === 1 ? "game" : "games"}</small>
+      </p>
+
+      <div className="library-pagination__controls">
+        <button
+          type="button"
+          className="pagination-button pagination-button--previous"
+          onClick={() => onChange(page - 1)}
+          disabled={page === 1}
+          aria-label="Show previous page"
+        >
+          <FiArrowLeft aria-hidden="true" />
+          <span>Previous</span>
+        </button>
+
+        <div className="pagination-pages" aria-label={`Page ${page} of ${totalPages}`}>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => {
+            const start = (pageNumber - 1) * PAGE_SIZE + 1;
+            const end = Math.min(pageNumber * PAGE_SIZE, totalItems);
+            const isCurrent = pageNumber === page;
+            return (
+              <button
+                key={pageNumber}
+                type="button"
+                className={`pagination-page ${isCurrent ? "pagination-page--active" : ""}`}
+                onClick={() => onChange(pageNumber)}
+                aria-current={isCurrent ? "page" : undefined}
+                aria-label={`Show page ${pageNumber}, games ${start} to ${end}`}
+              >
+                <span className="pagination-page__label">{pageNumber}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          className="pagination-button pagination-button--next"
+          onClick={() => onChange(page + 1)}
+          disabled={page === totalPages}
+          aria-label="Show next page"
+        >
+          <span>Next</span>
+          <FiArrowRight aria-hidden="true" />
+        </button>
+      </div>
+    </nav>
+  );
+}
+
 function buildSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Game Library — RD Game Zone Ahmedabad",
     description:
-      "Browse 30+ PS5, PS4 and PC games at RD Game Zone, Ahmedabad's premier gaming cafe. Play AAA titles including GTA Online, Valorant, Call of Duty, and more.",
-    url: "https://rdgamezone.in/games",
+      "Browse the PS5, PS4 and PC games available at RD Game Zone, Ahmedabad.",
+    url: "https://rdgamezone.com/games",
     numberOfItems: games.length,
-    itemListElement: games.slice(0, 10).map((g, i) => ({
+    itemListElement: games.map((game, index) => ({
       "@type": "ListItem",
-      position: i + 1,
-      name: g.title,
-      url: `https://rdgamezone.in/games#${g.id}`,
+      position: index + 1,
+      name: game.title,
+      url: `https://rdgamezone.com/games#${game.id}`,
     })),
   };
 }
 
-/* ═══════════════════════════════════════════════════════
-   COMPONENT
-═══════════════════════════════════════════════════════ */
 export default function GameLibraryPage() {
   const [activeGame, setActiveGame] = useState<Game | null>(null);
-  const [category,   setCategory]   = useState<Category>("ALL");
-  const [status,     setStatus]     = useState<Status>("ALL");
-  const [search,     setSearch]     = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [category, setCategory] = useState<Category>("ALL");
+  const [status, setStatus] = useState<Status>("ALL");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
-  const drawerRef    = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const filteredGames = useMemo(() => {
+    const query = search.trim().toLowerCase();
 
-  /* ── Filter ── */
-  const filteredGames = games.filter((g) => {
-    const matchCat    = category === "ALL" || g.category.toUpperCase() === category;
-    const matchStatus = status   === "ALL" || g.status.toUpperCase()   === status;
-    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchStatus && matchSearch;
-  });
+    return games.filter((game) => {
+      const matchesCategory = category === "ALL" || game.category.toUpperCase() === category;
+      const matchesStatus = status === "ALL" || game.status.toUpperCase() === status;
+      const matchesSearch = !query || game.title.toLowerCase().includes(query);
 
-  /* ── Body scroll lock when drawer open ── */
+      return matchesCategory && matchesStatus && matchesSearch;
+    });
+  }, [category, search, status]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredGames.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const visibleGames = filteredGames.slice(startIndex, startIndex + PAGE_SIZE);
+  const rangeStart = filteredGames.length ? startIndex + 1 : 0;
+  const rangeEnd = Math.min(startIndex + PAGE_SIZE, filteredGames.length);
+  const hasFilters = category !== "ALL" || status !== "ALL" || Boolean(search);
+
   useEffect(() => {
-    document.body.style.overflow    = drawerOpen ? "hidden" : "";
-    document.body.style.touchAction = drawerOpen ? "none"   : "";
-    return () => {
-      document.body.style.overflow    = "";
-      document.body.style.touchAction = "";
-    };
-  }, [drawerOpen]);
+    setPage(1);
+  }, [category, status, search]);
 
-  /* ── Escape closes drawer / search ── */
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setDrawerOpen(false); setSearchOpen(false); }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  const goToPage = (nextPage: number) => {
+    const safePage = Math.max(1, Math.min(nextPage, totalPages));
+    if (safePage === currentPage) return;
 
-  /* ── Focus search input when expanding ── */
-  useEffect(() => {
-    if (searchOpen) setTimeout(() => searchInputRef.current?.focus(), 80);
-  }, [searchOpen]);
+    setPage(safePage);
+    window.requestAnimationFrame(() => {
+      document.getElementById("library-results")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
 
-  /* ── Handlers ── */
-  const pickCategory = useCallback((cat: Category) => {
-    setCategory(cat);
-    setDrawerOpen(false);
-  }, []);
+  const clearFilters = () => {
+    setCategory("ALL");
+    setStatus("ALL");
+    setSearch("");
+  };
 
-  const pickStatus = useCallback((st: Status) => setStatus(st), []);
-  const clearSearch = useCallback(() => setSearch(""), []);
+  const selectAvailability = (nextStatus: Status) => {
+    /* “Coming soon” is a dedicated collection. Resetting other filters keeps
+       GTA VI discoverable instead of silently intersecting it with a stale
+       genre or search selection. */
+    if (nextStatus === "UPCOMING") {
+      setCategory("ALL");
+      setSearch("");
+    }
+    setStatus(nextStatus);
+  };
 
-  /* ══════════════════════════════════════════════════════
-     RENDER
-  ══════════════════════════════════════════════════════ */
   return (
     <>
-      {/* SEO structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSchema()) }}
       />
 
-      <section
-        className="game-library-page"
-        aria-label="Game Library"
-        itemScope
-        itemType="https://schema.org/CollectionPage"
-      >
+      <main className="game-library-page" aria-label="Game library">
+        <div className="library-shell">
+          <header className="library-header">
+            <p className="library-eyebrow">RD GAME ZONE · AHMEDABAD</p>
+            <div className="library-heading-row">
+              <div>
+                <h1 className="library-title">Game library</h1>
+                <p className="library-intro">
+                  Explore every title in the lounge vault, check its availability, and watch a trailer before your visit.
+                </p>
+              </div>
+              <div className="library-total" aria-label={`${games.length} games in the library`}>
+                <strong>{games.length}</strong>
+                <span>games</span>
+              </div>
+            </div>
+          </header>
 
-        {/* ══════════════════════════
-            HEADER — h1 only, no subtitle
-        ══════════════════════════ */}
-        <header className="library-header">
-          <h1 className="library-title" itemProp="name">
-            GAME LIBRARY
-          </h1>
-        </header>
+          <section className="library-filters" aria-label="Filter the game library">
+            <div className="library-filter-group">
+              <span className="library-filter-label">Genre</span>
+              <div className="filter-chip-row" role="group" aria-label="Filter by genre">
+                {CATEGORIES.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`filter-chip ${category === item ? "filter-chip--active" : ""}`}
+                    onClick={() => setCategory(item)}
+                    aria-pressed={category === item}
+                  >
+                    {item === "ALL" ? "All games" : item}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-        {/* ════════════════════════════════════════════════════
-            DESKTOP CONTROLS  (≥ 769px)
-            Row 1 → all genre pills inline, 1 row
-            Row 2 → status pills + search bar
-        ════════════════════════════════════════════════════ */}
-        <nav className="desktop-controls" aria-label="Filter games">
+            <div className="library-filter-bottom">
+              <div className="library-filter-group library-filter-group--availability">
+                <span className="library-filter-label">Availability</span>
+                <div className="availability-tabs" role="group" aria-label="Filter by availability">
+                  {STATUSES.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className={`availability-tab ${status === item ? "availability-tab--active" : ""}`}
+                      onClick={() => selectAvailability(item)}
+                      aria-pressed={status === item}
+                    >
+                      {item === "ALL"
+                        ? "All"
+                        : item === "UPCOMING"
+                          ? "Coming soon"
+                          : item.charAt(0) + item.slice(1).toLowerCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          {/* Row 1: Genres */}
-          <div className="desktop-row desktop-row--genres" role="group" aria-label="Genre filter">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`filter-pill ${category === cat ? "filter-pill--active" : ""}`}
-                onClick={() => setCategory(cat)}
-                aria-pressed={category === cat}
+              <label className="library-search">
+                <FiSearch aria-hidden="true" />
+                <span className="sr-only">Search games</span>
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Search a game"
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                {search && (
+                  <button
+                    type="button"
+                    className="library-search__clear"
+                    onClick={() => setSearch("")}
+                    aria-label="Clear search"
+                  >
+                    <FiX aria-hidden="true" />
+                  </button>
+                )}
+              </label>
+            </div>
+          </section>
+
+          <section className="library-results" id="library-results" aria-labelledby="library-results-title">
+            <div className="library-results__heading">
+              <div>
+                <p className="library-results__eyebrow">Your game vault</p>
+                <h2 id="library-results-title">
+                  {filteredGames.length ? `Page ${currentPage}` : "No games found"}
+                </h2>
+                {filteredGames.length > 0 && (
+                  <p className="library-results__collection-copy">
+                    {visibleGames.length} {visibleGames.length === 1 ? "game" : "games"} ready to explore in this collection.
+                  </p>
+                )}
+              </div>
+
+              {hasFilters && (
+                <button type="button" className="reset-filters" onClick={clearFilters}>
+                  <FiX aria-hidden="true" />
+                  Clear filters
+                </button>
+              )}
+            </div>
+
+            <Pagination
+              page={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredGames.length}
+              onChange={goToPage}
+            />
+
+            {visibleGames.length > 0 ? (
+              <div
+                className="game-grid"
+                aria-label={`Showing games ${rangeStart} to ${rangeEnd} of ${filteredGames.length}`}
+                aria-live="polite"
               >
-                {cat}
-              </button>
-            ))}
-          </div>
+                {visibleGames.map((game, index) => {
+                  const catalogPosition = startIndex + index + 1;
 
-          {/* Row 2: Status + Search */}
-          <div className="desktop-row desktop-row--status-search">
-            <div className="status-pill-group" role="group" aria-label="Availability filter">
-              {STATUSES.map((st) => (
-                <button
-                  key={st}
-                  type="button"
-                  className={`filter-pill filter-pill--status ${status === st ? "filter-pill--active" : ""}`}
-                  onClick={() => pickStatus(st)}
-                  aria-pressed={status === st}
-                >
-                  {st}
-                </button>
-              ))}
-            </div>
+                  return (
+                    <article
+                      key={game.id}
+                      id={String(game.id)}
+                      itemScope
+                      itemType="https://schema.org/VideoGame"
+                    >
+                      <meta itemProp="name" content={game.title} />
+                      <meta itemProp="description" content={game.subtitle} />
+                      <meta itemProp="position" content={String(catalogPosition)} />
+                      <GameCard
+                        game={game}
+                        onPlay={() => game.video && setActiveGame(game)}
+                      />
+                    </article>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="game-grid__empty" role="status">
+                <p>No games match these filters.</p>
+                <button type="button" onClick={clearFilters}>Show all games</button>
+              </div>
+            )}
 
-            {/* Search field — desktop */}
-            <label className="search-field" aria-label="Search games">
-              <span className="search-field__icon" aria-hidden="true">
-                <FiSearch size={15} strokeWidth={2.5} />
-              </span>
-              <input
-                type="search"
-                className="search-field__input"
-                placeholder="Search games..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                aria-label="Search games by title"
-                autoComplete="off"
-                spellCheck={false}
-              />
-              {search && (
-                <button type="button" className="search-field__clear" onClick={clearSearch} aria-label="Clear search">
-                  <FiX size={13} strokeWidth={2.5} />
-                </button>
-              )}
-            </label>
-          </div>
-        </nav>
-
-        {/* ════════════════════════════════════════════════════
-            MOBILE CONTROLS  (≤ 768px)
-            SINGLE ROW:
-            [≡ GENRES] [ALL][AVAIL][UPCOMING][UNAVAIL] [🔍]
-            ──────────────────────────────────────────────────
-            When 🔍 tapped → search bar expands below as row 2
-        ════════════════════════════════════════════════════ */}
-        <div className="mobile-controls" aria-label="Mobile filters">
-
-          {/* ── Single control row ── */}
-          <div className="mobile-row">
-
-            {/* Hamburger genre trigger */}
-            <button
-              type="button"
-              className={`mobile-genre-btn ${category !== "ALL" ? "mobile-genre-btn--active" : ""}`}
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Open genre filter"
-              aria-expanded={drawerOpen}
-              aria-controls="genre-drawer"
-            >
-              <FiMenu size={15} strokeWidth={2.5} aria-hidden="true" />
-              <span className="mobile-genre-btn__label">
-                {category !== "ALL" ? category : "GENRES"}
-              </span>
-              {category !== "ALL" && (
-                <span className="mobile-genre-btn__dot" aria-hidden="true" />
-              )}
-            </button>
-
-            {/* Status pills — flex-shrink scrollable strip */}
-            <div
-              className="mobile-status-strip"
-              role="group"
-              aria-label="Availability filter"
-            >
-              {STATUSES.map((st) => (
-                <button
-                  key={st}
-                  type="button"
-                  className={`filter-pill filter-pill--status ${status === st ? "filter-pill--active" : ""}`}
-                  onClick={() => pickStatus(st)}
-                  aria-pressed={status === st}
-                >
-                  {st}
-                </button>
-              ))}
-            </div>
-
-            {/* Search icon button */}
-            <button
-              type="button"
-              className={`mobile-search-btn ${searchOpen ? "mobile-search-btn--active" : ""}`}
-              onClick={() => setSearchOpen((v) => !v)}
-              aria-label={searchOpen ? "Close search" : "Open search"}
-              aria-expanded={searchOpen}
-            >
-              {searchOpen
-                ? <FiX     size={15} strokeWidth={2.5} aria-hidden="true" />
-                : <FiSearch size={15} strokeWidth={2.5} aria-hidden="true" />
-              }
-            </button>
-          </div>
-
-          {/* ── Search expand row (row 2 — only when searchOpen) ── */}
-          <div className={`mobile-search-expand ${searchOpen ? "mobile-search-expand--open" : ""}`}>
-            <label className="search-field search-field--mobile" aria-label="Search games">
-              <span className="search-field__icon" aria-hidden="true">
-                <FiSearch size={14} strokeWidth={2.5} />
-              </span>
-              <input
-                ref={searchInputRef}
-                type="search"
-                className="search-field__input"
-                placeholder="Search games..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                aria-label="Search games by title"
-                autoComplete="off"
-                spellCheck={false}
-              />
-              {search && (
-                <button type="button" className="search-field__clear" onClick={clearSearch} aria-label="Clear">
-                  <FiX size={12} />
-                </button>
-              )}
-            </label>
-          </div>
+            <Pagination
+              page={currentPage}
+              totalPages={totalPages}
+              totalItems={filteredGames.length}
+              onChange={goToPage}
+            />
+          </section>
         </div>
+      </main>
 
-        {/* ════════════════════════════════════════════════════
-            MOBILE GENRE DRAWER — bottom sheet, ≤ 768px only
-        ════════════════════════════════════════════════════ */}
-
-        {/* Backdrop */}
-        <div
-          className={`drawer-backdrop ${drawerOpen ? "drawer-backdrop--visible" : ""}`}
-          onClick={() => setDrawerOpen(false)}
-          aria-hidden="true"
+      {activeGame?.video && (
+        <VideoModal
+          video={activeGame.video}
+          game={activeGame}
+          onClose={() => setActiveGame(null)}
         />
-
-        {/* Drawer */}
-        <div
-          id="genre-drawer"
-          ref={drawerRef}
-          className={`genre-drawer ${drawerOpen ? "genre-drawer--open" : ""}`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Genre filter"
-          aria-hidden={!drawerOpen}
-          tabIndex={drawerOpen ? 0 : -1}
-        >
-          <div className="genre-drawer__handle" aria-hidden="true" />
-
-          <div className="genre-drawer__header">
-            <h2 className="genre-drawer__title">SELECT GENRE</h2>
-            <button
-              type="button"
-              className="genre-drawer__close"
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close genre filter"
-            >
-              <FiX size={18} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          <div className="genre-drawer__grid" role="group" aria-label="Genre categories">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`genre-drawer__pill ${category === cat ? "genre-drawer__pill--active" : ""}`}
-                onClick={() => pickCategory(cat)}
-                aria-pressed={category === cat}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ════════════════════════════════
-            GAME GRID
-        ════════════════════════════════ */}
-        <main
-          className="game-grid"
-          aria-label={`${filteredGames.length} game${filteredGames.length !== 1 ? "s" : ""} found`}
-          aria-live="polite"
-          aria-atomic="false"
-          itemScope
-          itemType="https://schema.org/ItemList"
-        >
-          {filteredGames.map((game, index) => (
-            <article
-              key={game.id}
-              id={String(game.id)}
-              itemScope
-              itemType="https://schema.org/VideoGame"
-              itemProp="itemListElement"
-            >
-              <meta itemProp="name"        content={game.title} />
-              <meta itemProp="description" content={game.subtitle} />
-              <meta itemProp="position"    content={String(index + 1)} />
-              <GameCard
-                game={game}
-                onPlay={() => game.video && setActiveGame(game)}
-              />
-            </article>
-          ))}
-
-          {filteredGames.length === 0 && (
-            <div className="game-grid__empty" role="status" aria-live="polite">
-              <p>No games found for this filter.</p>
-            </div>
-          )}
-        </main>
-
-        {activeGame?.video && (
-          <VideoModal video={activeGame.video} onClose={() => setActiveGame(null)} />
-        )}
-      </section>
+      )}
     </>
   );
 }

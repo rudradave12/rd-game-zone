@@ -10,13 +10,14 @@
   --rdnav-h-xl:     84px;
   --nav-h:          72px;
 
-  --rdnav-accent:   #00e5ff;
-  --rdnav-accent2:  #0077ff;
-  --rdnav-red:      #ff2d5a;
-  --rdnav-bg-solid: rgba(4, 6, 11, 0.96);
-  --rdnav-border:   rgba(0, 229, 255, 0.10);
-  --rdnav-text:     rgba(255, 255, 255, 0.80);
-  --rdnav-text-hov: #ffffff;
+  /* Re-pointed at design-system.css — navbar no longer owns colour. */
+  --rdnav-accent:   var(--accent);
+  --rdnav-accent2:  var(--accent-deep);
+  --rdnav-red:      var(--danger);
+  --rdnav-bg-solid: rgba(5, 7, 12, 0.94);
+  --rdnav-border:   var(--border-subtle);
+  --rdnav-text:     var(--text-3);
+  --rdnav-text-hov: var(--text-1);
 }
 
 @media (min-width: 1600px) {
@@ -27,7 +28,7 @@
 .rdnav {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 9000;
+  z-index: var(--z-nav);
   height: calc(var(--rdnav-h) + var(--sat, 0px));
   padding-top:   var(--sat, 0px);
   padding-left:  clamp(16px, 4vw, 60px);
@@ -39,9 +40,9 @@
   gap: 16px;
 
   transition:
-    background   0.45s cubic-bezier(0.4,0,0.2,1),
-    box-shadow   0.45s cubic-bezier(0.4,0,0.2,1),
-    border-color 0.45s ease;
+    background   var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    box-shadow   var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    border-color var(--d-slow) ease;
   will-change: background;
 }
 
@@ -53,10 +54,10 @@
 
 .rdnav--solid {
   background: var(--rdnav-bg-solid);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--rdnav-border);
-  box-shadow: 0 4px 40px rgba(0,0,0,0.65);
+  box-shadow: 0 1px 24px rgba(0,0,0,0.7);
 }
 
 /* ─── BRAND ─── */
@@ -72,7 +73,7 @@
 .rdnav__brand:focus-visible {
   outline: 2px solid var(--rdnav-accent);
   outline-offset: 4px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
 }
 
 .rdnav__logo-box {
@@ -96,15 +97,15 @@
 .rdnav__logo-ring {
   position: absolute;
   inset: 0;
-  border-radius: 10px;
-  border: 1px solid rgba(0,229,255,0.30);
-  background: linear-gradient(135deg, rgba(0,229,255,0.10) 0%, rgba(0,119,255,0.06) 100%);
-  transition: border-color 0.25s, box-shadow 0.25s;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(0,229,255,0.18);
+  background: linear-gradient(135deg, rgba(0,229,255,0.06) 0%, rgba(0,112,255,0.04) 100%);
+  transition: border-color var(--d-base), box-shadow var(--d-base);
 }
 
 .rdnav__brand:hover .rdnav__logo-ring {
-  border-color: rgba(0,229,255,0.55);
-  box-shadow: 0 0 16px rgba(0,229,255,0.20);
+  border-color: rgba(0,229,255,0.35);
+  box-shadow: 0 0 12px rgba(0,229,255,0.12);
 }
 
 .rdnav__brand-text {
@@ -115,7 +116,7 @@
 }
 
 .rdnav__brand-name {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px, 0.95vw, 14px);
   font-weight: 900;
   letter-spacing: 2px;
@@ -124,7 +125,7 @@
 }
 
 .rdnav__brand-tag {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(7.5px, 0.6vw, 9.5px);
   font-weight: 700;
   letter-spacing: 2.8px;
@@ -144,7 +145,7 @@
 
 .rdnav__item {
   position: relative;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(12.5px, 0.9vw, 14px);
   font-weight: 700;
   letter-spacing: 1.8px;
@@ -156,7 +157,7 @@
   padding: 6px 0;
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.22s ease;
+  transition: color var(--d-base) ease;
   min-height: 36px;
   display: inline-flex;
   align-items: center;
@@ -165,7 +166,7 @@
 .rdnav__item:focus-visible {
   outline: 2px solid var(--rdnav-accent);
   outline-offset: 3px;
-  border-radius: 3px;
+  border-radius: var(--r-xs);
 }
 
 .rdnav__item::after {
@@ -176,8 +177,8 @@
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--rdnav-accent), var(--rdnav-accent2));
-  border-radius: 2px;
-  transition: width 0.28s cubic-bezier(0.4,0,0.2,1);
+  border-radius: var(--r-xs);
+  transition: width var(--d-base) cubic-bezier(0.4,0,0.2,1);
 }
 
 .rdnav__item:hover           { color: var(--rdnav-text-hov); }
@@ -200,12 +201,12 @@
   gap: 8px;
   padding: 0 20px;
   height: 38px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: none;
   cursor: pointer;
   white-space: nowrap;
 
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 10.5px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -217,7 +218,7 @@
     0 0 0 1px rgba(0,229,255,0.35),
     0 4px 20px rgba(0,229,255,0.22);
 
-  transition: box-shadow 0.28s ease, transform 0.22s ease;
+  transition: box-shadow var(--d-base) ease, transform var(--d-base) ease;
 }
 
 .rdnav__cta:hover {
@@ -273,10 +274,10 @@
   padding: 0;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.22s, border-color 0.22s;
+  transition: background var(--d-base), border-color var(--d-base);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -295,12 +296,12 @@
   width: 20px;
   height: 1.5px;
   background: #ffffff;
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   transform-origin: center;
   transition:
-    transform  0.32s cubic-bezier(0.4,0,0.2,1),
-    opacity    0.22s ease,
-    width      0.22s ease;
+    transform  var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    opacity    var(--d-base) ease,
+    width      var(--d-base) ease;
 }
 
 .rdnav__burger.is-open .rdnav__burger-line:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
@@ -333,9 +334,9 @@
   pointer-events: none;
   transform: translateX(12px);
   transition:
-    opacity    0.32s cubic-bezier(0.4,0,0.2,1),
-    transform  0.32s cubic-bezier(0.4,0,0.2,1),
-    visibility 0s 0.32s;
+    opacity    var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    transform  var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    visibility 0s var(--d-slow);
 }
 
 .rdmenu--open {
@@ -344,8 +345,8 @@
   pointer-events: all;
   transform: translateX(0);
   transition:
-    opacity    0.32s cubic-bezier(0.4,0,0.2,1),
-    transform  0.32s cubic-bezier(0.4,0,0.2,1),
+    opacity    var(--d-slow) cubic-bezier(0.4,0,0.2,1),
+    transform  var(--d-slow) cubic-bezier(0.4,0,0.2,1),
     visibility 0s 0s;
 }
 
@@ -382,7 +383,7 @@
 .rdmenu__logo-box {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: var(--r-md);
   border: 1px solid rgba(0,229,255,0.25);
   background: rgba(0,229,255,0.08);
   display: flex;
@@ -392,7 +393,7 @@
 }
 
 .rdmenu__brand-name {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 15px;
   font-weight: 900;
   letter-spacing: 2px;
@@ -400,7 +401,7 @@
 }
 
 .rdmenu__brand-tag {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 3px;
@@ -435,7 +436,7 @@
   gap: 16px;
   width: 100%;
   padding: 14px 18px;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   background: none;
   border: none;
   cursor: pointer;
@@ -446,9 +447,9 @@
   opacity: 0;
   transform: translateX(-16px);
   transition:
-    background 0.2s,
-    opacity    0.35s cubic-bezier(0.4,0,0.2,1) calc(var(--i, 0) * 60ms + 80ms),
-    transform  0.35s cubic-bezier(0.4,0,0.2,1) calc(var(--i, 0) * 60ms + 80ms);
+    background var(--d-base),
+    opacity    var(--d-slow) cubic-bezier(0.4,0,0.2,1) calc(var(--i, 0) * 60ms + 80ms),
+    transform  var(--d-slow) cubic-bezier(0.4,0,0.2,1) calc(var(--i, 0) * 60ms + 80ms);
 }
 
 .rdmenu--open .rdmenu__nav-item { opacity: 1; transform: translateX(0); }
@@ -456,7 +457,7 @@
 .rdmenu__nav-item:active { background: rgba(0,229,255,0.08); }
 
 .rdmenu__nav-num {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px;
   font-weight: 700;
   color: var(--rdnav-accent);
@@ -467,14 +468,14 @@
 }
 
 .rdmenu__nav-label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(18px, 5vw, 28px);
   font-weight: 800;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: rgba(255,255,255,0.82);
   flex: 1;
-  transition: color 0.2s;
+  transition: color var(--d-base);
 }
 
 .rdmenu__nav-item:hover .rdmenu__nav-label { color: #ffffff; }
@@ -482,7 +483,7 @@
 .rdmenu__nav-arrow {
   font-size: 18px;
   color: rgba(255,255,255,0.20);
-  transition: color 0.2s, transform 0.2s;
+  transition: color var(--d-base), transform var(--d-base);
 }
 
 .rdmenu__nav-item:hover .rdmenu__nav-arrow {
@@ -495,7 +496,7 @@
   position: relative;
   z-index: 1;
   margin-top: 16px;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 2px;

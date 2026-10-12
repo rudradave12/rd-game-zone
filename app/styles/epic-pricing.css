@@ -9,7 +9,7 @@
    ================================================================ */
 
 .pricing-wrapper {
-  background: #000;
+  background: var(--bg);
   color: #fff;
   width: 100%;
   max-width: 100%;
@@ -32,7 +32,7 @@
   font-size: clamp(0.58rem, 1.2vw, 0.8rem);
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #777;
+  color: rgba(255, 255, 255, 0.35);
   word-break: break-word;
   display: block;
   white-space: nowrap;
@@ -51,13 +51,13 @@
 
 /* ✅ Notice above blocks — full width, no 900px cap */
 .pricing-notice {
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid var(--accent-deep);
   padding-left: clamp(10px, 1.8vw, 18px);
   /* Full width — stretches with container */
   max-width: 100%;
   font-size: clamp(0.62rem, 1.1vw, 0.95rem);
   line-height: 1.72;
-  color: #d1d1d1;
+  color: rgba(255, 255, 255, 0.55);
   margin-bottom: clamp(24px, 4vw, 80px);
   word-break: break-word;
   overflow-wrap: break-word;
@@ -70,16 +70,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: #1a1a1a;
+  background: var(--surface-2);
   width: 100%;
   box-sizing: border-box;
 }
 
 /* ── Card — unchanged ── */
 .pricing-card {
-  background: #000;
+  background: var(--bg);
   padding: clamp(8px, 2vw, 40px);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--d-base) ease, box-shadow var(--d-base) ease;
   min-width: 0;
   overflow: hidden;
   box-sizing: border-box;
@@ -118,9 +118,9 @@
   align-items: flex-start;
   gap: clamp(2px, 0.5vw, 8px);
   padding: clamp(4px, 0.8vw, 10px) 0;
-  border-bottom: 1px dashed rgba(255,255,255,0.10);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
   font-size: clamp(0.48rem, 0.9vw, 0.95rem);
-  color: #cfcfcf;
+  color: rgba(255, 255, 255, 0.55);
   word-break: break-word;
   overflow-wrap: break-word;
   flex-wrap: wrap;
@@ -137,8 +137,8 @@
 .pricing-footer {
   margin-top: clamp(20px, 4vw, 80px);
   font-size: clamp(0.58rem, 1vw, 0.9rem);
-  color: #b5b5b5;
-  border-left: 2px solid #2a2a2a;
+  color: rgba(255, 255, 255, 0.45);
+  border-left: 2px solid rgba(255, 255, 255, 0.06);
   padding-left: clamp(10px, 1.5vw, 20px);
   /* Full width — stretches with container */
   max-width: 100%;
@@ -335,4 +335,238 @@
   .pricing-notice { font-size: 1.05rem; line-height: 1.8; }
   .pricing-footer { font-size: 0.95rem; }
   .pricing-title  { font-size: clamp(3.5rem, 3.5vw, 6rem); }
+}
+
+
+/* ================================================================
+   ▓▓ RD DESIGN SYSTEM LAYER — loaded last ▓▓
+   ----------------------------------------------------------------
+   Rate cards become defined premium cards on the shared surface
+   language. The grid now reflows 4 → 2 → 1 instead of forcing four
+   columns onto a phone, which is what pushed the old card text down
+   to clamp(0.46rem) ≈ 7px. Rates and copy are unchanged.
+   ================================================================ */
+
+.pricing-container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: var(--pad-y) var(--pad-x);
+}
+
+/* ── Header ── */
+.pricing-subhead {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  overflow: visible;
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-eyebrow);
+  white-space: normal;
+  text-overflow: clip;
+}
+
+.pricing-subhead::before {
+  width: 26px;
+  height: 1.5px;
+  content: "";
+  flex: 0 0 auto;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.pricing-title {
+  margin: var(--s-4) 0 var(--s-5);
+  color: var(--text-1);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+}
+
+.pricing-notice {
+  max-width: var(--measure-wide);
+  padding: var(--s-4) var(--s-5);
+  margin-bottom: var(--s-10);
+  border-left: 2px solid var(--accent-line);
+  border-radius: var(--r-md);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  background: var(--accent-soft);
+}
+
+.pricing-notice strong { color: var(--text-1); font-weight: var(--fw-bold); }
+
+/* ── Grid: reflow, never shrink type ── */
+.pricing-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-grid);
+  background: transparent;
+}
+
+/* ── Card ── */
+.pricing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-6);
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.013) 100%),
+    var(--surface-1);
+  box-shadow: var(--ring), var(--e-2);
+  transition: transform var(--d-slow) var(--ease-out),
+              box-shadow var(--d-base) var(--ease),
+              background var(--d-base) var(--ease);
+}
+
+/* Machined top edge, same cue as the game cards */
+.pricing-card::before {
+  position: absolute;
+  top: 0;
+  right: 18%;
+  left: 18%;
+  height: 1px;
+  content: "";
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, transparent, var(--sheen), transparent);
+  transition: background var(--d-base) var(--ease);
+}
+
+@media (min-width: 769px) {
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.02) 100%),
+      var(--surface-2);
+    box-shadow: var(--ring-accent), var(--e-4), 0 0 30px rgba(0, 229, 255, 0.12);
+  }
+  .pricing-card:hover::before {
+    right: 8%;
+    left: 8%;
+    background: linear-gradient(90deg, transparent, var(--accent-line), transparent);
+  }
+}
+
+/* ── Featured (65" PS5) ── */
+.pricing-card.featured {
+  outline: none;
+  background:
+    linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, rgba(0, 112, 255, 0.03) 100%),
+    var(--surface-1);
+  box-shadow: 0 0 0 1px var(--border-accent), var(--e-3), 0 0 34px rgba(0, 229, 255, 0.1);
+}
+
+.pricing-card.featured::after {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+  content: "POPULAR";
+  padding: 3px var(--s-2);
+  border-radius: var(--r-full);
+  color: var(--accent-ink);
+  font-size: 0.56rem;
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-eyebrow);
+  background: var(--accent);
+}
+
+/* ── Card head ── */
+.pricing-card h3 {
+  margin: 0 0 var(--s-4);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-1);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-title);
+  line-height: var(--lh-heading);
+  text-transform: none;
+}
+
+/* ── Rate rows ── */
+.pricing-card ul {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pricing-card li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  border-bottom: 0;
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  flex-wrap: nowrap;
+}
+
+.pricing-card li + li { border-top: 1px solid var(--border-subtle); }
+
+.pricing-card li span {
+  flex: 0 0 auto;
+  color: var(--text-1);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pricing-card.featured li span { color: var(--accent); }
+
+/* ── Footer note ── */
+.pricing-footer {
+  max-width: var(--measure-wide);
+  padding-left: var(--s-4);
+  margin-top: var(--s-10);
+  border-left: 2px solid var(--border);
+  color: var(--text-4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — reflow instead of shrinking
+   ════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 599px) and (orientation: portrait) {
+  .pricing-container { padding: var(--s-12) var(--s-4); }
+  .pricing-grid      { grid-template-columns: 1fr; gap: var(--s-3); }
+  .pricing-card      { padding: var(--s-5); }
+  .pricing-title     { font-size: var(--fs-2xl); margin: var(--s-3) 0 var(--s-4); }
+  .pricing-subhead   { font-size: var(--fs-xs); letter-spacing: var(--track-eyebrow); }
+
+  .pricing-card h3   { margin-bottom: var(--s-3); padding-bottom: var(--s-3); font-size: var(--fs-base); }
+  .pricing-card li   { padding: var(--s-2) 0; font-size: var(--fs-sm); }
+  .pricing-card li span { font-size: var(--fs-base); }
+
+  .pricing-notice { padding: var(--s-3) var(--s-4); margin-bottom: var(--s-6); font-size: var(--fs-sm); }
+  .pricing-footer { margin-top: var(--s-6); font-size: var(--fs-sm); }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .pricing-container { padding: var(--s-8) var(--s-5); }
+  .pricing-grid      { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+  .pricing-card      { padding: var(--s-4); }
+  .pricing-card h3   { margin-bottom: var(--s-3); padding-bottom: var(--s-2); font-size: var(--fs-sm); }
+  .pricing-card li   { padding: var(--s-1) 0; font-size: var(--fs-xs); }
+  .pricing-card li span { font-size: var(--fs-sm); }
+  .pricing-title     { font-size: var(--fs-xl); }
+  .pricing-notice    { margin-bottom: var(--s-4); font-size: var(--fs-xs); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card { transition: none; }
+  .pricing-card:hover { transform: none; }
 }

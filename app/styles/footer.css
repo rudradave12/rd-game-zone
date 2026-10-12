@@ -16,43 +16,43 @@
 
 /* ── 01  DESIGN TOKENS ─────────────────────────────────────── */
 :root {
-  --ft-bg:       #000000;
-  --ft-surface:  #090909;
-  --ft-raised:   #111111;
-  --ft-elevated: #181818;
+  --ft-bg:       var(--bg);
+  --ft-surface:  var(--surface-1);
+  --ft-raised:   var(--surface-2);
+  --ft-elevated: var(--surface-3);
 
-  --ft-line-xs:  rgba(255,255,255,0.04);
-  --ft-line-sm:  rgba(255,255,255,0.08);
-  --ft-line-md:  rgba(255,255,255,0.14);
+  --ft-line-xs:  rgba(255,255,255,0.03);
+  --ft-line-sm:  rgba(255,255,255,0.06);
+  --ft-line-md:  rgba(255,255,255,0.1);
 
   --ft-white:  #ffffff;
-  --ft-bright: #e0e0e0;
-  --ft-mid:    #888888;
-  --ft-dim:    #444444;
-  --ft-ghost:  #222222;
+  --ft-bright: rgba(255,255,255,0.85);
+  --ft-mid:    rgba(255,255,255,0.45);
+  --ft-dim:    rgba(255,255,255,0.25);
+  --ft-ghost:  rgba(255,255,255,0.12);
 
   --ft-t1: rgba(255,255,255,0.92);
-  --ft-t2: rgba(255,255,255,0.58);
-  --ft-t3: rgba(255,255,255,0.30);
-  --ft-t4: rgba(255,255,255,0.15);
-  --ft-t5: rgba(255,255,255,0.07);
+  --ft-t2: rgba(255,255,255,0.55);
+  --ft-t3: rgba(255,255,255,0.28);
+  --ft-t4: rgba(255,255,255,0.14);
+  --ft-t5: rgba(255,255,255,0.06);
 
-  --ft-info-bg:  #0c0c0c;
-  --ft-info-bdr: rgba(255,255,255,0.06);
-  --ft-acc-bg:   #080808;
-  --ft-acc-bdr:  rgba(255,255,255,0.07);
-  --ft-bot-bg:   #060606;
+  --ft-info-bg:  var(--surface-1);
+  --ft-info-bdr: rgba(255,255,255,0.05);
+  --ft-acc-bg:   var(--bg-elevated);
+  --ft-acc-bdr:  rgba(255,255,255,0.05);
+  --ft-bot-bg:   var(--surface-sunken);
 
   --ft-open-bg:   #071510;
   --ft-open-bdr:  #1a5c34;
-  --ft-open-text: #4ade80;
-  --ft-open-dot:  #22c55e;
+  --ft-open-text: var(--success);
+  --ft-open-dot:  var(--success);
   --ft-open-ico:  #0d2a1a;
 
   --ft-clos-bg:   #150707;
   --ft-clos-bdr:  #5a1a1a;
-  --ft-clos-text: #f87171;
-  --ft-clos-dot:  #ef4444;
+  --ft-clos-text: var(--danger);
+  --ft-clos-dot:  var(--danger);
   --ft-clos-ico:  #2a0d0d;
 }
 
@@ -62,7 +62,7 @@
   border-top: 1px solid var(--ft-line-sm);
   padding: clamp(22px,3vw,48px) clamp(24px,5vw,80px) 0;
   color: var(--ft-mid);
-  font-family: "Rajdhani", system-ui, sans-serif;
+  font-family: var(--font-primary);
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -91,7 +91,7 @@
 }
 
 .rd-map-eyebrow {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.44rem,.66vw,.58rem);
   font-weight: 700;
   letter-spacing: .38em;
@@ -100,7 +100,7 @@
 }
 
 .rd-map-title {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.88rem,1.65vw,1.5rem);
   font-weight: 900;
   color: var(--ft-white);
@@ -111,7 +111,7 @@
 }
 
 .rd-map-address {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.56rem,.86vw,.74rem);
   color: var(--ft-mid);
   line-height: 1.55;
@@ -141,13 +141,13 @@
 }
 .rd-map-thumb-fallback svg  { width: clamp(24px,3.2vw,38px); height: clamp(24px,3.2vw,38px); }
 .rd-map-thumb-fallback span {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(8px,.82vw,11px);
   letter-spacing: .24em;
   font-weight: 600;
 }
 .rd-map-thumb-sub {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(9px,.9vw,12px);
   letter-spacing: .1em;
   opacity: .55;
@@ -181,9 +181,9 @@
   gap: 8px;
   padding: 11px 26px;
   min-height: 42px;
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   border: 1px solid transparent;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px,.8vw,12px);
   font-weight: 700;
   letter-spacing: .13em;
@@ -207,7 +207,7 @@
   color: var(--ft-bright);
 }
 .rd-map-btn--secondary:hover {
-  background: #202020;
+  background: var(--surface-3);
   border-color: rgba(255,255,255,.28);
   color: var(--ft-white);
 }
@@ -240,14 +240,14 @@
   justify-content: center;
   flex-shrink: 0;
   border: 1px solid var(--ft-line-sm);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   background: var(--ft-surface);
   color: var(--ft-dim);
 }
 .rd-status-tag__icon svg { width: 14px; height: 14px; }
 
 .rd-status-tag__text {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.54rem,.82vw,.74rem);
   color: var(--ft-dim);
   letter-spacing: .02em;
@@ -261,7 +261,7 @@
   display: flex;
   align-items: stretch;
   border: 1px solid var(--ft-line-sm);
-  border-radius: 3px;
+  border-radius: var(--r-xs);
   overflow: hidden;
   flex-shrink: 0;
   margin-left: auto;
@@ -286,7 +286,7 @@
   padding: 8px 14px;
 }
 .rd-live-badge__label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.34rem,.54vw,.48rem);
   font-weight: 700;
   letter-spacing: .22em;
@@ -294,7 +294,7 @@
   color: var(--ft-dim);
 }
 .rd-live-badge__state {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(.48rem,.76vw,.68rem);
   font-weight: 900;
   letter-spacing: .1em;
@@ -352,7 +352,7 @@
 .ft-col:last-child { border-right: none; }
 
 .ft-col__label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: .28em;
@@ -369,7 +369,7 @@
 .ft-col--brand { gap: 0; }
 
 .ft-wordmark {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(13px,1.3vw,18px);
   font-weight: 900;
   letter-spacing: .04em;
@@ -381,7 +381,7 @@
 
 .ft-wordmark-sub {
   display: block;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: .22em;
@@ -403,7 +403,7 @@
 }
 
 .ft-brand-line {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(12px,.95vw,13.5px);
   font-weight: 600;
   color: var(--ft-t2);
@@ -422,7 +422,7 @@
   margin-top: 20px;
   padding: 8px 14px;
   border: 1px solid var(--ft-line-sm);
-  border-radius: 4px;
+  border-radius: var(--r-xs);
   background: var(--ft-raised);
   text-decoration: none;
   width: fit-content;
@@ -443,7 +443,7 @@
 .ft-google-badge__icon svg { display: block; }
 
 .ft-google-badge__text {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(11px,.9vw,13px);
   font-weight: 700;
   letter-spacing: .04em;
@@ -465,7 +465,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 0;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(12px,1vw,14px);
   font-weight: 600;
   color: var(--ft-t2);
@@ -503,14 +503,14 @@
   width: clamp(28px,2.5vw,34px);
   height: clamp(28px,2.5vw,34px);
   border: 1px solid var(--ft-line-sm);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   background: var(--ft-raised);
   color: var(--ft-t3);
 }
 .ft-list__svc-icon svg { width: clamp(12px,1.1vw,14px); height: clamp(12px,1.1vw,14px); display: block; }
 
 .ft-list__svc-label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(8.5px,.7vw,11px);
   font-weight: 800;
   letter-spacing: .12em;
@@ -538,7 +538,7 @@
   width: clamp(28px,2.5vw,34px);
   height: clamp(28px,2.5vw,34px);
   border: 1px solid var(--ft-line-sm);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   background: var(--ft-raised);
   color: var(--ft-t3);
   margin-top: 1px;
@@ -553,7 +553,7 @@
 }
 
 .ft-list__contact-label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 7.5px;
   font-weight: 800;
   letter-spacing: .18em;
@@ -564,7 +564,7 @@
 }
 
 .ft-list__contact-value {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(11.5px,.88vw,13px);
   font-weight: 600;
   color: var(--ft-t2);
@@ -612,7 +612,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 }
 
 .ft-acc__title {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: .26em;
@@ -661,7 +661,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 }
 
 .ft-bottom__copy {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px,.75vw,12px);
   font-weight: 500;
   letter-spacing: .02em;
@@ -674,7 +674,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 .ft-bottom__nav { display: flex; align-items: center; }
 
 .ft-bottom__link {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: .14em;
@@ -716,13 +716,13 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   height: clamp(480px,80vh,720px);
   background: var(--ft-bg);
   border: 1px solid var(--ft-line-md);
-  border-radius: 3px;
+  border-radius: var(--r-xs);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   box-shadow: 0 40px 90px rgba(0,0,0,.9);
   transform: translateY(14px) scale(.985);
-  transition: transform .3s cubic-bezier(.22,1,.36,1);
+  transition: transform var(--d-base) cubic-bezier(.22,1,.36,1);
 }
 .ftr-modal--ready .ftr-modal__panel { transform: translateY(0) scale(1); }
 
@@ -741,7 +741,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 
 .ftr-modal__bar-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
 .ftr-modal__bar-name {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px,.95vw,13px);
   font-weight: 800;
   color: var(--ft-white);
@@ -749,7 +749,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   white-space: nowrap;
 }
 .ftr-modal__bar-addr {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px,.82vw,11.5px);
   color: var(--ft-mid);
   white-space: nowrap;
@@ -767,9 +767,9 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   padding: 7px 14px;
   background: var(--ft-raised);
   border: 1px solid var(--ft-line-sm);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   color: var(--ft-mid);
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: .13em;
@@ -780,7 +780,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 .ftr-bar-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 .ftr-bar-btn:hover { background: var(--ft-elevated); border-color: var(--ft-line-md); color: var(--ft-white); }
 .ftr-bar-btn--close { padding: 7px 10px; }
-.ftr-bar-btn--close:hover { border-color: rgba(239,68,68,.5); color: #f87171; background: rgba(239,68,68,.08); }
+.ftr-bar-btn--close:hover { border-color: rgba(239,68,68,.5); color: var(--danger); background: rgba(239,68,68,.08); }
 
 .ftr-modal__map-wrap { position: relative; flex: 1; overflow: hidden; }
 .ftr-modal__map      { width: 100%; height: 100%; }
@@ -817,7 +817,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 }
 @keyframes ftSpin { to { transform: rotate(360deg); } }
 .ftr-modal__loader span {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .28em;
@@ -835,7 +835,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   align-items: center;
   background: var(--ft-surface);
   border: 1px solid var(--ft-line-sm);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   overflow: hidden;
 }
 .ftr-zoom__btn {
@@ -891,8 +891,8 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   padding: 3px 7px;
   background: var(--ft-bg);
   border: 1px solid var(--ft-line-md);
-  border-radius: 2px;
-  font-family: "Orbitron", sans-serif;
+  border-radius: var(--r-xs);
+  font-family: var(--font-primary);
   font-size: 7px;
   font-weight: 800;
   letter-spacing: .1em;
@@ -903,7 +903,7 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
 .ftr-popup-wrap .leaflet-popup-content-wrapper {
   background: var(--ft-elevated) !important;
   border: 1px solid var(--ft-line-md) !important;
-  border-radius: 3px !important;
+  border-radius: var(--r-xs) !important;
   box-shadow: 0 12px 40px rgba(0,0,0,.95) !important;
   padding: 0 !important;
 }
@@ -920,20 +920,20 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   min-width: 200px;
 }
 .ftr-popup__name {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px; font-weight: 800;
   color: var(--ft-white);
   letter-spacing: .07em;
 }
 .ftr-popup__addr {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px;
   color: var(--ft-mid);
   line-height: 1.5;
   margin: 0;
 }
 .ftr-popup__link {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px; font-weight: 700;
   color: var(--ft-mid);
   text-decoration: none;
@@ -1074,4 +1074,100 @@ a.ft-list__contact-value:hover { color: var(--ft-t1); }
   .rd-live-badge__dot { animation: none !important; }
   .ft-acc__chevron,
   .ft-acc__chevron--open { transform: none; }
+}
+
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓
+   Structure and content unchanged. Softens the 2–4px corners (which
+   read as sharp next to 16px cards elsewhere), applies the accent to
+   labels and icons, and lifts the map buttons to 44px touch targets. */
+.ft-col__label,
+.rd-map-eyebrow {
+  display: flex; align-items: center; gap: var(--s-2);
+  color: var(--accent);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-eyebrow);
+}
+.ft-col__label::before,
+.rd-map-eyebrow::before {
+  width: 18px; height: 1.5px; content: ""; flex: 0 0 auto;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.rd-map-title {
+  color: var(--text-1);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-title);
+  text-transform: none;
+}
+.rd-map-address { color: var(--text-3); font-size: var(--fs-sm); line-height: var(--lh-body); }
+
+.ft-info, .ft-acc {
+  border-radius: var(--r-xl);
+  background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, rgba(255,255,255,.007) 100%), var(--surface-1);
+  box-shadow: var(--ring);
+}
+
+.ft-list__contact-icon,
+.ft-list__svc-icon,
+.ft-google-badge {
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.05);
+  box-shadow: var(--ring);
+}
+.ft-list__contact-icon,
+.ft-list__svc-icon { color: var(--accent); }
+
+.ft-google-badge {
+  min-height: 42px; border: none;
+  transition: background var(--d-base) var(--ease), box-shadow var(--d-base) var(--ease);
+}
+.ft-google-badge:hover { background: rgba(255,255,255,.09); box-shadow: var(--ring-strong); }
+
+.ft-list__link:hover,
+.ft-bottom__link:hover,
+.ft-list__contact-value:hover { color: var(--accent); }
+
+.rd-map-btn { min-height: var(--control); border-radius: var(--r-md); font-size: var(--fs-sm); }
+
+.rd-map-btn--primary {
+  border-color: transparent;
+  color: var(--accent-ink);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  box-shadow: 0 6px 20px rgba(0,229,255,.22);
+}
+.rd-map-btn--primary:hover {
+  border-color: transparent; color: var(--accent-ink);
+  background: linear-gradient(135deg, var(--accent-hover), #2b87ff);
+  box-shadow: 0 8px 26px rgba(0,229,255,.32);
+}
+
+.rd-map-btn--secondary {
+  border-color: transparent;
+  color: var(--text-2);
+  background: rgba(255,255,255,.06);
+  box-shadow: var(--ring);
+}
+.rd-map-btn--secondary:hover {
+  border-color: transparent; color: var(--text-1);
+  background: rgba(255,255,255,.11); box-shadow: var(--ring-strong);
+}
+
+.rd-live-badge { border-radius: var(--r-md); border-width: 0; box-shadow: inset 0 0 0 1px currentColor; }
+.rd-live-badge__icon { border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.rd-status-tag__icon { border: none; border-radius: var(--r-md); box-shadow: var(--ring); }
+.rd-status-tag__text { color: var(--text-4); font-size: var(--fs-sm); }
+.rd-status-tag__text strong { color: var(--text-2); }
+
+.ft-wordmark { color: var(--text-1); letter-spacing: var(--track-display); }
+.ft-wordmark-sub { color: var(--accent); letter-spacing: var(--track-eyebrow); }
+
+@media (max-width: 640px) {
+  .ft-info, .ft-acc { border-radius: var(--r-lg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ft-google-badge, .rd-map-btn { transition: none; }
 }

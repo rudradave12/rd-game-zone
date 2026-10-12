@@ -10,17 +10,16 @@
 
    VIDEOS (play on top of image once loaded)
    Desktop:
-   • videoDesktopWebm / videoDesktopMp4     — 16:9
+   • videoDesktopMp4                         — 16:9
    Mobile portrait:
-   • videoPortraitWebm  / videoPortraitMp4  — 9:16 vertical
+   • videoPortraitMp4                        — 9:16 vertical
    Mobile landscape:
-   • videoLandscapeWebm / videoLandscapeMp4 — 16:9
+   • videoLandscapeMp4                       — 16:9
 
    BUTTONS
    • btn1 / btn2
 
-   TIP: If you only have one video format, put the same path in
-   both Webm and Mp4 fields — the browser will just pick Mp4.
+   Each breakpoint references the best matching MP4 source in public/videos.
    ================================================================ */
 
 export type HeroSlide = {
@@ -35,16 +34,13 @@ export type HeroSlide = {
   imageMobileLandscape: string;
 
   /* ── Desktop video (16:9) ── */
-  videoDesktopWebm: string;
-  videoDesktopMp4:  string;
+  videoDesktopMp4: string;
 
   /* ── Mobile portrait video (9:16 vertical) ── */
-  videoPortraitWebm: string;
-  videoPortraitMp4:  string;
+  videoPortraitMp4: string;
 
   /* ── Mobile landscape video (16:9, separate file) ── */
-  videoLandscapeWebm: string;
-  videoLandscapeMp4:  string;
+  videoLandscapeMp4: string;
 
   /* ── Buttons ── */
   btn1: string;
@@ -62,13 +58,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageMobilePortrait:  "/images/valorant-mobile-portraite.jpg",
     imageMobileLandscape: "/images/valorant.jpg",
 
-    videoDesktopWebm:  "/videos/valorant-desktop.webm",
     videoDesktopMp4:   "/videos/Valorant-Desktop-Lanscape-New-Kj-Compressed.mp4",
     
-    videoPortraitWebm: "/videos/valorant-portrait.webm",
     videoPortraitMp4:  "/videos/valorant-mobile-portrait.mp4",
     
-    videoLandscapeWebm:"/videos/valorant-landscape.webm",
     videoLandscapeMp4: "/videos/valorant new compressed.mp4",
 
     btn1: "BEST GAME",
@@ -82,16 +75,13 @@ export const HERO_SLIDES: HeroSlide[] = [
     category: "RACING",
 
     imageDesktop:         "/images/asphalt.jpeg",
-    imageMobilePortrait:  "/images/asphalt-mobile-portrait.jpg",
+    imageMobilePortrait:  "/images/asphalt-mobile-potraite.jpg",
     imageMobileLandscape: "/images/asphalt.jpeg",
 
-    videoDesktopWebm:  "/videos/asphalt-desktop.webm",
     videoDesktopMp4:   "/videos/Asphalt Legends Unite.mp4",
     
-    videoPortraitWebm: "/videos/asphalt-portrait.webm",
     videoPortraitMp4:  "/videos/asphalt-mobile-portrait.mp4",
     
-    videoLandscapeWebm:"/videos/asphalt-landscape.webm",
     videoLandscapeMp4: "/videos/Asphalt Legends Unite.mp4",
 
     btn1: "BEST GAME",
@@ -108,13 +98,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageMobilePortrait:  "/images/black-myth-wukong-mobile-portraite.jpg",
     imageMobileLandscape: "/images/black-myth-wukong.jpeg",
 
-    videoDesktopWebm:  "/videos/wukong-desktop.webm",
     videoDesktopMp4:   "/videos/black myth wukong.mp4",
     
-    videoPortraitWebm: "/videos/wukong-portrait.webm",
     videoPortraitMp4:  "/videos/wukong-mobile-portrait.mp4",
     
-    videoLandscapeWebm:"/videos/wukong-landscape.webm",
     videoLandscapeMp4: "/videos/black myth wukong.mp4",
 
     btn1: "BEST GAME",
@@ -131,13 +118,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageMobilePortrait:  "/images/cod-7-mobile-portraite.jpg",
     imageMobileLandscape: "/images/cod-7-new-landscape.jpg",
 
-    videoDesktopWebm:  "/videos/cod-desktop.webm",
     videoDesktopMp4:   "/videos/cod blackops 7 new.mp4",
     
-    videoPortraitWebm: "/videos/cod-portrait.webm",
     videoPortraitMp4:  "/videos/cod-7-mobile-portrait.mp4",
     
-    videoLandscapeWebm:"/videos/cod-landscape.webm",
     videoLandscapeMp4: "/videos/cod blackops 7 new.mp4",
 
     btn1: "BEST GAME",
@@ -154,13 +138,10 @@ export const HERO_SLIDES: HeroSlide[] = [
     imageMobilePortrait:  "/images/gta-5online-mobile-portrait.jpeg",
     imageMobileLandscape: "/images/gta-5online.jpeg",
 
-    videoDesktopWebm:  "/videos/gta-desktop.webm",
     videoDesktopMp4:   "/videos/mobile/GTA Online.mp4",
     
-    videoPortraitWebm: "/videos/gta-portrait.webm",
-    videoPortraitMp4:  "public/videos/gta-online-mobile-portraite.mp4",
+    videoPortraitMp4:  "/videos/gta-online-mobile-portraite.mp4",
     
-    videoLandscapeWebm:"/videos/gta-landscape.webm",
     videoLandscapeMp4: "/videos/GTA Online.mp4",
 
     btn1: "OPEN WORLD",

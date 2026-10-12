@@ -1,65 +1,82 @@
-/* ===============================
-   VIDEO MODAL (LOCKED PLAYER)
-   =============================== */
+/* ================================================================
+   TRAILER MODAL — Netflix-style
+   ----------------------------------------------------------------
+   Near-black backdrop, blurred page behind, body scroll locked,
+   ESC + click-outside to close, focus trapped inside the dialog.
+   The player is followed by an info strip built from the game data
+   that already exists — no new route, no new data model.
+   ================================================================ */
 
 .video-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(12px, 3vw, 40px);
+  animation: modalIn var(--d-slow) var(--ease-out);
 }
 
-/* Dark background */
+@keyframes modalIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Backdrop ── */
 .video-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(26px) saturate(115%);
+  -webkit-backdrop-filter: blur(26px) saturate(115%);
 }
 
-/* Main container */
+/* ── Panel: player + info, scrolls as one unit on short screens ── */
+.video-panel {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1120px);
+  max-height: calc(100dvh - clamp(24px, 6vw, 80px));
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  border-radius: var(--r-xl);
+  background: var(--surface-1);
+  box-shadow: var(--ring), var(--e-5);
+  animation: panelIn var(--d-slow) var(--ease-out);
+  scrollbar-width: thin;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: scale(0.94) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Player ── */
 .video-container {
   position: relative;
-  width: 90%;
-  max-width: 1100px;
   aspect-ratio: 16 / 9;
-  background: #000;
-  border-radius: 16px;
+  width: 100%;
   overflow: hidden;
-  z-index: 2;
-  box-shadow: 0 0 60px rgba(0, 255, 180, 0.15);
-  animation: modalZoom 0.25s ease;
+  background: #000;
 }
 
-@keyframes modalZoom {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Iframe & video */
 .video-container iframe,
 .video-container video {
+  display: block;
   width: 100%;
   height: 100%;
   border: none;
   background: #000;
 }
 
-/* Wrapper for iframe blocking */
 .video-frame-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* CLICK BLOCKER — prevents YouTube redirect */
+/* Blocks the YouTube chrome (title, share, channel link) */
 .iframe-blocker {
   position: absolute;
   inset: 0;
@@ -67,33 +84,197 @@
   pointer-events: all;
 }
 
-/* Close button */
+/* ── Close ── */
 .close-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 5;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.65);
+  top: var(--s-4);
+  right: var(--s-4);
+  z-index: 10;
+  display: grid;
+  width: var(--control);
+  height: var(--control);
+  border: 0;
+  border-radius: var(--r-full);
   color: #fff;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: var(--icon);
+  place-items: center;
+  background: rgba(4, 8, 14, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px var(--border);
+  transition: background var(--d-fast) var(--ease),
+              transform var(--d-fast) var(--ease),
+              box-shadow var(--d-fast) var(--ease);
+}
+
+.close-btn:hover,
+.close-btn:focus-visible {
+  transform: scale(1.06);
+  background: var(--danger);
+  box-shadow: 0 0 22px rgba(255, 59, 82, 0.5);
+}
+
+.close-btn:active { transform: scale(0.94); }
+
+/* ════════════════════════════════════════════════
+   INFO STRIP
+   ════════════════════════════════════════════════ */
+.video-info {
+  padding: clamp(18px, 2.4vw, 30px) clamp(18px, 2.6vw, 34px) clamp(22px, 2.8vw, 34px);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.video-info__head {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--s-5);
+  margin-bottom: var(--s-5);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.video-info__title-block { min-width: 0; }
+
+.video-info__title {
+  margin: 0;
+  color: var(--text-1);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-heading);
+}
+
+.video-info__subtitle {
+  margin: var(--s-1) 0 0;
+  color: var(--text-4);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+/* Status — dot plus text, never colour alone */
+.video-info__status {
+  display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, transform 0.2s ease;
+  gap: var(--s-2);
+  height: 30px;
+  padding: 0 var(--s-3);
+  border-radius: var(--r-full);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.close-btn:hover {
-  background: rgba(255, 0, 0, 0.8);
-  transform: scale(1.1);
+.video-info__status > span {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
 }
 
-/* Disable text selection */
-.video-modal * {
+.video-info__status--available   { color: var(--success); background: var(--success-soft); box-shadow: inset 0 0 0 1px rgba(74,222,128,.22); }
+.video-info__status--upcoming    { color: var(--warning); background: var(--warning-soft); box-shadow: inset 0 0 0 1px rgba(255,183,3,.22); }
+.video-info__status--unavailable { color: var(--danger);  background: var(--danger-soft);  box-shadow: inset 0 0 0 1px rgba(255,59,82,.22); }
+
+/* ── Meta grid ── */
+.video-info__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+}
+
+.video-info__meta > div {
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.video-info__meta dt {
+  margin-bottom: var(--s-1);
+  color: var(--text-4);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-eyebrow);
+  text-transform: uppercase;
+}
+
+.video-info__meta dd {
+  margin: 0;
+  color: var(--text-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.video-info__platforms {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.video-info__platforms span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.video-info__platforms svg {
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+/* Text selection is allowed in the info strip, blocked over the player */
+.video-container,
+.close-btn {
   user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .video-modal { padding: var(--s-2); }
+  .video-panel { border-radius: var(--r-lg); }
+
+  .close-btn {
+    top: var(--s-2);
+    right: var(--s-2);
+    width: 40px;
+    height: 40px;
+  }
+
+  .video-info__head {
+    padding-bottom: var(--s-4);
+    margin-bottom: var(--s-4);
+  }
+
+  .video-info__title { font-size: var(--fs-lg); }
+
+  .video-info__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+
+  .video-info__meta > div { padding: var(--s-2) var(--s-3); }
+}
+
+/* Landscape phone: player only, info scrolls under */
+@media (orientation: landscape) and (max-height: 500px) {
+  .video-modal { padding: var(--s-2); }
+  .video-panel { max-height: calc(100dvh - var(--s-4)); }
+  .video-info  { padding: var(--s-4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-modal,
+  .video-panel { animation: none; }
+  .close-btn   { transition: none; }
+  .close-btn:hover { transform: none; }
 }

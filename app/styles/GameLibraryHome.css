@@ -10,7 +10,7 @@
 .game-library-container {
   position: relative;
   width: 100%;
-  background: #000;
+  background: var(--bg);
   overflow: hidden;
   padding-bottom: clamp(200px, 28vw, 340px);
   padding-top: clamp(24px, 3vw, 48px);
@@ -53,12 +53,12 @@
   flex-shrink: 0;
   width: 256px;   /* desktop default */
   height: 380px;  /* desktop default */
-  border-radius: 10px;
+  border-radius: var(--r-md);
   overflow: hidden;
-  background: #1f2937;
-  border: 2px solid rgba(255,255,255,0.2);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.55);
-  transition: transform 0.3s ease;
+  background: var(--surface-1);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+  transition: transform var(--d-base) ease;
 }
 
 .glh-card:hover { transform: scale(1.05); }
@@ -77,9 +77,9 @@
   inset: 0;
   background: linear-gradient(
     to bottom right,
-    rgba(30,  58, 138, 0.35),
-    rgba(88,  28, 135, 0.35),
-    rgba(153, 27,  27, 0.35)
+    rgba(0, 112, 255, 0.12),
+    rgba(0, 229, 255, 0.08),
+    rgba(88, 28, 135, 0.1)
   );
 }
 
@@ -88,16 +88,16 @@
   bottom: 0;
   width: 100%;
   padding: clamp(6px, 1.2vw, 16px) clamp(8px, 1.5vw, 20px);
-  background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.7), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.98), rgba(0,0,0,0.65), transparent);
 }
 
 .glh-title h3 {
   margin: 0;
   color: #fff;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-weight: 700;
   font-size: clamp(0.6rem, 1.1vw, 1.1rem);
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.95);
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.95);
   word-break: break-word;
 }
 
@@ -112,8 +112,8 @@
   pointer-events: none;
 }
 
-.gradient-overlay-left  { left: 0;  background: linear-gradient(to right, #000, transparent); }
-.gradient-overlay-right { right: 0; background: linear-gradient(to left,  #000, transparent); }
+.gradient-overlay-left  { left: 0;  background: linear-gradient(to right, var(--bg), transparent); }
+.gradient-overlay-right { right: 0; background: linear-gradient(to left,  var(--bg), transparent); }
 
 /* ── TEXT OVERLAY ── */
 .hero-overlay-text {
@@ -124,49 +124,49 @@
   z-index: 60;
   text-align: center;
   padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 32px) clamp(28px, 4vw, 56px);
-  background: linear-gradient(to top, rgba(0,0,0,0.97), rgba(0,0,0,0.7), transparent);
+  background: linear-gradient(to top, rgba(3,5,8,0.98), rgba(3,5,8,0.7), transparent);
   pointer-events: none;
 }
 
 .hero-overlay-text > * { pointer-events: all; }
 
 .hero-overlay-text h1 {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(1.6rem, 4vw, 3.8rem);
   font-weight: 900;
   color: #fff;
-  text-shadow: 0 8px 32px rgba(0,0,0,1);
+  text-shadow: 0 4px 24px rgba(0,0,0,1);
   margin-bottom: 8px;
   word-break: break-word;
 }
 
 .hero-overlay-text p {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(0.85rem, 1.5vw, 1.3rem);
-  color: rgba(255,255,255,0.78);
+  color: rgba(255,255,255,0.55);
   margin-bottom: clamp(16px, 2vw, 24px);
 }
 
 .view-all-button {
   display: inline-block;
   padding: clamp(10px, 1.2vw, 16px) clamp(24px, 3.5vw, 52px);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.14);
+  border-radius: var(--r-full);
+  background: rgba(255,255,255,0.06);
   color: #fff;
-  border: 2px solid rgba(255,255,255,0.32);
+  border: 1px solid rgba(255,255,255,0.12);
   cursor: pointer;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(12px, 1.2vw, 16px);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background var(--d-base) ease, transform var(--d-base) ease;
   touch-action: manipulation;
 }
 
 .view-all-button:hover {
-  background: rgba(255,255,255,0.26);
+  background: rgba(255,255,255,0.12);
   transform: translateY(-2px);
 }
 
@@ -181,7 +181,7 @@
    PORTRAIT MOBILE — 3 rows, 140×200
    ════════════════════════════════════════ */
 .glc--portrait .layer-container { height: 200px; }
-.glc--portrait .glh-card        { width: 140px; height: 200px; border-radius: 8px; border-width: 1.5px; }
+.glc--portrait .glh-card        { width: 140px; height: 200px; border-radius: var(--r-sm); border-width: 1px; }
 .glc--portrait .gallery-wrapper { gap: 10px; }
 .glc--portrait                  { padding-bottom: clamp(160px, 30vw, 240px); }
 
@@ -191,7 +191,7 @@
    look full and not cropped or squished
    ════════════════════════════════════════ */
 .glc--landscape .layer-container { height: 200px; }
-.glc--landscape .glh-card        { width: 140px; height: 200px; border-radius: 8px; border-width: 1.5px; }
+.glc--landscape .glh-card        { width: 140px; height: 200px; border-radius: var(--r-sm); border-width: 1px; }
 .glc--landscape .gallery-wrapper { gap: 10px; }
 .glc--landscape                  { padding-bottom: clamp(140px, 22vh, 220px); padding-top: 16px; }
 
@@ -211,4 +211,42 @@
 @keyframes scrollRight {
   from { transform: translateX(-50%); }
   to   { transform: translateX(0);    }
+}
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓ — defined tiles, matching the card system */
+.game-library-container { background: var(--bg); }
+.glh-card {
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--surface-1);
+  box-shadow: var(--ring), var(--e-2);
+  transition: transform var(--d-slow) var(--ease-out), box-shadow var(--d-base) var(--ease);
+}
+.glh-card:hover { transform: scale(1.04) translateY(-3px); box-shadow: var(--ring-accent), var(--e-4); }
+.glh-gradient { background: linear-gradient(160deg, rgba(0,229,255,.08), transparent 55%); }
+.glh-title h3 { color: var(--text-1); font-weight: var(--fw-bold); letter-spacing: var(--track-title); text-shadow: 0 2px 10px rgba(0,0,0,.9); }
+
+.hero-overlay-text h1 { color: var(--text-1); font-size: var(--fs-3xl); font-weight: var(--fw-black); letter-spacing: var(--track-display); }
+.hero-overlay-text p  { color: var(--text-4); font-size: var(--fs-md); }
+
+.view-all-button {
+  min-height: var(--control);
+  border: none;
+  border-radius: var(--r-full);
+  color: var(--accent-ink);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-label);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  box-shadow: 0 6px 20px rgba(0,229,255,.22);
+  transition: background var(--d-fast) var(--ease), box-shadow var(--d-fast) var(--ease), transform var(--d-fast) var(--ease);
+}
+.view-all-button:hover {
+  background: linear-gradient(135deg, var(--accent-hover), #2b87ff);
+  box-shadow: 0 8px 26px rgba(0,229,255,.32);
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .glh-card, .view-all-button { transition: none; }
+  .glh-card:hover, .view-all-button:hover { transform: none; }
 }

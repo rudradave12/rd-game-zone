@@ -1,127 +1,37 @@
-import { useEffect } from "react";
-import type React from "react";
+const standards = [
+  ["240Hz", "Esports displays"],
+  ["LAN", "Multiplayer ready"],
+  ["Secure", "Safe & friendly zone"],
+  ["Pro", "Headsets & gear"],
+];
 
-const AboutSection: React.FC = () => {
-  useEffect(() => {
-    /* ===== REVEAL ===== */
-    const reveals = document.querySelectorAll<HTMLElement>(".reveal");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("reveal-active");
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    reveals.forEach((el) => observer.observe(el));
-
-    /* ===== MAGNETIC CARDS ===== */
-    const cards = document.querySelectorAll<HTMLElement>(".epic-stat-box");
-
-    cards.forEach((card) => {
-      const onMove = (e: MouseEvent) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-        card.style.setProperty("--mx", `${x}%`);
-        card.style.setProperty("--my", `${y}%`);
-      };
-
-      const onLeave = () => {
-        card.style.setProperty("--mx", "50%");
-        card.style.setProperty("--my", "50%");
-      };
-
-      card.addEventListener("mousemove", onMove);
-      card.addEventListener("mouseleave", onLeave);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
+export default function AboutSection() {
   return (
-     <section id="about" className="epic-wrapper">
-      <div className="epic-container">
-        <span className="epic-subhead reveal">About RD Game Zone</span>
-
-        <h2 className="epic-headline reveal">RD GAME ZONE</h2>
-
-        {/* LONG DESCRIPTION */}
-        <div className="epic-body reveal">
-          <p>
-            RD GAME ZONE is designed for gamers who value{" "}
-            <span className="highlight">performance, comfort, and precision</span>.
-            Whether you’re here to compete, practice, or simply enjoy your
-            favorite games, our space delivers a balanced experience for both
-            casual and serious players.
-          </p>
-
-          <p>
-            Our gaming setup supports{" "}
-            <span className="highlight-accent">
-              PlayStation 5, PlayStation 4, and high-end gaming PCs
-            </span>
-            , powered by optimized hardware and high-refresh displays to deliver
-            smooth gameplay with stunning visuals.
-          </p>
-
-          <p>
-            The environment is carefully managed to remain{" "}
-            <span className="highlight-strong">
-              friendly, respectful, and welcoming
-            </span>
-            , allowing players to focus purely on gaming.
-          </p>
-
-          <p>
-            Enjoy access to{" "}
-            <span className="highlight-accent">
-              top AAA titles and competitive favorites
-            </span>
-            , updated regularly to match current gaming trends.
-          </p>
-
-          {/* FOOD LINE – MOVED ABOVE CARDS */}
-          <p className="food-line">
-            Food and refreshments are available inside the gaming zone to ensure
-            uninterrupted gameplay sessions. Outside food policies are strictly
-            managed to maintain hygiene, equipment safety, and a premium gaming
-            experience.
-          </p>
+    <section id="about" className="lounge-intro" aria-labelledby="about-title">
+      <div className="lounge-intro__grid">
+        <div className="lounge-intro__copy">
+          <p className="ps-kicker">Made for players</p>
+          <h2 id="about-title">A better way to play.</h2>
+          <p>RD Game Zone is designed for gamers who value <strong>performance, comfort, and precision</strong>. Whether you’re here to compete, practice, or simply enjoy your favorite games, our space delivers a balanced experience for both casual and serious players.</p>
+          <p>Our gaming setup supports <strong>PlayStation 5, PlayStation 4, and high-end gaming PCs</strong>, powered by optimized hardware and high-refresh displays to deliver smooth gameplay with stunning visuals.</p>
+          <p>The environment is carefully managed to remain <strong>friendly, respectful, and welcoming</strong>, allowing players to focus purely on gaming.</p>
+          <p>Enjoy access to <strong>top AAA titles and competitive favorites</strong>, updated regularly to match current gaming trends.</p>
+          <p>Food and refreshments are available inside the gaming zone to ensure uninterrupted gameplay sessions. Outside food policies are strictly managed to maintain hygiene, equipment safety, and a premium gaming experience.</p>
         </div>
-
-        <div className="epic-divider reveal" />
-
-        {/* 4 POLICY CARDS */}
-        <div className="epic-grid reveal">
-          <div className="epic-stat-box">
-            <div className="stat-number">240Hz</div>
-            <div className="stat-label">Esports Displays</div>
+        <aside className="lounge-intro__standard" aria-label="Lounge standards">
+          <span className="lounge-intro__orb lounge-intro__orb--one" aria-hidden="true" />
+          <span className="lounge-intro__orb lounge-intro__orb--two" aria-hidden="true" />
+          <p className="ps-kicker">Lounge standard</p>
+          <div className="lounge-intro__stats">
+            {standards.map(([value, label]) => (
+              <div key={value}>
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
           </div>
-
-          <div className="epic-stat-box">
-            <div className="stat-number">LAN</div>
-            <div className="stat-label">Multiplayer Ready</div>
-          </div>
-
-          <div className="epic-stat-box">
-            <div className="stat-number">Secure</div>
-            <div className="stat-label">Safe & Friendly Zone</div>
-          </div>
-
-          <div className="epic-stat-box">
-            <div className="stat-number">Pro</div>
-            <div className="stat-label">Headsets & Gear</div>
-          </div>
-        </div>
+        </aside>
       </div>
     </section>
   );
-};
-
-export default AboutSection;
+}

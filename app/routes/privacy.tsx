@@ -4,7 +4,6 @@
 
 import { useEffect } from "react";
 import type { MetaFunction } from "@remix-run/node";
-import "../styles/legal.css";
 
 export const meta: MetaFunction = () => [
   { title: "Privacy Policy — RD Game Zone" },
@@ -19,7 +18,7 @@ const SECTIONS = [
     heading: "Introduction",
     content: (
       <>
-        <p>Welcome to RD Game Zone. We operate a premium gaming lounge located at First Floor, A-113, Advance Business Park, Opp. Swaminarayan Temple, Shahibag, Ahmedabad – 380004. This Privacy Policy explains how we collect, use, store, and protect your personal information when you visit our website, use our booking system, or interact with our services in-store.</p>
+        <p>Welcome to RD Game Zone. We operate a premium gaming lounge located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004. This Privacy Policy explains how we collect, use, store, and protect your personal information when you visit our website, use our booking system, or interact with our services in-store.</p>
         <p>By accessing our website or using our services, you agree to the practices described in this policy. We are committed to handling your information with care, transparency, and respect. If you have any concerns, please reach out to us at <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
       </>
     ),
@@ -141,9 +140,8 @@ const SECTIONS = [
           <div className="legal-contact-row">
             <span className="legal-contact-label">Address</span>
             <span className="legal-contact-value">
-              First Floor, A-113, Advance Business Park,<br />
-              Opp. Swaminarayan Temple, Shahibag,<br />
-              Ahmedabad – 380004, Gujarat, India
+              First floor, A-113, opp. Shwami Narayan temple,<br />
+              Shahibag, Ahmedabad, Gujarat 380004, India
             </span>
           </div>
           <div className="legal-contact-row">
@@ -162,7 +160,7 @@ export default function PrivacyRoute() {
   }, []);
 
   return (
-    <div className="legal-page">
+    <main className="legal-page" aria-labelledby="privacy-policy-title">
 
       {/* Hero */}
       <div className="legal-hero">
@@ -174,7 +172,7 @@ export default function PrivacyRoute() {
             Back to Home
           </a>
           <span className="legal-eyebrow">Legal</span>
-          <h1 className="legal-title">Privacy Policy</h1>
+          <h1 id="privacy-policy-title" className="legal-title">Privacy Policy</h1>
           <p className="legal-meta">Last updated: June 2025</p>
           <p className="legal-intro">RD Game Zone is committed to protecting your privacy and being transparent about how we handle your information. This policy covers our website and in-store services.</p>
         </div>
@@ -229,6 +227,6 @@ export default function PrivacyRoute() {
         </div>
       </div>
 
-    </div>
+    </main>
   );
 }

@@ -9,10 +9,10 @@
 
 /* ── 01  PAGE SHELL ────────────────────────────────────────── */
 .legal-page {
-  background: #000000;
+  background: var(--bg);
   min-height: 100vh;
-  color: rgba(255,255,255,0.58);
-  font-family: "Rajdhani", system-ui, sans-serif;
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font-primary);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -20,8 +20,8 @@
 
 /* ── 02  HERO HEADER ───────────────────────────────────────── */
 .legal-hero {
-  background: #090909;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: var(--surface-1);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   padding: clamp(32px,5vw,72px) clamp(20px,5vw,80px) clamp(28px,4vw,56px);
 }
 
@@ -34,7 +34,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -47,7 +47,7 @@
 
 .legal-eyebrow {
   display: block;
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.38em;
@@ -57,7 +57,7 @@
 }
 
 .legal-title {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(20px,3.5vw,40px);
   font-weight: 900;
   letter-spacing: 0.03em;
@@ -68,7 +68,7 @@
 }
 
 .legal-meta {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -78,7 +78,7 @@
 }
 
 .legal-intro {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(13px,1.1vw,16px);
   font-weight: 500;
   line-height: 1.65;
@@ -113,7 +113,7 @@
 }
 
 .legal-toc__label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.28em;
@@ -140,7 +140,7 @@
   padding: 7px 0;
   text-decoration: none;
   color: rgba(255,255,255,0.3);
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(11px,0.85vw,12.5px);
   font-weight: 600;
   line-height: 1.35;
@@ -151,7 +151,7 @@
 .legal-toc__link:hover { color: rgba(255,255,255,0.7); }
 
 .legal-toc__num {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -174,7 +174,7 @@
 .legal-section:last-child  { border-bottom: none; }
 
 .legal-section__num {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -186,7 +186,7 @@
 .legal-section__body { display: flex; flex-direction: column; }
 
 .legal-section__heading {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(11px,1vw,14px);
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -200,7 +200,7 @@
 
 /* ── 06  CONTENT TYPOGRAPHY ────────────────────────────────── */
 .legal-section__content p {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(13px,1.05vw,15px);
   font-weight: 500;
   line-height: 1.72;
@@ -222,7 +222,7 @@
   flex-direction: column;
 }
 .legal-list li {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(13px,1.05vw,15px);
   font-weight: 500;
   line-height: 1.65;
@@ -258,9 +258,9 @@
   flex-direction: column;
   margin-top: 16px;
   border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   overflow: hidden;
-  background: #0a0a0a;
+  background: var(--surface-1);
 }
 
 .legal-contact-row {
@@ -273,7 +273,7 @@
 .legal-contact-row:last-child { border-bottom: none; }
 
 .legal-contact-label {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -284,7 +284,7 @@
 }
 
 .legal-contact-value {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(12px,0.95vw,14px);
   font-weight: 600;
   color: rgba(255,255,255,0.6);
@@ -296,7 +296,7 @@ a.legal-contact-value:hover { color: rgba(255,255,255,0.88); }
 
 /* ── 08  LEGAL FOOTER BAR ──────────────────────────────────── */
 .legal-foot {
-  background: #060606;
+  background: var(--surface-sunken);
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: 20px clamp(20px,5vw,80px);
 }
@@ -312,7 +312,7 @@ a.legal-contact-value:hover { color: rgba(255,255,255,0.88); }
 }
 
 .legal-foot__inner > span {
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(10px,0.75vw,12px);
   font-weight: 500;
   color: rgba(255,255,255,0.22);
@@ -322,7 +322,7 @@ a.legal-contact-value:hover { color: rgba(255,255,255,0.88); }
 .legal-foot__nav { display: flex; align-items: center; }
 
 .legal-foot__link {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -349,9 +349,9 @@ a.legal-contact-value:hover { color: rgba(255,255,255,0.88); }
   }
   .legal-toc {
     position: static;
-    background: #0a0a0a;
+    background: var(--surface-1);
     border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 2px;
+    border-radius: var(--r-xs);
     padding: 16px;
   }
   .legal-toc__list {
@@ -379,3 +379,15 @@ a.legal-contact-value:hover { color: rgba(255,255,255,0.88); }
   .legal-foot__link,
   a.legal-contact-value { transition: none; }
 }
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓ */
+.legal-page, .legal-wrap { background: var(--bg); }
+.legal-title { color: var(--text-1); font-size: var(--fs-3xl); font-weight: var(--fw-black); letter-spacing: var(--track-display); line-height: var(--lh-tight); }
+.legal-section h2, .legal-section h3 { color: var(--text-1); letter-spacing: var(--track-title); }
+.legal-section p, .legal-section li { max-width: var(--measure-wide); color: var(--text-3); font-size: var(--fs-base); line-height: var(--lh-body); }
+.legal-toc, .legal-contact-row {
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.01) 100%), var(--surface-1);
+  box-shadow: var(--ring);
+}
+.legal-toc__list a:hover { color: var(--accent); }

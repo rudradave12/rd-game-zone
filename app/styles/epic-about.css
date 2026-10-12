@@ -7,9 +7,9 @@
    ================================================================ */
 
 :root {
-  --epic-black: #000000;
+  --epic-black: var(--bg);
   --epic-white: #ffffff;
-  --epic-grey:  #1a1a1a;
+  --epic-grey:  var(--surface-2);
 }
 
 .epic-wrapper {
@@ -35,7 +35,7 @@
   font-size: clamp(0.6rem, 1.5vw, 0.75rem);
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #777;
+  color: rgba(255, 255, 255, 0.35);
   display: block;
   word-break: break-word;
   white-space: normal;
@@ -56,7 +56,7 @@
 .epic-body {
   font-size: clamp(0.82rem, 1.4vw, 1rem);
   line-height: 1.82;
-  color: #cfcfcf;
+  color: rgba(255, 255, 255, 0.55);
   max-width: 100%;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -67,7 +67,7 @@
 }
 
 .highlight        { color: #ffffff; font-weight: 600; }
-.highlight-accent { color: #e5e5e5; font-weight: 700; }
+.highlight-accent { color: rgba(255, 255, 255, 0.85); font-weight: 700; }
 .highlight-strong { color: #ffffff; font-weight: 800; }
 
 /* ✅ Food note: full width, no cap */
@@ -75,7 +75,7 @@
   margin-top: 20px;
   font-size: clamp(0.78rem, 1.3vw, 0.875rem);
   color: #bdbdbd;
-  border-left: 2px solid #2a2a2a;
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
   padding-left: 14px;
   word-break: break-word;
   max-width: 100%;
@@ -106,7 +106,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--d-base) ease, box-shadow var(--d-base) ease;
   overflow: hidden;
 }
 
@@ -120,7 +120,7 @@
     transparent 42%
   );
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--d-base);
   pointer-events: none;
 }
 
@@ -146,7 +146,7 @@
   font-size: clamp(0.5rem, 0.95vw, 0.75rem);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #777;
+  color: rgba(255, 255, 255, 0.35);
   word-break: break-word;
   overflow-wrap: break-word;
   line-height: 1.3;
@@ -276,4 +276,126 @@
   .epic-body  { font-size: 1.15rem; line-height: 1.9; }
   .food-line  { font-size: 1.05rem; }
   .epic-headline { font-size: clamp(4rem, 4vw, 8rem); }
+}
+
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓
+   Markup unchanged — same paragraphs, divider and stat grid. This
+   layer fixes the measure (body copy was running ~150 chars per line
+   on desktop, well past the 60–75 readable range) and moves the stat
+   boxes onto the shared card language. */
+.epic-container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.epic-subhead {
+  display: flex; align-items: center; gap: var(--s-3);
+  color: var(--accent); font-size: var(--fs-xs);
+  font-weight: var(--fw-bold); letter-spacing: var(--track-eyebrow);
+}
+.epic-subhead::before {
+  width: 26px; height: 1.5px; content: ""; flex: 0 0 auto;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.epic-headline {
+  margin: var(--s-4) 0 var(--s-6);
+  color: var(--text-1);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+}
+
+.epic-body {
+  max-width: var(--measure-wide);   /* was 100% — lines ran too long */
+  color: var(--text-3);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+}
+.epic-body p { margin-bottom: var(--s-4); }
+
+.highlight        { color: var(--text-1); font-weight: var(--fw-semibold); }
+.highlight-accent { color: var(--text-1); font-weight: var(--fw-bold); }
+.highlight-strong { color: var(--text-1); font-weight: var(--fw-black); }
+
+.food-line {
+  max-width: var(--measure-wide);
+  padding: var(--s-4) var(--s-5);
+  margin-top: var(--s-6);
+  border-left: 2px solid var(--warning);
+  border-radius: var(--r-md);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  background: var(--warning-soft);
+}
+
+.epic-divider {
+  height: 1px;
+  margin: var(--s-12) 0;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ── Stat grid: separate defined cards, not hairline cells ── */
+.epic-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-grid);
+  background: transparent;
+}
+
+.epic-stat-box {
+  padding: var(--s-6);
+  min-height: 0;
+  border-radius: var(--r-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.013) 100%), var(--surface-1);
+  box-shadow: var(--ring), var(--e-2);
+  transition: transform var(--d-slow) var(--ease-out), box-shadow var(--d-base) var(--ease);
+}
+
+.epic-stat-box::before {
+  background: radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(0,229,255,.1), transparent 45%);
+}
+
+@media (min-width: 900px) {
+  .epic-stat-box:hover {
+    transform: translateY(-5px) scale(1);
+    box-shadow: var(--ring-accent), var(--e-4);
+  }
+}
+
+.stat-number {
+  color: var(--text-1);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: 1;
+}
+
+.stat-label {
+  margin-top: var(--s-2);
+  color: var(--text-4);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-eyebrow);
+}
+
+@media (max-width: 700px) {
+  .epic-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--s-3); }
+  .epic-stat-box { padding: var(--s-4); }
+  .stat-number { font-size: var(--fs-xl); }
+}
+
+@media (max-width: 480px) {
+  .epic-container { padding: var(--s-12) var(--s-4); }
+  .epic-body { font-size: var(--fs-base); }
+  .stat-label { font-size: 0.62rem; letter-spacing: .12em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .epic-stat-box { transition: none; }
+  .epic-stat-box:hover { transform: none; }
 }

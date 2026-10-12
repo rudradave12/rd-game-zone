@@ -2,6 +2,21 @@ import type { Game } from "../components/types";
 
 export const games: Game[] = [
   {
+    id: 41,
+    title: "GRAND THEFT AUTO VI",
+    subtitle: "Coming soon to RD Game Zone",
+    category: "OPEN WORLD",
+    playerType: "SINGLE PLAYER",
+    platforms: ["PS5"],
+    status: "upcoming",
+    adult: true,
+    image: "/images/gta-vi-cover-art.jpg",
+    video: {
+      type: "youtube",
+      id: "QdBZY2fkU-0",
+    },
+  },
+  {
     id: 1,
     title: "CALL OF DUTY BLACK OPS 7",
     subtitle: "Tactical First-Person Shooter",

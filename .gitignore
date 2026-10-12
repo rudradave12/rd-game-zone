@@ -5,3 +5,6 @@
 # React Router
 /.react-router/
 /build/
+
+# Cloudflare local development state
+/.wrangler/

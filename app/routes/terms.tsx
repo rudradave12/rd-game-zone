@@ -4,7 +4,6 @@
 
 import { useEffect } from "react";
 import type { MetaFunction } from "@remix-run/node";
-import "../styles/legal.css";
 
 export const meta: MetaFunction = () => [
   { title: "Terms & Conditions — RD Game Zone" },
@@ -19,7 +18,7 @@ const SECTIONS = [
     heading: "Acceptance of Terms",
     content: (
       <>
-        <p>By accessing or using the RD Game Zone website (the "Site") or visiting our gaming lounge located at First Floor, A-113, Advance Business Park, Opp. Swaminarayan Temple, Shahibag, Ahmedabad – 380004 (the "Premises"), you agree to be bound by these Terms &amp; Conditions.</p>
+        <p>By accessing or using the RD Game Zone website (the "Site") or visiting our gaming lounge located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004 (the "Premises"), you agree to be bound by these Terms &amp; Conditions.</p>
         <p>If you do not agree with any part of these terms, you must not use our website or services. We reserve the right to update these terms at any time. Continued use of our services following any changes constitutes acceptance of the revised terms.</p>
         <p>These terms apply to all visitors, users, and customers of RD Game Zone.</p>
       </>
@@ -162,9 +161,8 @@ const SECTIONS = [
           <div className="legal-contact-row">
             <span className="legal-contact-label">Address</span>
             <span className="legal-contact-value">
-              First Floor, A-113, Advance Business Park,<br />
-              Opp. Swaminarayan Temple, Shahibag,<br />
-              Ahmedabad – 380004, Gujarat, India
+              First floor, A-113, opp. Shwami Narayan temple,<br />
+              Shahibag, Ahmedabad, Gujarat 380004, India
             </span>
           </div>
           <div className="legal-contact-row">
@@ -183,7 +181,7 @@ export default function TermsRoute() {
   }, []);
 
   return (
-    <div className="legal-page">
+    <main className="legal-page" aria-labelledby="terms-title">
 
       {/* Hero */}
       <div className="legal-hero">
@@ -195,7 +193,7 @@ export default function TermsRoute() {
             Back to Home
           </a>
           <span className="legal-eyebrow">Legal</span>
-          <h1 className="legal-title">Terms &amp; Conditions</h1>
+          <h1 id="terms-title" className="legal-title">Terms &amp; Conditions</h1>
           <p className="legal-meta">Last updated: Feb 2026</p>
           <p className="legal-intro">These terms govern your use of the RD Game Zone website and in-store gaming services. Please read them carefully before using our services.</p>
         </div>
@@ -250,6 +248,6 @@ export default function TermsRoute() {
         </div>
       </div>
 
-    </div>
+    </main>
   );
 }

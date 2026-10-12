@@ -1,0 +1,86 @@
+:root {
+  --font-primary: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: var(--font-primary);
+
+  --canvas: #f5f8ff;
+  --canvas-strong: #eaf1ff;
+  --surface: #ffffff;
+  --surface-muted: #f1f5ff;
+  --surface-blue: #e5efff;
+  --ink: #0a1b48;
+  --ink-strong: #061238;
+  --text: #26375f;
+  --muted: #65749a;
+  --line: rgba(9, 39, 99, 0.1);
+  --line-strong: rgba(0, 76, 179, 0.18);
+
+  --blue: #0072ce;
+  --blue-dark: #00439c;
+  --blue-deep: #001f63;
+  --blue-soft: #dcecff;
+  --cyan: #00a7e1;
+  --violet: #6744e8;
+  --pink: #e14b87;
+  --green: #14986a;
+  --green-soft: #dff7ec;
+  --amber: #d77900;
+  --amber-soft: #fff1d9;
+  --red: #c63a45;
+  --red-soft: #ffeaec;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-full: 999px;
+
+  --shadow-xs: 0 2px 8px rgba(19, 52, 112, 0.05);
+  --shadow-sm: 0 10px 28px rgba(28, 65, 134, 0.09);
+  --shadow-md: 0 22px 56px rgba(24, 56, 119, 0.13);
+  --shadow-blue: 0 16px 34px rgba(0, 94, 186, 0.26);
+
+  --site-width: 1240px;
+  --page-x: clamp(18px, 4vw, 72px);
+  --section-y: clamp(64px, 9vw, 132px);
+  --nav-height: 76px;
+  --transition: 180ms cubic-bezier(.2, .75, .25, 1);
+}
+
+/* The same blue gaming identity carries into dark mode; only the surrounding
+   canvas and reading surfaces change so buttons and status states stay familiar. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --canvas: #06101f;
+  --canvas-strong: #0a1930;
+  --surface: #0c1d36;
+  --surface-muted: #102744;
+  --surface-blue: #0d315c;
+  --ink: #eaf3ff;
+  --ink-strong: #ffffff;
+  --text: #d4e3f8;
+  --muted: #9fb4d4;
+  --line: rgba(159, 199, 255, .16);
+  --line-strong: rgba(121, 202, 255, .35);
+
+  /* Bright blues are reserved for reading on night surfaces. Components that
+     carry white text use the dedicated, darker action treatment in site.css. */
+  --blue: #67c3ff;
+  --blue-dark: #b6e3ff;
+  --blue-deep: #031b4a;
+  --blue-soft: #143a67;
+  --cyan: #44caff;
+  --violet: #9a80ff;
+  --pink: #ff82b7;
+  --green: #5de0a7;
+  --green-soft: #103a31;
+  --amber: #ffc86c;
+  --amber-soft: #3d2c0a;
+  --red: #ff96a1;
+  --red-soft: #3c1821;
+
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, .24);
+  --shadow-sm: 0 10px 28px rgba(0, 0, 0, .3);
+  --shadow-md: 0 22px 56px rgba(0, 0, 0, .38);
+  --shadow-blue: 0 16px 34px rgba(0, 95, 200, .32);
+}

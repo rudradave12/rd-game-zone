@@ -1,202 +1,53 @@
-/* ================================================================
-   RD GAME ZONE — GLOBAL CSS
-   Clean foundation like Riot Games / PlayStation / Epic Games
-   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; }
 
-/* ── RESET ── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* ── CSS VARIABLES ── */
-:root {
-  /* Nav heights */
-  --nav-h:        72px;
-  --nav-h-mobile: 64px;
-  --nav-h-xl:     84px;
-
-  /* Safe area insets (notch / Dynamic Island) */
-  --sat: env(safe-area-inset-top,    0px);
-  --sab: env(safe-area-inset-bottom, 0px);
-  --sal: env(safe-area-inset-left,   0px);
-  --sar: env(safe-area-inset-right,  0px);
-
-  /* Brand colours */
-  --c-accent:   #00e5ff;
-  --c-accent2:  #0077ff;
-  --c-red:      #ff2d5a;
-  --c-bg:       #04060b;
-  --c-surface:  #0b0e17;
-
-  /* Typography scale */
-  --text-xs:  11px;
-  --text-sm:  13px;
-  --text-base: 15px;
-  --text-lg:  18px;
-
-  /* Spacing */
-  --section-pad-x: clamp(16px, 5vw, 80px);
-  --section-pad-y: clamp(60px, 9vw, 120px);
-}
-
-@media (min-width: 1600px) {
-  :root {
-    --nav-h: var(--nav-h-xl);
-  }
-}
-
-/* ── HTML ── */
 html {
+  min-height: 100%;
+  background: var(--canvas);
+  color: var(--ink);
   font-size: 16px;
-  /* Disable iOS auto-zoom — does NOT prevent user zoom */
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  /* Smooth anchor scrolling */
   scroll-behavior: smooth;
-  /* Block only horizontal overflow globally */
-  overflow-x: hidden;
-  /* Ensure height is reliable on mobile browsers */
-  height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* ── BODY ── */
 body {
-  width: 100%;
+  min-width: 0;
   min-height: 100dvh;
-  min-height: 100vh; /* fallback */
-
-  /* ✅ FIX: overflow-x hidden, overflow-y AUTO (never clip vertical scroll) */
+  margin: 0;
   overflow-x: hidden;
-  overflow-y: auto;
-
-  background: var(--c-bg);
-  color: #ffffff;
-
-  font-family: "Rajdhani", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: var(--text-base);
-  font-weight: 500;
+  color: var(--text);
+  background: var(--canvas);
+  font-family: var(--font-primary);
+  font-size: 0.975rem;
   line-height: 1.6;
-
-  /* ✅ FIX: Removed overscroll-behavior-y:contain — was freezing scroll on iOS */
-  overscroll-behavior-x: none;
-
+  letter-spacing: -0.012em;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Allow native momentum scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
+  text-rendering: optimizeLegibility;
 }
 
-/* ── PAGE WRAPPER ── */
-/* Non-home pages: push content below fixed navbar */
-.page-layout {
-  padding-top: calc(var(--nav-h) + var(--sat));
-  min-height: 100dvh;
-  width: 100%;
+body.nav-menu-open, body.modal-open { overflow: hidden; }
+
+img, svg, video { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, p { margin: 0; }
+
+:focus-visible { outline: 3px solid rgba(0, 114, 206, .55); outline-offset: 3px; }
+::selection { color: #fff; background: var(--blue); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-/* Home page: hero goes edge-to-edge behind transparent navbar */
-.page-layout--home {
-  padding-top: 0;
-}
-
-/* ── SECTIONS ── */
-section {
-  position: relative;
-  width: 100%;
-  /* clip only horizontal, never vertical */
-  overflow-x: clip;
-}
-
-/* ── TYPOGRAPHY HELPERS ── */
-.font-orbitron { font-family: "Orbitron", sans-serif; }
-.font-rajdhani { font-family: "Rajdhani", sans-serif; }
-
-/* ── ELEMENTS ── */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-video {
-  display: block;
-  max-width: 100%;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
-  /* Better mobile tap feel */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-input,
-textarea,
-select {
-  font-family: inherit;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar        { width: 5px; }
-::-webkit-scrollbar-track  { background: var(--c-bg); }
-::-webkit-scrollbar-thumb  {
-  background: linear-gradient(180deg, var(--c-accent), var(--c-accent2));
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--c-accent); }
-
-/* ── SELECTION ── */
-::selection {
-  background: var(--c-accent);
-  color: #000000;
-}
-
-/* ── FOCUS RING ── */
-:focus-visible {
-  outline: 2px solid var(--c-accent);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-/* ── SECTION SPACING UTILITY ── */
-.section-inner {
-  max-width: 1400px;
-  margin-inline: auto;
-  padding-inline: var(--section-pad-x);
-}
-
-/* ── GLOW UTILITY ── */
-.glow-cyan { text-shadow: 0 0 20px rgba(0, 229, 255, 0.45); }
-.glow-blue { text-shadow: 0 0 20px rgba(0, 119, 255, 0.45); }
-
-/* ── REDUCE MOTION ── */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration:    0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration:   0.01ms !important;
-    scroll-behavior:       auto !important;
-  }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

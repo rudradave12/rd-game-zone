@@ -1,0 +1,6 @@
+# Cloudflare Pages configuration for the already-connected RD Game Zone project.
+# Git integration deploys automatically when changes are pushed to the configured
+# production branch (main); the same output folder is ready for Wrangler deploys.
+name = "rd-game-zone"
+compatibility_date = "2026-10-09"
+pages_build_output_dir = "./build/client"

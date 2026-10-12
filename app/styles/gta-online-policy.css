@@ -6,7 +6,7 @@
    ================================================================ */
 
 .gta-policy-section {
-  background: #000;
+  background: var(--bg);
   padding: clamp(40px, 6vw, 80px) clamp(12px, 4vw, 40px);
   display: flex;
   justify-content: center;
@@ -21,14 +21,14 @@
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: clamp(16px, 3vw, 30px);
-  background: rgba(15, 20, 35, 0.65);
+  background: rgba(10, 14, 26, 0.7);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius: 18px;
+  border-radius: var(--r-xl);
   padding: clamp(16px, 3vw, 30px);
   box-shadow:
-    0 0 40px rgba(0, 150, 255, 0.15),
-    inset 0 0 1px rgba(255,255,255,0.2);
+    0 0 30px rgba(0, 112, 255, 0.08),
+    inset 0 0 1px rgba(255,255,255,0.1);
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -42,12 +42,12 @@
 .gta-profile-frame {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   overflow: hidden;
-  background: linear-gradient(145deg, #1c2b4a, #0b1222);
+  background: linear-gradient(145deg, var(--surface-1), var(--surface-sunken));
   box-shadow:
-    0 0 30px rgba(0, 170, 255, 0.35),
-    inset 0 0 12px rgba(255,255,255,0.15);
+    0 0 20px rgba(0, 112, 255, 0.15),
+    inset 0 0 8px rgba(255,255,255,0.06);
   flex-shrink: 0;
 }
 
@@ -74,7 +74,7 @@
   letter-spacing: 0.06em;
   color: #fff;
   background: linear-gradient(135deg, rgba(255,60,60,0.95), rgba(160,0,0,0.95));
-  border-radius: 999px;
+  border-radius: var(--r-full);
   box-shadow: 0 0 22px rgba(255,60,60,0.6);
   white-space: nowrap;
   overflow: hidden;
@@ -96,7 +96,7 @@
 .gta-policy-text {
   font-size: clamp(0.68rem, 1.3vw, 1.1rem);
   line-height: 1.6;
-  color: #cfd8ff;
+  color: rgba(200, 216, 255, 0.6);
   opacity: 0.95;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -116,13 +116,13 @@
     grid-template-columns: clamp(48px, 16vw, 72px) 1fr;
     gap: 7px;
     padding: 9px 10px;
-    border-radius: 10px;
+    border-radius: var(--r-md);
     /* fill almost full width */
     width: 92vw;
     max-width: 92vw;
   }
 
-  .gta-profile-frame { border-radius: 7px; }
+  .gta-profile-frame { border-radius: var(--r-sm); }
 
   .gta-warning-bar {
     font-size: clamp(0.38rem, 2vw, 0.48rem);
@@ -164,4 +164,79 @@
   .gta-title       { font-size: 0.88rem; }
   .gta-policy-text { font-size: 0.7rem; }
   .gta-warning-bar { font-size: 0.54rem; padding: 3px 8px; }
+}
+
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓
+   Was a blue-glow glass bar that collapsed to a 48px thumbnail and
+   ~8px text on phones. Now a defined warning card with a red rail. */
+.gta-policy-section { padding: var(--pad-y) var(--pad-x); }
+
+.gta-glass-bar {
+  max-width: 1100px;
+  grid-template-columns: 170px 1fr;
+  gap: var(--s-6);
+  align-items: center;
+  padding: var(--s-6);
+  border-radius: var(--r-lg);
+  border-left: 2px solid var(--danger);
+  background: linear-gradient(135deg, rgba(255,59,82,.07) 0%, rgba(255,255,255,.015) 45%), var(--surface-1);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--ring), var(--e-2);
+}
+
+.gta-profile-frame {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  box-shadow: 0 0 0 1px var(--border-subtle);
+}
+
+.gta-warning-bar {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  padding: 5px var(--s-3);
+  margin-bottom: var(--s-3);
+  border-radius: var(--r-full);
+  color: #ffc9c9;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-eyebrow);
+  background: var(--danger-soft);
+  box-shadow: inset 0 0 0 1px rgba(255,90,110,.34);
+  white-space: nowrap; overflow: visible; text-overflow: clip;
+}
+.gta-warning-bar::before {
+  width: 5px; height: 5px; content: ""; border-radius: var(--r-full);
+  background: var(--danger); box-shadow: 0 0 8px var(--danger);
+}
+
+.gta-title {
+  margin-bottom: var(--s-3);
+  color: var(--text-1);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-heading);
+  text-transform: none;
+}
+
+.gta-policy-text {
+  max-width: var(--measure-wide);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  opacity: 1;
+}
+
+@media (max-width: 599px) {
+  .gta-policy-section { padding: var(--s-12) var(--s-4); }
+  .gta-glass-bar { grid-template-columns: 100px 1fr; gap: var(--s-4); padding: var(--s-4); border-radius: var(--r-md); }
+  .gta-warning-bar { margin-bottom: var(--s-2); font-size: 0.58rem; }
+  .gta-title { margin-bottom: var(--s-2); font-size: var(--fs-lg); }
+  .gta-policy-text { font-size: var(--fs-sm); }
+}
+@media (max-width: 380px) {
+  .gta-glass-bar { grid-template-columns: 1fr; }
+  .gta-profile-frame { max-width: 140px; }
 }

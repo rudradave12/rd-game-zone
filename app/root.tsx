@@ -5,27 +5,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useLocation,
+  useRouteError,
 } from "@remix-run/react";
 import { useEffect } from "react";
 import Navbar from "~/components/Navbar";
 
 /* ================= STYLES ================= */
-import globalStyles      from "~/styles/global.css?url";
-import navbarStyles      from "~/styles/navbar.css?url";
-import heroStyles        from "~/styles/cinematic-hero.css?url";
-import aboutStyles       from "~/styles/epic-about.css?url";
-import bookingStyles     from "~/styles/epic-booking.css?url";
-import pricingStyles     from "~/styles/epic-pricing.css?url";
-import tickerStyles      from "~/styles/esports-ticker.css?url";
-import experienceStyles  from "~/styles/Experience.css?url";
-import footerStyles      from "~/styles/footer.css?url";
-import gameCardStyles    from "~/styles/game-card.css?url";
-import guidelinesStyles  from "~/styles/game-guidelines.css?url";
-import libraryPageStyles from "~/styles/game-library-page.css?url";
-import libraryHomeStyles from "~/styles/GameLibraryHome.css?url";
-import gtaPolicyStyles   from "~/styles/gta-online-policy.css?url";
-import videoModalStyles  from "~/styles/video-model.css?url";
+/* Design system MUST load first — every stylesheet below consumes its tokens. */
+import designSystem from "~/styles/design-system.css?url";
+import globalStyles from "~/styles/global.css?url";
+import siteStyles from "~/styles/site.css?url";
 
 /* ================================================================
    SEO: MetaFunction — Advanced
@@ -60,7 +51,7 @@ export const meta: MetaFunction = () => [
   { property: "og:url",          content: "https://rdgamezone.com/" },
   { property: "og:title",        content: "RD Game Zone | #1 Gaming Cafe in Ahmedabad" },
   { property: "og:description",  content: "PS5, PC Gaming, 240Hz Esports displays, LAN multiplayer. Ahmedabad's best gaming experience." },
-  { property: "og:image",        content: "https://rdgamezone.com/og-image.jpg" },
+  { property: "og:image",        content: "https://rdgamezone.com/images/cod-7-new-landscape.jpg" },
   { property: "og:image:width",  content: "1200" },
   { property: "og:image:height", content: "630" },
   { property: "og:image:alt",    content: "RD Game Zone — Gaming Cafe Ahmedabad" },
@@ -71,23 +62,23 @@ export const meta: MetaFunction = () => [
   { name: "twitter:card",        content: "summary_large_image" },
   { name: "twitter:title",       content: "RD Game Zone | #1 Gaming Cafe Ahmedabad" },
   { name: "twitter:description", content: "PS5, PC, 240Hz Esports, LAN Gaming in Ahmedabad." },
-  { name: "twitter:image",       content: "https://rdgamezone.com/og-image.jpg" },
+  { name: "twitter:image",       content: "https://rdgamezone.com/images/cod-7-new-landscape.jpg" },
   { name: "twitter:image:alt",   content: "RD Game Zone Gaming Cafe" },
 
   /* ── Mobile / PWA ── */
-  { name: "theme-color",                           content: "#000000" },
+  { name: "theme-color",                           content: "#f5f8ff" },
   { name: "mobile-web-app-capable",                content: "yes" },
   { name: "apple-mobile-web-app-capable",          content: "yes" },
   { name: "apple-mobile-web-app-title",            content: "RD Game Zone" },
   { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
   { name: "format-detection",                      content: "telephone=yes" },
-  { name: "msapplication-TileColor",               content: "#000000" },
+  { name: "msapplication-TileColor",               content: "#f5f8ff" },
 
   /* ── Geo targeting (local SEO) ── */
   { name: "geo.region",    content: "IN-GJ" },
   { name: "geo.placename", content: "Ahmedabad, Gujarat, India" },
-  { name: "geo.position",  content: "23.0722;72.5867" },
-  { name: "ICBM",          content: "23.0722, 72.5867" },
+  { name: "geo.position",  content: "23.0452531;72.5892595" },
+  { name: "ICBM",          content: "23.0452531, 72.5892595" },
 
   /* ── Content Security — basic inline declarative ── */
   /* ✅ NOTE: Full CSP + security headers should be done in
@@ -104,41 +95,26 @@ export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
 
-  /* ── Google Fonts — Orbitron + Rajdhani ── */
+  /* ── Google Font — Single Unified Font: Inter ── */
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap",
   },
 
   /* ── Core styles ── */
-  { rel: "stylesheet", href: globalStyles  },
-  { rel: "stylesheet", href: navbarStyles  },
-  { rel: "stylesheet", href: heroStyles    },
+  { rel: "stylesheet", href: designSystem },
+  { rel: "stylesheet", href: globalStyles },
+  { rel: "stylesheet", href: siteStyles },
 
   /* ── Home page ── */
-  { rel: "stylesheet", href: tickerStyles     },
-  { rel: "stylesheet", href: aboutStyles      },
-  { rel: "stylesheet", href: bookingStyles    },
-  { rel: "stylesheet", href: pricingStyles    },
-  { rel: "stylesheet", href: experienceStyles },
-  { rel: "stylesheet", href: footerStyles     },
 
   /* ── Game Library ── */
-  { rel: "stylesheet", href: gameCardStyles    },
-  { rel: "stylesheet", href: guidelinesStyles  },
-  { rel: "stylesheet", href: libraryPageStyles },
-  { rel: "stylesheet", href: libraryHomeStyles },
 
   /* ── Extra ── */
-  { rel: "stylesheet", href: gtaPolicyStyles  },
-  { rel: "stylesheet", href: videoModalStyles },
 
   /* ── Icons ── */
-  { rel: "icon",             href: "/favicon.ico"         },
-  { rel: "icon",             href: "/favicon-32x32.png",  type: "image/png", sizes: "32x32"   },
-  { rel: "icon",             href: "/favicon-16x16.png",  type: "image/png", sizes: "16x16"   },
-  { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-  { rel: "manifest",         href: "/site.webmanifest"    },
+  { rel: "icon", href: "/icons/logo.svg", type: "image/svg+xml" },
+  { rel: "manifest", href: "/manifest.webmanifest" },
 
   /* ── Canonical (static, home page) ── */
   { rel: "canonical", href: "https://rdgamezone.com/" },
@@ -163,12 +139,12 @@ const localBusinessSchema = {
   "currenciesAccepted": "INR",
   "paymentAccepted": "Cash, UPI",
   "image": [
-    "https://rdgamezone.com/og-image.jpg"
+    "https://rdgamezone.com/images/cod-7-new-landscape.jpg"
   ],
-  "logo": "https://rdgamezone.com/logo.svg",
+  "logo": "https://rdgamezone.com/icons/logo.svg",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "First Floor, A-113, Opp. Swaminarayan Temple",
+    "streetAddress": "First floor, A-113, opp. Shwami Narayan temple",
     "addressLocality": "Shahibag",
     "addressRegion": "Gujarat",
     "postalCode": "380004",
@@ -176,10 +152,10 @@ const localBusinessSchema = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "23.0722",
-    "longitude": "72.5867"
+    "latitude": "23.0452531",
+    "longitude": "72.5892595"
   },
-  "hasMap": "https://www.google.com/maps?q=RD+GAME+ZONE+Ahmedabad",
+  "hasMap": "https://maps.app.goo.gl/MZgKwhA8TPxEJfdD7",
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
@@ -291,6 +267,16 @@ function HashScrollHandler() {
   return null;
 }
 
+const initialThemeScript = `(() => {
+  try {
+    const theme = localStorage.getItem("rd-game-zone-theme") === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  } catch {
+    document.documentElement.dataset.theme = "light";
+  }
+})();`;
+
 /* ================================================================
    APP ROOT
    ✅ Static / Cloudflare Pages compatible (no SSR exports needed)
@@ -301,6 +287,7 @@ export default function App() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
+        <script dangerouslySetInnerHTML={{ __html: initialThemeScript }} />
 
         {/* ── Cloudflare / browser hints ── */}
         {/* DNS prefetch for third parties */}
@@ -334,6 +321,73 @@ export default function App() {
         <Navbar />
         <Outlet />
         <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+/* ================================================================
+   ERROR BOUNDARY — branded 404 / error screen
+   ----------------------------------------------------------------
+   This is NOT a new route. Remix renders this in place of <Outlet />
+   whenever a route throws or a URL doesn't match, so bad URLs stop
+   silently rendering the homepage. Cloudflare config is unaffected.
+   ================================================================ */
+/* SPA mode generates the Cloudflare Pages index from this component. Keeping
+   it branded prevents a blank/system loading document while route modules load. */
+export function HydrateFallback() {
+  return (
+    <html lang="en" dir="ltr">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <Meta />
+        <Links />
+      </head>
+      <body className="app-loading">
+        <main className="app-loading__main" aria-label="Loading RD Game Zone">
+          <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
+          <p>RD Game Zone</p>
+          <span>Loading your next session</span>
+        </main>
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  const status = isRouteErrorResponse(error) ? error.status : 500;
+  const heading = status === 404 ? "Page not found" : "Something went wrong";
+  const message =
+    status === 404
+      ? "That page doesn't exist — it may have moved, or the link was mistyped."
+      : "An unexpected error occurred. Try again, or head back to the home page.";
+
+  return (
+    <html lang="en" dir="ltr">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <title>{`${status} · ${heading} | RD Game Zone`}</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <main className="rd-error">
+          <div className="rd-error__panel">
+            <p className="rd-error__code">{status}</p>
+            <h1 className="rd-error__title">{heading}</h1>
+            <p className="rd-error__text">{message}</p>
+            <div className="rd-error__actions">
+              <a href="/" className="rd-btn rd-btn--primary">Back to home</a>
+              <a href="/games" className="rd-btn rd-btn--secondary">Browse games</a>
+            </div>
+          </div>
+        </main>
         <Scripts />
       </body>
     </html>

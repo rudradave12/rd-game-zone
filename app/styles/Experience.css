@@ -10,8 +10,8 @@
   width: 100%;
   min-height: 100vh;
   background:
-    radial-gradient(1200px 600px at 50% 20%, rgba(90,120,255,0.08), transparent 60%),
-    #000;
+    radial-gradient(1200px 600px at 50% 20%, rgba(0, 112, 255, 0.05), transparent 60%),
+    var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,14 +29,14 @@
   padding: clamp(2rem, 5vw, 4.5rem) clamp(1.5rem, 4.5vw, 4rem);
   background: linear-gradient(
     to bottom,
-    rgba(15,15,25,0.90),
-    rgba(5,5,12,0.95)
+    rgba(10,14,26,0.92),
+    rgba(3,5,8,0.96)
   );
   border-radius: clamp(1rem, 2.5vw, 1.8rem);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.04);
   box-shadow:
-    0 60px 120px rgba(0,0,0,0.85),
-    inset 0 0 80px rgba(255,255,255,0.018);
+    0 40px 80px rgba(0,0,0,0.8),
+    inset 0 0 60px rgba(255,255,255,0.012);
   animation: fadeUp 1.6s ease forwards;
   box-sizing: border-box;
   overflow: hidden;
@@ -47,23 +47,23 @@
 ════════════════════════════════════════════ */
 .experience-eyebrow {
   display: inline-block;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(0.68rem, 1.4vw, 0.88rem);
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: #7aa2ff;
+  color: rgba(0, 229, 255, 0.5);
   margin-bottom: clamp(0.6rem, 1.5vw, 1.1rem);
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
 .experience-title {
-  font-family: "Orbitron", sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(1.3rem, 3.5vw, 3rem);
   font-weight: 800;
   margin: 0 0 clamp(0.8rem, 2vw, 1.5rem);
   color: #ffffff;
-  text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+  text-shadow: 0 6px 28px rgba(0,0,0,0.9);
   word-break: break-word;
   overflow-wrap: break-word;
   line-height: 1.15;
@@ -72,7 +72,7 @@
 .experience-description {
   font-size: clamp(0.84rem, 1.5vw, 1.1rem);
   line-height: 1.82;
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.55);
   max-width: 720px;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -92,10 +92,10 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  font-family: "Rajdhani", sans-serif;
+  font-family: var(--font-primary);
   font-weight: 700;
   font-size: clamp(0.82rem, 1.4vw, 1rem);
-  color: #e5e7eb;
+  color: rgba(255,255,255,0.7);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -109,8 +109,8 @@
 }
 
 .dot.green {
-  background: #22c55e;
-  box-shadow: 0 0 12px rgba(34,197,94,0.8);
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(74,222,128,0.6);
 }
 
 /* ── Animation ── */
@@ -222,4 +222,89 @@
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .experience-frame { animation: none; opacity: 1; transform: none; }
+}
+
+
+/* ▓▓ RD DESIGN SYSTEM LAYER ▓▓ */
+.experience-section {
+  min-height: auto;
+  padding: var(--pad-y) var(--pad-x);
+  background: radial-gradient(1100px 520px at 50% 0%, rgba(0,229,255,.05), transparent 62%), var(--bg);
+}
+
+.experience-frame {
+  max-width: 940px;
+  padding: var(--s-10) var(--s-10);
+  border: none;
+  border-radius: var(--r-xl);
+  background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.013) 100%), var(--surface-1);
+  box-shadow: var(--ring), var(--e-4);
+}
+
+.experience-eyebrow {
+  display: flex; align-items: center; gap: var(--s-3);
+  margin-bottom: var(--s-4);
+  color: var(--accent); font-size: var(--fs-xs);
+  font-weight: var(--fw-bold); letter-spacing: var(--track-eyebrow);
+}
+.experience-eyebrow::before {
+  width: 26px; height: 1.5px; content: ""; flex: 0 0 auto;
+  border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.experience-title {
+  margin: 0 0 var(--s-4);
+  color: var(--text-1);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+  text-shadow: none;
+}
+
+.experience-description {
+  max-width: var(--measure);
+  color: var(--text-3);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+}
+
+.experience-features { gap: var(--s-3); margin-top: var(--s-8); }
+
+.experience-features .feature {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  min-height: 38px; padding: 0 var(--s-4);
+  border-radius: var(--r-full);
+  color: var(--text-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: rgba(255,255,255,.05);
+  box-shadow: var(--ring);
+  transition: background var(--d-base) var(--ease), box-shadow var(--d-base) var(--ease);
+}
+.experience-features .feature:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent-line);
+}
+
+.experience-features .dot,
+.experience-features .dot.green {
+  width: 6px; height: 6px; flex: 0 0 auto;
+  border-radius: var(--r-full);
+  background: var(--success);
+  box-shadow: 0 0 9px rgba(74,222,128,.75);
+}
+
+@media (max-width: 560px) {
+  .experience-section { padding: var(--s-12) var(--s-4); }
+  .experience-frame { padding: var(--s-6) var(--s-5); border-radius: var(--r-lg); }
+  .experience-features .feature { min-height: 34px; padding: 0 var(--s-3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .experience-frame { animation: none; }
+  .experience-features .feature { transition: none; }
 }

@@ -1,38 +1,48 @@
-const CACHE_NAME = "rd-game-zone-v1";
+const CACHE_NAME = "rd-game-zone-static-v3";
+const CACHEABLE_DESTINATIONS = new Set(["style", "script", "image", "font"]);
 
-const STATIC_ASSETS = [
-  "/",
-  "/games",
-  "/manifest.webmanifest",
-  "/favicon.ico"
-];
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
-  );
+self.addEventListener("install", () => {
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => key !== CACHE_NAME && caches.delete(key))
-      )
-    )
+    Promise.all([
+      caches.keys().then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))),
+      ),
+      self.clients.claim(),
+    ]),
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // HTML routes always come from the network. This avoids an older build
+  // being pinned in a browser cache after a Cloudflare deployment.
+  if (
+    request.method !== "GET" ||
+    request.mode === "navigate" ||
+    url.origin !== self.location.origin ||
+    !CACHEABLE_DESTINATIONS.has(request.destination)
+  ) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then(
-      (cached) =>
-        cached ||
-        fetch(event.request).catch(() =>
-          new Response("", { status: 503 })
-        )
-    )
+    fetch(request)
+      .then((response) => {
+        if (response.ok && response.type !== "opaque") {
+          void caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
+        }
+        return response;
+      })
+      .catch(() =>
+        caches.match(request).then(
+          (cached) => cached || new Response("Offline", { status: 503, statusText: "Offline" }),
+        ),
+      ),
   );
 });

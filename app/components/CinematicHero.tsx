@@ -332,7 +332,11 @@ export default function CinematicHero() {
       {HERO_SLIDES.map((slide, i) => {
         const isActive = i === current;
         return (
-          <div key={slide.id} className={`cin-slide ${isActive ? "active" : ""}`}>
+          <div
+            key={slide.id}
+            className={`cin-slide ${isActive ? "active" : ""}`}
+            aria-hidden={!isActive}
+          >
 
             {/* ═══════════════ DESKTOP LAYER ═══════════════
                 <img> renders instantly as fallback background.
@@ -358,9 +362,8 @@ export default function CinematicHero() {
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
-                {/* webm first — smaller file, faster to buffer */}
-                <source src={slide.videoDesktopWebm} type="video/webm" />
-                <source src={slide.videoDesktopMp4}  type="video/mp4"  />
+                {/* The deployed desktop hero source is an MP4. */}
+                <source src={slide.videoDesktopMp4} type="video/mp4" />
               </video>
             </div>
 
@@ -385,8 +388,7 @@ export default function CinematicHero() {
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
-                <source src={slide.videoPortraitWebm} type="video/webm" />
-                <source src={slide.videoPortraitMp4}  type="video/mp4"  />
+                <source src={slide.videoPortraitMp4} type="video/mp4" />
               </video>
             </div>
 
@@ -411,8 +413,7 @@ export default function CinematicHero() {
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
-                <source src={slide.videoLandscapeWebm} type="video/webm" />
-                <source src={slide.videoLandscapeMp4}  type="video/mp4"  />
+                <source src={slide.videoLandscapeMp4} type="video/mp4" />
               </video>
             </div>
 
@@ -421,12 +422,14 @@ export default function CinematicHero() {
 
             {/* ── Content ── */}
             <div className="cin-content">
+              <p className="cin-category">{slide.category}</p>
               <h1 className="cin-title">{slide.title}</h1>
-              <p  className="cin-tag">{slide.tagline}</p>
+              <p className="cin-tag">{slide.tagline}</p>
               <div className="cin-buttons">
-                <button className="cin-btn primary">{slide.btn1}</button>
-                <button className="cin-btn secondary">{slide.btn2}</button>
+                <span className="cin-chip cin-chip--primary">{slide.btn1}</span>
+                <span className="cin-chip">{slide.btn2}</span>
               </div>
+              <a className="cin-explore" href="#game-library" tabIndex={isActive ? 0 : -1}>Explore games <span aria-hidden="true">→</span></a>
             </div>
 
           </div>
@@ -436,13 +439,12 @@ export default function CinematicHero() {
       {/* ── Progress bars (desktop + landscape) ── */}
       <div className="cin-progress" role="tablist" aria-label="Slide navigation">
         {HERO_SLIDES.map((slide, i) => (
-          <div
+          <button
             key={i}
+            type="button"
             className={`bar ${i === current ? "active" : ""}`}
             onClick={() => goTo(i)}
-            onKeyDown={e => e.key === "Enter" && goTo(i)}
             role="tab"
-            tabIndex={0}
             aria-selected={i === current}
             aria-label={`${slide.title} — slide ${i + 1}`}
           />

@@ -3,8 +3,6 @@ import CinematicHero from "~/components/CinematicHero";
 import AboutSection from "~/components/About";
 import Pricing from "~/components/Pricing";
 import Booking from "~/components/Booking";
-import GTAOnlinePolicy from "~/components/GTAOnlinePolicy";
-import GameGuidelines from "~/components/GameGuidelines";
 import GameLibraryHome from "~/components/GameLibraryHome";
 import Experience from "~/components/Experience";
 import EsportsTicker from "~/components/EsportsTicker";
@@ -21,11 +19,9 @@ export default function Home() {
       <CinematicHero />
       <EsportsTicker />
       <AboutSection />
+      <GameLibraryHome />
       <Pricing />
       <Booking />
-      <GTAOnlinePolicy />
-      <GameGuidelines />
-      <GameLibraryHome />
       <Experience />
       <Footer />
     </main>
