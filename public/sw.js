@@ -1,4 +1,4 @@
-const CACHE_NAME = "rd-game-zone-static-v3";
+const CACHE_NAME = "rd-game-zone-static-v4";
 const CACHEABLE_DESTINATIONS = new Set(["style", "script", "image", "font"]);
 
 self.addEventListener("install", () => {

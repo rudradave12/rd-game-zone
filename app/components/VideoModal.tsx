@@ -22,25 +22,70 @@ export default function VideoModal({ video, game, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    /* ── Netflix-style scroll lock ──
-       position:fixed removes the scrollbar, so we store the offset and
-       restore it on close to avoid the page jumping to the top. */
+    /* ── Trailer scroll lock ──
+       Lock both root scrolling surfaces and preserve the exact offset. This
+       prevents wheel, keyboard, and iOS overscroll gestures from moving the
+       page behind the trailer while keeping the panel itself scrollable. */
     const scrollY = window.scrollY;
+    const root = document.documentElement;
+    const previousRootStyles = {
+      overflow: root.style.overflow,
+      height: root.style.height,
+    };
+    const previousBodyStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      right: document.body.style.right,
+      left: document.body.style.left,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow,
+    };
+
+    root.classList.add("modal-open");
     document.body.classList.add("modal-open");
+    root.style.overflow = "hidden";
+    root.style.height = "100%";
+    document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
+    document.body.style.right = "0";
+    document.body.style.left = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
 
     /* Move focus into the dialog so keyboard and screen-reader users
        land inside it rather than behind it. */
     closeRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
+      /* Focus trap — Tab cycles within the dialog only. */
+      if (!panelRef.current) return;
+
+      /* Escape and backdrop clicks deliberately do nothing. A trailer can
+         only be dismissed with its visible close control, so an accidental
+         key press or tap never interrupts playback. */
       if (e.key === "Escape") {
-        onClose();
+        e.preventDefault();
         return;
       }
 
-      /* Focus trap — Tab cycles within the dialog only. */
-      if (e.key !== "Tab" || !panelRef.current) return;
+      /* Route keyboard scrolling to the modal panel rather than allowing
+         PageUp/PageDown, arrows, or space to move the page underneath. */
+      const scrollStep = Math.max(180, panelRef.current.clientHeight * 0.78);
+      const keyboardScroll: Record<string, number> = {
+        ArrowDown: 72,
+        ArrowUp: -72,
+        PageDown: scrollStep,
+        PageUp: -scrollStep,
+        Home: -panelRef.current.scrollHeight,
+        End: panelRef.current.scrollHeight,
+      };
+      if (e.key in keyboardScroll) {
+        e.preventDefault();
+        panelRef.current.scrollBy({ top: keyboardScroll[e.key], behavior: "auto" });
+        return;
+      }
+
+      if (e.key !== "Tab") return;
 
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
         'button, [href], video, iframe, [tabindex]:not([tabindex="-1"])'
@@ -59,13 +104,33 @@ export default function VideoModal({ video, game, onClose }: Props) {
       }
     };
 
+    const stopBackgroundTouchScroll = (event: TouchEvent) => {
+      if (!panelRef.current?.contains(event.target as Node)) event.preventDefault();
+    };
+
+    const stopBackgroundWheelScroll = (event: WheelEvent) => {
+      if (!panelRef.current?.contains(event.target as Node)) event.preventDefault();
+    };
+
     window.addEventListener("keydown", onKeyDown);
+    document.addEventListener("touchmove", stopBackgroundTouchScroll, { passive: false });
+    document.addEventListener("wheel", stopBackgroundWheelScroll, { passive: false });
 
     return () => {
+      root.classList.remove("modal-open");
       document.body.classList.remove("modal-open");
-      document.body.style.top = "";
-      window.scrollTo(0, scrollY);
+      root.style.overflow = previousRootStyles.overflow;
+      root.style.height = previousRootStyles.height;
+      document.body.style.position = previousBodyStyles.position;
+      document.body.style.top = previousBodyStyles.top;
+      document.body.style.right = previousBodyStyles.right;
+      document.body.style.left = previousBodyStyles.left;
+      document.body.style.width = previousBodyStyles.width;
+      document.body.style.overflow = previousBodyStyles.overflow;
       window.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("touchmove", stopBackgroundTouchScroll);
+      document.removeEventListener("wheel", stopBackgroundWheelScroll);
+      window.scrollTo(0, scrollY);
     };
   }, [onClose]);
 
@@ -121,7 +186,7 @@ export default function VideoModal({ video, game, onClose }: Props) {
       aria-modal="true"
       aria-label={game ? `${game.title} trailer` : "Game trailer"}
     >
-      <div className="video-overlay" onClick={onClose} />
+      <div className="video-overlay" aria-hidden="true" />
 
       <div className="video-panel" ref={panelRef}>
         <button

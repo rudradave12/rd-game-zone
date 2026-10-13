@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { FiArrowLeft, FiArrowRight, FiFolder, FiSearch, FiX } from "react-icons/fi";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiFolder, FiSearch, FiX } from "react-icons/fi";
 import GameCard from "./GameCard";
-import VideoModal from "./VideoModal";
 import type { Game } from "./types";
 import { games } from "../data/games";
+
+const VideoModal = lazy(() => import("./VideoModal"));
 
 const CATEGORIES = [
   "ALL",
@@ -137,6 +138,40 @@ export default function GameLibraryPage() {
   const rangeStart = filteredGames.length ? startIndex + 1 : 0;
   const rangeEnd = Math.min(startIndex + PAGE_SIZE, filteredGames.length);
   const hasFilters = category !== "ALL" || status !== "ALL" || Boolean(search);
+  const emptyState = useMemo(() => {
+    const query = search.trim();
+
+    if (status === "UNAVAILABLE" && category === "ALL" && !query) {
+      return {
+        eyebrow: "Lounge status",
+        heading: "All clear",
+        title: "Everything is ready to play.",
+        body: "No titles are marked unavailable right now. Explore the live library and choose your next session.",
+        action: "View all games",
+        kind: "ready" as const,
+      };
+    }
+
+    if (query) {
+      return {
+        eyebrow: "Search results",
+        heading: "No match yet",
+        title: `Nothing matched “${query}”.`,
+        body: "Try a shorter game title, or clear the filters to browse every title in the lounge vault.",
+        action: "Clear search and filters",
+        kind: "search" as const,
+      };
+    }
+
+    return {
+      eyebrow: "Collection update",
+      heading: "Nothing here yet",
+      title: "This collection is waiting for its next title.",
+      body: "Adjust a filter or return to the full game library to see every currently listed game.",
+      action: "Show all games",
+      kind: "search" as const,
+    };
+  }, [category, search, status]);
 
   useEffect(() => {
     setPage(1);
@@ -267,11 +302,16 @@ export default function GameLibraryPage() {
               <div>
                 <p className="library-results__eyebrow">Your game vault</p>
                 <h2 id="library-results-title">
-                  {filteredGames.length ? `Page ${currentPage}` : "No games found"}
+                  {filteredGames.length ? `Page ${currentPage}` : emptyState.heading}
                 </h2>
                 {filteredGames.length > 0 && (
                   <p className="library-results__collection-copy">
                     {visibleGames.length} {visibleGames.length === 1 ? "game" : "games"} ready to explore in this collection.
+                  </p>
+                )}
+                {filteredGames.length === 0 && (
+                  <p className="library-results__collection-copy">
+                    {emptyState.eyebrow}
                   </p>
                 )}
               </div>
@@ -319,9 +359,18 @@ export default function GameLibraryPage() {
                 })}
               </div>
             ) : (
-              <div className="game-grid__empty" role="status">
-                <p>No games match these filters.</p>
-                <button type="button" onClick={clearFilters}>Show all games</button>
+              <div className={`library-empty library-empty--${emptyState.kind}`} role="status" aria-live="polite">
+                <span className="library-empty__icon" aria-hidden="true">
+                  {emptyState.kind === "ready" ? <FiCheckCircle /> : <FiSearch />}
+                </span>
+                <div className="library-empty__copy">
+                  <p className="library-empty__eyebrow">{emptyState.eyebrow}</p>
+                  <h3>{emptyState.title}</h3>
+                  <p>{emptyState.body}</p>
+                </div>
+                <button type="button" className="library-empty__action" onClick={clearFilters}>
+                  {emptyState.action}
+                </button>
               </div>
             )}
 
@@ -336,11 +385,13 @@ export default function GameLibraryPage() {
       </main>
 
       {activeGame?.video && (
-        <VideoModal
-          video={activeGame.video}
-          game={activeGame}
-          onClose={() => setActiveGame(null)}
-        />
+        <Suspense fallback={null}>
+          <VideoModal
+            video={activeGame.video}
+            game={activeGame}
+            onClose={() => setActiveGame(null)}
+          />
+        </Suspense>
       )}
     </>
   );

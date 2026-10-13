@@ -51,24 +51,24 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --canvas: #06101f;
-  --canvas-strong: #0a1930;
-  --surface: #0c1d36;
-  --surface-muted: #102744;
-  --surface-blue: #0d315c;
-  --ink: #eaf3ff;
+  --canvas: #020711;
+  --canvas-strong: #06101b;
+  --surface: #08172b;
+  --surface-muted: #0d2440;
+  --surface-blue: #0a2a50;
+  --ink: #edf5ff;
   --ink-strong: #ffffff;
-  --text: #d4e3f8;
-  --muted: #9fb4d4;
-  --line: rgba(159, 199, 255, .16);
-  --line-strong: rgba(121, 202, 255, .35);
+  --text: #d8e6f8;
+  --muted: #a4b8d4;
+  --line: rgba(159, 199, 255, .14);
+  --line-strong: rgba(121, 202, 255, .32);
 
   /* Bright blues are reserved for reading on night surfaces. Components that
      carry white text use the dedicated, darker action treatment in site.css. */
   --blue: #67c3ff;
   --blue-dark: #b6e3ff;
   --blue-deep: #031b4a;
-  --blue-soft: #143a67;
+  --blue-soft: #12365f;
   --cyan: #44caff;
   --violet: #9a80ff;
   --pink: #ff82b7;
@@ -79,8 +79,8 @@ html[data-theme="dark"] {
   --red: #ff96a1;
   --red-soft: #3c1821;
 
-  --shadow-xs: 0 2px 8px rgba(0, 0, 0, .24);
-  --shadow-sm: 0 10px 28px rgba(0, 0, 0, .3);
-  --shadow-md: 0 22px 56px rgba(0, 0, 0, .38);
-  --shadow-blue: 0 16px 34px rgba(0, 95, 200, .32);
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, .34);
+  --shadow-sm: 0 12px 32px rgba(0, 0, 0, .42);
+  --shadow-md: 0 26px 64px rgba(0, 0, 0, .52);
+  --shadow-blue: 0 18px 40px rgba(0, 63, 148, .38);
 }

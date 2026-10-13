@@ -17,6 +17,7 @@ import Navbar from "~/components/Navbar";
 import designSystem from "~/styles/design-system.css?url";
 import globalStyles from "~/styles/global.css?url";
 import siteStyles from "~/styles/site.css?url";
+import responsiveLayouts from "~/styles/responsive-layouts.css?url";
 
 /* ================================================================
    SEO: MetaFunction — Advanced
@@ -105,6 +106,7 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: designSystem },
   { rel: "stylesheet", href: globalStyles },
   { rel: "stylesheet", href: siteStyles },
+  { rel: "stylesheet", href: responsiveLayouts },
 
   /* ── Home page ── */
 

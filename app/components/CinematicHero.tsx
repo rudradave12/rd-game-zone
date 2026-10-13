@@ -10,9 +10,9 @@ function getDeviceMode(): DeviceMode {
   if (typeof window === "undefined") return "desktop";
   const w = window.innerWidth;
   const h = window.innerHeight;
-  if (w > 1024) return "desktop";
-  if (h < w)    return "landscape";
-  return "portrait";
+  if (w <= 1100 && h < w) return "landscape";
+  if (w <= 1100) return "portrait";
+  return "desktop";
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -57,8 +57,9 @@ function safePlay(video: HTMLVideoElement | null): () => void {
     video.addEventListener("canplay", handler, { once: true });
     removeListener = () => video.removeEventListener("canplay", handler);
 
-    // If preload="none" the browser won't fetch until we tell it to
-    if (video.preload === "none") {
+    // Videos begin with preload="none". Promote only the visible video when
+    // it is needed so the three device variants never download together.
+    if (video.preload !== "auto") {
       video.preload = "auto";
       video.load();
     }
@@ -97,7 +98,9 @@ function preloadVideo(
   const refs = mode === "desktop" ? d : mode === "portrait" ? p : l;
   const v = refs.current[index];
   if (v && v.preload === "none" && v.readyState === 0) {
-    v.preload = "auto";
+    // Metadata is enough to make the next transition feel prepared without
+    // consuming a second full-size hero video in the background.
+    v.preload = "metadata";
     v.load();
   }
 }
@@ -122,7 +125,7 @@ function getActiveVideo(
 ───────────────────────────────────────────────────────────────── */
 export default function CinematicHero() {
   const [current,    setCurrent]    = useState(0);
-  const [deviceMode, setDeviceMode] = useState<DeviceMode>("desktop");
+  const [deviceMode, setDeviceMode] = useState<DeviceMode>(getDeviceMode);
 
   const desktopVideoRefs   = useRef<(HTMLVideoElement | null)[]>([]);
   const portraitVideoRefs  = useRef<(HTMLVideoElement | null)[]>([]);
@@ -133,6 +136,7 @@ export default function CinematicHero() {
   const isTabActiveRef = useRef(true);   // browser tab focused?
   const cancelPlayRef  = useRef<() => void>(() => {}); // cancel pending safePlay
   const touchStartX    = useRef<number>(0);            // swipe origin (portrait only)
+  const prefersReducedMotionRef = useRef(false);
 
   /* ── Play the active slide (respects visibility + tab state) ── */
   const playActive = useCallback((slideIndex: number, mode: DeviceMode) => {
@@ -143,7 +147,7 @@ export default function CinematicHero() {
     pauseAll(desktopVideoRefs, portraitVideoRefs, landscapeVideoRefs);
 
     // Only play if the hero is on screen AND the tab is active
-    if (!isVisibleRef.current || !isTabActiveRef.current) return;
+    if (!isVisibleRef.current || !isTabActiveRef.current || prefersReducedMotionRef.current) return;
 
     const refs =
       mode === "desktop"  ? desktopVideoRefs  :
@@ -164,6 +168,25 @@ export default function CinematicHero() {
       window.removeEventListener("orientationchange", update);
     };
   }, []);
+
+  /* Visitors who request reduced motion keep the image-led hero and avoid
+     loading autoplaying video altogether. */
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      prefersReducedMotionRef.current = query.matches;
+      if (query.matches) {
+        cancelPlayRef.current();
+        pauseAll(desktopVideoRefs, portraitVideoRefs, landscapeVideoRefs);
+      } else if (isVisibleRef.current && isTabActiveRef.current) {
+        playActive(current, deviceMode);
+      }
+    };
+
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, [current, deviceMode, playActive]);
 
   /* ── IntersectionObserver: pause when hero scrolls out of view ──
      This is the primary battery-saving mechanism.
@@ -279,10 +302,13 @@ export default function CinematicHero() {
     // Play current
     playActive(current, deviceMode);
 
-    // Pre-buffer the NEXT slide's video so it's ready before ended fires.
-    // This is what prevents the "loading/black flash" when switching slides.
-    const next = (current + 1) % HERO_SLIDES.length;
-    preloadVideo(next, deviceMode, desktopVideoRefs, portraitVideoRefs, landscapeVideoRefs);
+    // Save-Data visitors get only the active clip. Everyone else receives a
+    // lightweight metadata warm-up for the next slide.
+    const connection = navigator as Navigator & { connection?: { saveData?: boolean } };
+    if (!prefersReducedMotionRef.current && !connection.connection?.saveData) {
+      const next = (current + 1) % HERO_SLIDES.length;
+      preloadVideo(next, deviceMode, desktopVideoRefs, portraitVideoRefs, landscapeVideoRefs);
+    }
 
     return () => {
       // Cancel any pending safePlay when slide/mode changes
@@ -331,6 +357,7 @@ export default function CinematicHero() {
 
       {HERO_SLIDES.map((slide, i) => {
         const isActive = i === current;
+        const isPriorityImage = i === 0;
         return (
           <div
             key={slide.id}
@@ -350,7 +377,7 @@ export default function CinematicHero() {
                 src={slide.imageDesktop}
                 alt=""
                 aria-hidden="true"
-                loading={i === 0 ? "eager" : "lazy"}
+                loading={isPriorityImage && deviceMode === "desktop" ? "eager" : "lazy"}
                 decoding="async"
               />
               <video
@@ -358,7 +385,7 @@ export default function CinematicHero() {
                 className="cin-video cin-video--desktop"
                 muted
                 playsInline
-                preload={i === 0 ? "auto" : "none"}
+                preload="none"
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
@@ -376,7 +403,7 @@ export default function CinematicHero() {
                 src={slide.imageMobilePortrait}
                 alt=""
                 aria-hidden="true"
-                loading={i === 0 ? "eager" : "lazy"}
+                loading={isPriorityImage && deviceMode === "portrait" ? "eager" : "lazy"}
                 decoding="async"
               />
               <video
@@ -384,7 +411,7 @@ export default function CinematicHero() {
                 className="cin-video cin-video--portrait"
                 muted
                 playsInline
-                preload={i === 0 ? "auto" : "none"}
+                preload="none"
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
@@ -401,7 +428,7 @@ export default function CinematicHero() {
                 src={slide.imageMobileLandscape}
                 alt=""
                 aria-hidden="true"
-                loading={i === 0 ? "eager" : "lazy"}
+                loading={isPriorityImage && deviceMode === "landscape" ? "eager" : "lazy"}
                 decoding="async"
               />
               <video
@@ -409,7 +436,7 @@ export default function CinematicHero() {
                 className="cin-video cin-video--landscape"
                 muted
                 playsInline
-                preload={i === 0 ? "auto" : "none"}
+                preload="none"
                 disablePictureInPicture
                 x-webkit-airplay="deny"
               >
