@@ -92,14 +92,19 @@ export const meta: MetaFunction = () => [
    LINKS — Preload, Fonts, Stylesheets, Icons
    ================================================================ */
 export const links: LinksFunction = () => [
-  /* ── Font preconnect ── */
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-
-  /* ── Google Font — Single Unified Font: Inter ── */
+  /* First-screen hero artwork: preload the matching device asset so its
+     discovery is not delayed until React mounts the homepage. */
   {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap",
+    rel: "preload",
+    as: "image",
+    href: "/images/hero/valorant.jpg",
+    media: "(min-width: 1101px)",
+  },
+  {
+    rel: "preload",
+    as: "image",
+    href: "/images/valorant-mobile-portraite.jpg",
+    media: "(max-width: 1100px)",
   },
 
   /* ── Core styles ── */
@@ -269,16 +274,6 @@ function HashScrollHandler() {
   return null;
 }
 
-const initialThemeScript = `(() => {
-  try {
-    const theme = localStorage.getItem("rd-game-zone-theme") === "dark" ? "dark" : "light";
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-  } catch {
-    document.documentElement.dataset.theme = "light";
-  }
-})();`;
-
 /* ================================================================
    APP ROOT
    ✅ Static / Cloudflare Pages compatible (no SSR exports needed)
@@ -289,12 +284,7 @@ export default function App() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
-        <script dangerouslySetInnerHTML={{ __html: initialThemeScript }} />
-
-        {/* ── Cloudflare / browser hints ── */}
-        {/* DNS prefetch for third parties */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://www.google.com"       />
+        <script src="/theme-init.js" />
 
         <Meta />
         <Links />
@@ -344,14 +334,21 @@ export function HydrateFallback() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <script src="/theme-init.js" />
         <Meta />
         <Links />
       </head>
       <body className="app-loading">
         <main className="app-loading__main" aria-label="Loading RD Game Zone">
-          <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
-          <p>RD Game Zone</p>
-          <span>Loading your next session</span>
+          <picture className="app-loading__art" aria-hidden="true">
+            <source media="(max-width: 1100px)" srcSet="/images/valorant-mobile-portraite.jpg" />
+            <img src="/images/hero/valorant.jpg" alt="" width="1920" height="1080" />
+          </picture>
+          <div className="app-loading__content">
+            <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
+            <p>RD Game Zone</p>
+            <span>Loading your next session</span>
+          </div>
         </main>
         <Scripts />
       </body>

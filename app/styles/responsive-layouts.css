@@ -15,6 +15,10 @@
 
 body { overflow-x: hidden; }
 
+/* Image-first hero artwork is a single responsive <picture>, so no hidden
+   desktop, portrait, or landscape video layer can consume network data. */
+.cin-layer--static { display: block; }
+
 html[data-theme="dark"],
 html[data-theme="dark"] body {
   background:

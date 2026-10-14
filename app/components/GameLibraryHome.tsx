@@ -4,6 +4,18 @@ import { games } from "~/data/games";
 
 const featuredGames = games.slice(0, 6);
 
+/* The library's showcase appears on the first page after the hero. Use
+   purpose-made 16:9 assets here so its six visuals do not compete with the
+   first-screen content or download multi-megabyte source artwork. */
+const featuredImages: Record<number, string> = {
+  41: "/images/featured/gta-vi.jpg",
+  1: "/images/featured/cod-blackops-7.jpg",
+  2: "/images/featured/gta-online.jpg",
+  3: "/images/featured/valorant.jpg",
+  4: "/images/featured/counter-strike-2.jpg",
+  5: "/images/featured/apex-legends.jpg",
+};
+
 export default function GameLibraryHome() {
   return (
     <section id="game-library" className="featured-library" aria-labelledby="featured-library-title">
@@ -22,7 +34,7 @@ export default function GameLibraryHome() {
         {featuredGames.map((game, index) => (
           <Link key={game.id} to={`/games#${game.id}`} className={`featured-game featured-game--${index + 1}`}>
             <div className="featured-game__media">
-              <img src={game.image} alt={game.title} loading="lazy" decoding="async" />
+              <img src={featuredImages[game.id] ?? game.image} alt={game.title} loading="lazy" decoding="async" />
               <span className={`featured-game__status featured-game__status--${game.status}`}>
                 {game.status === "upcoming" ? "Coming soon" : "In lounge"}
               </span>

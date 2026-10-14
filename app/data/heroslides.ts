@@ -3,23 +3,17 @@
    ─────────────────────────────────────────────────────────────
    Each slide has:
 
-   IMAGES (shown immediately, also fallback while video loads)
+   IMAGES (shown immediately as the responsive hero artwork)
    • imageDesktop        — 16:9 widescreen,  e.g. 1920×1080
    • imageMobilePortrait — 9:16 portrait,    e.g.  828×1792
    • imageMobileLandscape— 16:9 landscape,   e.g. 1792× 828
 
-   VIDEOS (play on top of image once loaded)
-   Desktop:
-   • videoDesktopMp4                         — 16:9
-   Mobile portrait:
-   • videoPortraitMp4                        — 9:16 vertical
-   Mobile landscape:
-   • videoLandscapeMp4                       — 16:9
-
    BUTTONS
    • btn1 / btn2
 
-   Each breakpoint references the best matching MP4 source in public/videos.
+   Each breakpoint references an appropriately sized still image. Keeping the
+   landing hero image-led avoids downloading large autoplay videos before a
+   visitor has chosen to watch a trailer.
    ================================================================ */
 
 export type HeroSlide = {
@@ -28,19 +22,10 @@ export type HeroSlide = {
   tagline: string;
   category: string;
 
-  /* ── Images (used as immediate bg + fallback while video loads) ── */
+  /* ── Responsive artwork ── */
   imageDesktop:         string;
   imageMobilePortrait:  string;
   imageMobileLandscape: string;
-
-  /* ── Desktop video (16:9) ── */
-  videoDesktopMp4: string;
-
-  /* ── Mobile portrait video (9:16 vertical) ── */
-  videoPortraitMp4: string;
-
-  /* ── Mobile landscape video (16:9, separate file) ── */
-  videoLandscapeMp4: string;
 
   /* ── Buttons ── */
   btn1: string;
@@ -54,15 +39,9 @@ export const HERO_SLIDES: HeroSlide[] = [
     tagline: "5V5 CHARACTER-BASED TACTICAL FIREFIGHT",
     category: "TACTICAL FPS",
 
-    imageDesktop:         "/images/valorant.jpg",
+    imageDesktop:         "/images/hero/valorant.jpg",
     imageMobilePortrait:  "/images/valorant-mobile-portraite.jpg",
-    imageMobileLandscape: "/images/valorant.jpg",
-
-    videoDesktopMp4:   "/videos/Valorant-Desktop-Lanscape-New-Kj-Compressed.mp4",
-    
-    videoPortraitMp4:  "/videos/valorant-mobile-portrait.mp4",
-    
-    videoLandscapeMp4: "/videos/valorant new compressed.mp4",
+    imageMobileLandscape: "/images/hero/valorant.jpg",
 
     btn1: "BEST GAME",
     btn2: "FPS ACTION",
@@ -74,15 +53,9 @@ export const HERO_SLIDES: HeroSlide[] = [
     tagline: "LEGENDS CHANGE THE GAME",
     category: "RACING",
 
-    imageDesktop:         "/images/asphalt.jpeg",
-    imageMobilePortrait:  "/images/asphalt-mobile-potraite.jpg",
-    imageMobileLandscape: "/images/asphalt.jpeg",
-
-    videoDesktopMp4:   "/videos/Asphalt Legends Unite.mp4",
-    
-    videoPortraitMp4:  "/videos/asphalt-mobile-portrait.mp4",
-    
-    videoLandscapeMp4: "/videos/Asphalt Legends Unite.mp4",
+    imageDesktop:         "/images/hero/asphalt.jpg",
+    imageMobilePortrait:  "/images/hero/asphalt-portrait.jpg",
+    imageMobileLandscape: "/images/hero/asphalt.jpg",
 
     btn1: "BEST GAME",
     btn2: "ARCADE RACING",
@@ -94,15 +67,9 @@ export const HERO_SLIDES: HeroSlide[] = [
     tagline: "RECLAIM THE LEGEND",
     category: "ACTION ADVENTURE",
 
-    imageDesktop:         "/images/black-myth-wukong.jpeg",
-    imageMobilePortrait:  "/images/black-myth-wukong-mobile-portraite.jpg",
-    imageMobileLandscape: "/images/black-myth-wukong.jpeg",
-
-    videoDesktopMp4:   "/videos/black myth wukong.mp4",
-    
-    videoPortraitMp4:  "/videos/wukong-mobile-portrait.mp4",
-    
-    videoLandscapeMp4: "/videos/black myth wukong.mp4",
+    imageDesktop:         "/images/hero/black-myth-wukong.jpg",
+    imageMobilePortrait:  "/images/hero/black-myth-wukong-portrait.jpg",
+    imageMobileLandscape: "/images/hero/black-myth-wukong.jpg",
 
     btn1: "BEST GAME",
     btn2: "ACTION ADVENTURE",
@@ -114,15 +81,9 @@ export const HERO_SLIDES: HeroSlide[] = [
     tagline: "A NEW ERA OF COVERT OPERATIONS",
     category: "FPS ACTION",
  
-    imageDesktop:         "/images/cod-7-new-landscape.jpg",
-    imageMobilePortrait:  "/images/cod-7-mobile-portraite.jpg",
-    imageMobileLandscape: "/images/cod-7-new-landscape.jpg",
-
-    videoDesktopMp4:   "/videos/cod blackops 7 new.mp4",
-    
-    videoPortraitMp4:  "/videos/cod-7-mobile-portrait.mp4",
-    
-    videoLandscapeMp4: "/videos/cod blackops 7 new.mp4",
+    imageDesktop:         "/images/hero/cod-blackops-7.jpg",
+    imageMobilePortrait:  "/images/hero/cod-blackops-7-portrait.jpg",
+    imageMobileLandscape: "/images/hero/cod-blackops-7.jpg",
 
     btn1: "BEST GAME",
     btn2: "FPS ACTION",
@@ -134,15 +95,9 @@ export const HERO_SLIDES: HeroSlide[] = [
     tagline: "BUILD YOUR CRIMINAL EMPIRE",
     category: "OPEN WORLD",
 
-    imageDesktop:         "/images/gta-5online.jpeg",
+    imageDesktop:         "/images/hero/gta-online.jpg",
     imageMobilePortrait:  "/images/gta-5online-mobile-portrait.jpeg",
-    imageMobileLandscape: "/images/gta-5online.jpeg",
-
-    videoDesktopMp4:   "/videos/mobile/GTA Online.mp4",
-    
-    videoPortraitMp4:  "/videos/gta-online-mobile-portraite.mp4",
-    
-    videoLandscapeMp4: "/videos/GTA Online.mp4",
+    imageMobileLandscape: "/images/hero/gta-online.jpg",
 
     btn1: "OPEN WORLD",
     btn2: "MULTIPLAYER",
