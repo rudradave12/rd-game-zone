@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import CinematicHero from "~/components/CinematicHero";
 import AboutSection from "~/components/About";
 import Pricing from "~/components/Pricing";
@@ -15,6 +15,22 @@ export const meta: MetaFunction = () => [
     name: "description",
     content:
       "Play PS5, PC, 240Hz esports and LAN multiplayer at RD Game Zone in Ahmedabad. Browse the game library, rates and visit details.",
+  },
+];
+
+/* Preload only on the route that renders this cinematic hero. */
+export const links: LinksFunction = () => [
+  {
+    rel: "preload",
+    as: "image",
+    href: "/images/hero/valorant.jpg",
+    media: "(min-width: 1101px)",
+  },
+  {
+    rel: "preload",
+    as: "image",
+    href: "/images/valorant-mobile-portraite.jpg",
+    media: "(max-width: 1100px)",
   },
 ];
 

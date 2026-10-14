@@ -13,11 +13,14 @@ import { useEffect } from "react";
 import Navbar from "~/components/Navbar";
 
 /* ================= STYLES ================= */
-/* Design system MUST load first — every stylesheet below consumes its tokens. */
-import designSystem from "~/styles/design-system.css?url";
-import globalStyles from "~/styles/global.css?url";
-import siteStyles from "~/styles/site.css?url";
-import responsiveLayouts from "~/styles/responsive-layouts.css?url";
+/* The aggregate preserves CSS order while avoiding multiple blocking fetches. */
+import appStyles from "~/styles/app.css?url";
+
+/* Establish stable document geometry before the full stylesheet can be
+   reattached during SPA route hydration. The build hashes this block into the
+   strict CSP, so it remains a narrowly scoped inline style. */
+const criticalDocumentStyles =
+  "html{min-height:100%;overflow-x:hidden}body{min-width:0;min-height:100dvh;margin:0;overflow-x:hidden}body:not(.app-ready){visibility:hidden}body:not(.app-ready)>.app-loading__main{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;min-height:100dvh;overflow:hidden;visibility:visible;background:#f5f8ff;color:#061238}body:not(.app-ready) .app-loading__content{position:relative;z-index:1;display:grid;min-height:100dvh;place-items:center;align-content:center;text-align:center}body:not(.app-ready) .app-loading__mark{display:grid;width:64px;height:64px;place-items:center;border-radius:21px}body:not(.app-ready) .app-loading__mark img{width:40px;height:41px}body:not(.app-ready) .app-loading__main p{margin-top:1rem;font-size:1rem;line-height:1.6}body:not(.app-ready) .app-loading__main span{margin-top:.2rem;font-size:.78rem;line-height:1.6}html[data-theme=dark] body:not(.app-ready)>.app-loading__main{background:#020711;color:#f7f9ff}body.app-ready>.app-loading__main{display:none}";
 
 /* ================================================================
    SEO: MetaFunction — Advanced
@@ -92,26 +95,9 @@ export const meta: MetaFunction = () => [
    LINKS — Preload, Fonts, Stylesheets, Icons
    ================================================================ */
 export const links: LinksFunction = () => [
-  /* First-screen hero artwork: preload the matching device asset so its
-     discovery is not delayed until React mounts the homepage. */
-  {
-    rel: "preload",
-    as: "image",
-    href: "/images/hero/valorant.jpg",
-    media: "(min-width: 1101px)",
-  },
-  {
-    rel: "preload",
-    as: "image",
-    href: "/images/valorant-mobile-portraite.jpg",
-    media: "(max-width: 1100px)",
-  },
-
   /* ── Core styles ── */
-  { rel: "stylesheet", href: designSystem },
-  { rel: "stylesheet", href: globalStyles },
-  { rel: "stylesheet", href: siteStyles },
-  { rel: "stylesheet", href: responsiveLayouts },
+  { rel: "preload", as: "style", href: appStyles },
+  { rel: "stylesheet", href: appStyles },
 
   /* ── Home page ── */
 
@@ -274,6 +260,50 @@ function HashScrollHandler() {
   return null;
 }
 
+function AppReadyHandler() {
+  useEffect(() => {
+    let active = true;
+    let completed = false;
+    let fallbackTimer = 0;
+    const stylesheet = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')]
+      .find((link) => link.href.includes("/assets/app-"));
+
+    const revealApp = () => {
+      if (!active || completed) return;
+      completed = true;
+      window.clearTimeout(fallbackTimer);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          if (active) document.body.classList.add("app-ready");
+        });
+      });
+    };
+
+    let stylesheetIsReady = false;
+    try {
+      stylesheetIsReady = Boolean(stylesheet?.sheet && stylesheet.sheet.cssRules.length > 0);
+    } catch {
+      // A stylesheet that cannot be inspected is still covered by its load event.
+    }
+
+    if (!stylesheet || stylesheetIsReady) revealApp();
+    else {
+      stylesheet.addEventListener("load", revealApp, { once: true });
+      stylesheet.addEventListener("error", revealApp, { once: true });
+      fallbackTimer = window.setTimeout(revealApp, 2500);
+    }
+
+    return () => {
+      active = false;
+      window.clearTimeout(fallbackTimer);
+      stylesheet?.removeEventListener("load", revealApp);
+      stylesheet?.removeEventListener("error", revealApp);
+    };
+  }, []);
+
+  return null;
+}
+
 /* ================================================================
    APP ROOT
    ✅ Static / Cloudflare Pages compatible (no SSR exports needed)
@@ -284,6 +314,7 @@ export default function App() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
+        <style>{criticalDocumentStyles}</style>
         <script src="/theme-init.js" />
 
         <Meta />
@@ -309,6 +340,14 @@ export default function App() {
       </head>
 
       <body>
+        <AppReadyHandler />
+        <main className="app-loading__main" aria-label="Loading RD Game Zone">
+          <div className="app-loading__content">
+            <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
+            <p>RD Game Zone</p>
+            <span>Loading your next session</span>
+          </div>
+        </main>
         <HashScrollHandler />
         <Navbar />
         <Outlet />
@@ -333,17 +372,25 @@ export function HydrateFallback() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <style>{criticalDocumentStyles}</style>
         <script src="/theme-init.js" />
         <Meta />
         <Links />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
       </head>
-      <body className="app-loading">
+      <body>
         <main className="app-loading__main" aria-label="Loading RD Game Zone">
-          <picture className="app-loading__art" aria-hidden="true">
-            <source media="(max-width: 1100px)" srcSet="/images/valorant-mobile-portraite.jpg" />
-            <img src="/images/hero/valorant.jpg" alt="" width="1920" height="1080" />
-          </picture>
           <div className="app-loading__content">
             <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
             <p>RD Game Zone</p>

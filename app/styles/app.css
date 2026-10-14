@@ -1,0 +1,6 @@
+/* Keep the small, shared design system and page layout in one render-blocking
+   request, preserving their original dependency order. */
+@import "./design-system.css";
+@import "./global.css";
+@import "./site.css";
+@import "./responsive-layouts.css";

@@ -13,8 +13,6 @@
   min-width: 0;
 }
 
-body { overflow-x: hidden; }
-
 /* Image-first hero artwork is a single responsive <picture>, so no hidden
    desktop, portrait, or landscape video layer can consume network data. */
 .cin-layer--static { display: block; }
@@ -93,15 +91,33 @@ body.modal-open {
 /* Below-the-fold sections can skip visual work until they approach the screen.
    Intrinsic sizes keep scroll position stable and avoid visible jumps. */
 @supports (content-visibility: auto) {
+  .game-grid > article {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 340px;
+  }
   .featured-library,
+  .lounge-intro,
   .rate-section,
   .booking-section,
   .experience-section,
-  .guidelines-rules,
-  .guidelines-gta,
-  .ps-footer {
+  .guidelines-gta {
     content-visibility: auto;
     contain-intrinsic-size: auto 760px;
+  }
+}
+
+/* Keep links and service labels legible on the deep-blue footer even when
+   browser default anchor colors or the quiet-button surface are inherited. */
+.ps-footer .ps-footer__column a[href],
+.ps-footer .ps-footer__column li,
+.ps-footer .ps-footer__bottom nav a {
+  color: #e5efff;
+}
+.ps-footer .ps-footer__visit-actions a.ps-button--quiet { color: #fff; }
+
+@media (max-width: 700px) {
+  @supports (content-visibility: auto) {
+    .game-grid > article { contain-intrinsic-size: auto 270px; }
   }
 }
 
@@ -559,4 +575,73 @@ html[data-theme="dark"] .video-info__status--available { color: #8af1bd; backgro
 
 @media (prefers-reduced-motion: reduce) {
   .cin-slide { transition: none; }
+}
+
+/* Keep policy art and copy together on phones instead of stacking them into
+   a tall banner. The title and warning share a compact, wrap-safe header. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .guidelines-gta {
+    grid-template-columns: minmax(5.5rem, .68fr) minmax(0, 1.32fr);
+    align-items: center;
+    gap: .25rem;
+    margin: 0 var(--page-x) var(--section-y);
+  }
+  .guidelines-gta__art {
+    align-self: center;
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+  .guidelines-gta__art img { display: block; }
+  .guidelines-gta__content { padding: .8rem .68rem .8rem .5rem; }
+  .guidelines-gta__heading {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: .3rem;
+  }
+  .guidelines-gta__content h2 {
+    font-size: clamp(.88rem, 3.65vw, 1.12rem);
+    font-weight: 650;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  .guidelines-gta__content .ps-kicker {
+    gap: .2rem;
+    font-size: clamp(.48rem, 1.9vw, .58rem);
+    font-weight: 600;
+    letter-spacing: .035em;
+  }
+  .guidelines-gta__content .ps-kicker svg { width: .75rem; height: .75rem; }
+  .guidelines-gta__content > p:not(.ps-kicker) {
+    margin-top: .42rem;
+    font-size: clamp(.69rem, 2.75vw, .79rem);
+    font-weight: 400;
+    line-height: 1.42;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 359px) and (orientation: portrait) {
+  .guidelines-gta { grid-template-columns: minmax(4.75rem, .62fr) minmax(0, 1.38fr); }
+  .guidelines-gta__content { padding-right: .45rem; }
+  .guidelines-gta__heading { grid-template-columns: minmax(0, 1fr); gap: .18rem; }
+  .guidelines-gta__content .ps-kicker { grid-row: 1; }
+}
+
+/* Headlines use a medium display weight; reserve heavier weights for small
+   labels and explicit emphasis so Outfit's geometric forms stay readable. */
+.cin-title,
+.lounge-intro__copy h2,
+.ps-section-heading h2,
+.booking-section__intro h2,
+.experience-section__copy h2,
+.guidelines-hero h1,
+.guidelines-rules__heading h2,
+.library-title,
+.library-results__heading h2,
+.video-info__title,
+.legal-title,
+.guidelines-gta__content h2,
+.game-card__title,
+.featured-game__content h3 {
+  font-weight: 650;
 }

@@ -9,7 +9,9 @@ const index = await readFile(indexPath, "utf8");
 const headers = await readFile(headersPath, "utf8");
 
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+const stylePattern = /<style\b[^>]*>([\s\S]*?)<\/style>/gi;
 const hashes = new Set();
+const styleHashes = new Set();
 
 for (const match of index.matchAll(scriptPattern)) {
   const [, attributes, source] = match;
@@ -22,14 +24,24 @@ for (const match of index.matchAll(scriptPattern)) {
   hashes.add(`'sha256-${hash}'`);
 }
 
+for (const match of index.matchAll(stylePattern)) {
+  const hash = createHash("sha256").update(match[1]).digest("base64");
+  styleHashes.add(`'sha256-${hash}'`);
+}
+
 if (hashes.size === 0) {
   throw new Error("No inline executable scripts were found for the Content-Security-Policy.");
 }
+if (styleHashes.size === 0) {
+  throw new Error("No critical inline styles were found for the Content-Security-Policy.");
+}
 
-const output = headers.replace("__CSP_SCRIPT_HASHES__", [...hashes].join(" "));
-if (output === headers) {
-  throw new Error("The CSP hash placeholder was not found in build/client/_headers.");
+const output = headers
+  .replace("__CSP_SCRIPT_HASHES__", [...hashes].join(" "))
+  .replace("__CSP_STYLE_HASHES__", [...styleHashes].join(" "));
+if (output === headers || output.includes("__CSP_")) {
+  throw new Error("A CSP hash placeholder was not found in build/client/_headers.");
 }
 
 await writeFile(headersPath, output, "utf8");
-console.log(`Generated ${hashes.size} CSP script hash${hashes.size === 1 ? "" : "es"}.`);
+console.log(`Generated ${hashes.size} script and ${styleHashes.size} style CSP hash(es).`);
