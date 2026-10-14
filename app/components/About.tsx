@@ -18,10 +18,10 @@ export default function AboutSection() {
           <p>Enjoy access to <strong>top AAA titles and competitive favorites</strong>, updated regularly to match current gaming trends.</p>
           <p>Food and refreshments are available inside the gaming zone to ensure uninterrupted gameplay sessions. Outside food policies are strictly managed to maintain hygiene, equipment safety, and a premium gaming experience.</p>
         </div>
-        <aside className="lounge-intro__standard" aria-label="Lounge standards">
+        <aside className="lounge-intro__standard" aria-label="Game zone standards">
           <span className="lounge-intro__orb lounge-intro__orb--one" aria-hidden="true" />
           <span className="lounge-intro__orb lounge-intro__orb--two" aria-hidden="true" />
-          <p className="ps-kicker">Lounge standard</p>
+          <p className="ps-kicker">Our standards</p>
           <div className="lounge-intro__stats">
             {standards.map(([value, label]) => (
               <div key={value}>

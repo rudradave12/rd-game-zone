@@ -15,9 +15,9 @@ export default function GuidelinesRoute() {
     <main className="guidelines-page">
       <section className="guidelines-hero">
         <div>
-          <p className="ps-kicker"><FiShield aria-hidden="true" /> Play responsibly</p>
-          <h1>Everything you need for a great session.</h1>
-          <p>Clear rules help every player enjoy a clean, secure, and respectful gaming lounge.</p>
+          <p className="ps-kicker"><FiShield aria-hidden="true" /> RD Game Zone · E-sports hub</p>
+          <h1>Play bold. Play fair.</h1>
+          <p>Clear rules keep every session safe, focused, and welcoming for all players.</p>
           <Link to="/games" className="ps-button ps-button--primary">Browse the game library <FiArrowUpRight aria-hidden="true" /></Link>
         </div>
       </section>

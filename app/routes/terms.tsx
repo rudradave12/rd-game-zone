@@ -18,7 +18,7 @@ const SECTIONS = [
     heading: "Acceptance of Terms",
     content: (
       <>
-        <p>By accessing or using the RD Game Zone website (the "Site") or visiting our gaming lounge located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004 (the "Premises"), you agree to be bound by these Terms &amp; Conditions.</p>
+        <p>By accessing or using the RD Game Zone website (the "Site") or visiting our gaming center located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004 (the "Premises"), you agree to be bound by these Terms &amp; Conditions.</p>
         <p>If you do not agree with any part of these terms, you must not use our website or services. We reserve the right to update these terms at any time. Continued use of our services following any changes constitutes acceptance of the revised terms.</p>
         <p>These terms apply to all visitors, users, and customers of RD Game Zone.</p>
       </>

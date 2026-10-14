@@ -15,7 +15,7 @@ export default function Booking() {
       <div className="booking-section__intro">
         <p className="ps-kicker">Reservations & contact</p>
         <h2 id="booking-title">Ready when you are.</h2>
-        <p>Reserve in advance or walk in. Call us or visit RD Game Zone to secure your time at the lounge.</p>
+        <p>Reserve in advance or walk in. Call us or visit RD Game Zone to secure your play session.</p>
         <div className="booking-section__facts" aria-label="Booking information">
           <span><FiClock aria-hidden="true" /> Open daily · 10 AM–10 PM</span>
           <span><FiMapPin aria-hidden="true" /> Ahmedabad, Gujarat</span>

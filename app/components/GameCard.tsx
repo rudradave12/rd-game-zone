@@ -14,7 +14,7 @@ const statusLabels = {
 
 export default function GameCard({ game, onPlay }: Props) {
   // Coming-soon titles can still have an official reveal trailer even though
-  // they are not yet playable at the lounge.
+  // they are not yet playable at RD Game Zone.
   const canWatchTrailer = Boolean(game.video);
   const trailerLabel = canWatchTrailer ? "Watch trailer" : "Trailer unavailable";
 

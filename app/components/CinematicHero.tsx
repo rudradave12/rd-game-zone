@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { FiPause, FiPlay } from "react-icons/fi";
 import { HERO_SLIDES } from "../data/heroslides";
 
 type DeviceMode = "desktop" | "portrait" | "landscape";
@@ -21,6 +22,10 @@ export default function CinematicHero() {
   const [current, setCurrent] = useState(0);
   const [deviceMode, setDeviceMode] = useState<DeviceMode>(getDeviceMode);
   const [renderedSlides, setRenderedSlides] = useState<Set<number>>(() => new Set([0]));
+  const [isPaused, setIsPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [isEngaged, setIsEngaged] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
   const touchStartX = useRef(0);
 
   useEffect(() => {
@@ -34,6 +39,27 @@ export default function CinematicHero() {
       window.removeEventListener("orientationchange", updateDeviceMode);
     };
   }, []);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => setReducedMotion(motionQuery.matches);
+    updateMotion();
+    motionQuery.addEventListener("change", updateMotion);
+    return () => motionQuery.removeEventListener("change", updateMotion);
+  }, []);
+
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || isEngaged || reducedMotion || !pageVisible || HERO_SLIDES.length < 2) return;
+    const timer = window.setInterval(() => showSlide((current + 1) % HERO_SLIDES.length), 7000);
+    return () => window.clearInterval(timer);
+  }, [current, isEngaged, isPaused, pageVisible, reducedMotion]);
 
   const showSlide = (index: number) => {
     setRenderedSlides((slides) => {
@@ -68,6 +94,12 @@ export default function CinematicHero() {
       aria-label="Featured games"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setIsEngaged(true)}
+      onMouseLeave={() => setIsEngaged(false)}
+      onFocusCapture={() => setIsEngaged(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setIsEngaged(false);
+      }}
     >
       {HERO_SLIDES.map((slide, index) => {
         const isActive = index === current;
@@ -78,6 +110,8 @@ export default function CinematicHero() {
             key={slide.id}
             id={`hero-slide-${slide.id}`}
             className={`cin-slide ${isActive ? "active" : ""}`}
+            role="tabpanel"
+            aria-labelledby={`hero-tab-${slide.id}`}
             aria-hidden={!isActive}
           >
             {shouldRenderArtwork && (
@@ -100,6 +134,7 @@ export default function CinematicHero() {
             <div className="cin-overlay" aria-hidden="true" />
 
             <div className="cin-content">
+              <p className="cin-brandline">RD GAME ZONE <span aria-hidden="true">·</span> E-SPORTS HUB</p>
               <p className="cin-category">{slide.category}</p>
               <h1 className="cin-title">{slide.title}</h1>
               <p className="cin-tag">{slide.tagline}</p>
@@ -115,20 +150,34 @@ export default function CinematicHero() {
         );
       })}
 
-      <div className="cin-progress" role="tablist" aria-label="Featured game slides">
-        {HERO_SLIDES.map((slide, index) => (
-          <button
-            key={slide.id}
-            type="button"
-            className={`bar ${index === current ? "active" : ""}`}
-            onClick={() => showSlide(index)}
-            onFocus={() => setRenderedSlides((slides) => slides.has(index) ? slides : new Set(slides).add(index))}
-            role="tab"
-            aria-controls={`hero-slide-${slide.id}`}
-            aria-selected={index === current}
-            aria-label={`Show ${slide.title}`}
-          />
-        ))}
+      <div className="cin-controls">
+        <div className="cin-progress" role="tablist" aria-label="Featured game slides">
+          {HERO_SLIDES.map((slide, index) => (
+            <button
+              key={slide.id}
+              id={`hero-tab-${slide.id}`}
+              type="button"
+              className={`bar ${index === current ? "active" : ""}`}
+              onClick={() => showSlide(index)}
+              onFocus={() => setRenderedSlides((slides) => slides.has(index) ? slides : new Set(slides).add(index))}
+              role="tab"
+              aria-controls={`hero-slide-${slide.id}`}
+              aria-selected={index === current}
+              aria-label={`Show ${slide.title}`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          className="cin-autoplay-toggle"
+          onClick={() => setIsPaused((paused) => !paused)}
+          aria-label={reducedMotion ? "Slideshow paused by reduced-motion preference" : isPaused ? "Resume featured game slideshow" : "Pause featured game slideshow"}
+          aria-pressed={isPaused}
+          title={reducedMotion ? "Slideshow paused by reduced-motion preference" : isPaused ? "Resume slideshow" : "Pause slideshow"}
+          disabled={reducedMotion}
+        >
+          {isPaused || reducedMotion ? <FiPlay aria-hidden="true" /> : <FiPause aria-hidden="true" />}
+        </button>
       </div>
 
       <div className="cin-netflix-bar" aria-hidden="true">

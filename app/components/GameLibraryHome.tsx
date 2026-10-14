@@ -21,9 +21,9 @@ export default function GameLibraryHome() {
     <section id="game-library" className="featured-library" aria-labelledby="featured-library-title">
       <div className="ps-section-heading featured-library__heading">
         <div>
-          <p className="ps-kicker">Curated for the lounge</p>
+          <p className="ps-kicker">The RD Game Zone lineup</p>
           <h2 id="featured-library-title">Your next game night starts here.</h2>
-          <p>See the next big arrival alongside lounge favourites, then browse every title by genre, platform, and availability.</p>
+          <p>Find competitive favourites and upcoming releases, then browse every title by genre, platform, and availability.</p>
         </div>
         <Link to="/games" className="ps-button ps-button--quiet">
           Explore all {games.length} games <FiArrowUpRight aria-hidden="true" />
@@ -36,7 +36,7 @@ export default function GameLibraryHome() {
             <div className="featured-game__media">
               <img src={featuredImages[game.id] ?? game.image} alt={game.title} loading="lazy" decoding="async" />
               <span className={`featured-game__status featured-game__status--${game.status}`}>
-                {game.status === "upcoming" ? "Coming soon" : "In lounge"}
+                {game.status === "upcoming" ? "Coming soon" : "Available to play"}
               </span>
               <span className="featured-game__play"><FiPlay aria-hidden="true" /></span>
             </div>

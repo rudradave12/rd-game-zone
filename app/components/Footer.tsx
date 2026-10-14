@@ -19,7 +19,7 @@ export default function Footer() {
     <footer className="ps-footer">
       <div className="ps-footer__visit">
         <div>
-          <p className="ps-kicker">Find the lounge</p>
+          <p className="ps-kicker">Find the game zone</p>
           <h2>Play together in Shahibag.</h2>
           <p>{store.address}</p>
         </div>
@@ -28,7 +28,7 @@ export default function Footer() {
             Get directions <FiArrowUpRight aria-hidden="true" />
           </a>
           <a className="ps-button ps-button--quiet" href={`tel:${store.phone.replace(/\s/g, "")}`}>
-            Call the lounge
+            Call RD Game Zone
           </a>
         </div>
       </div>
@@ -37,13 +37,13 @@ export default function Footer() {
         <div className="ps-footer__brand">
           <div className="ps-footer__logo"><img src="/icons/logo.svg" alt="" width="32" height="33" /></div>
           <h2>RD Game Zone</h2>
-          <p>Ahmedabad’s gaming lounge for competitive sessions, relaxed co-op, and the latest console and PC titles.</p>
+          <p>Ahmedabad’s gaming and e-sports hub for competitive sessions, relaxed co-op, and the latest console and PC titles.</p>
           <span className="ps-footer__hours"><FiClock aria-hidden="true" /> Open daily · 10 AM–10 PM</span>
         </div>
 
         <nav className="ps-footer__column" aria-label="Explore">
           <h3>Explore</h3>
-          <a href="/#about">About the lounge</a>
+          <a href="/#about">About the game zone</a>
           <a href="/games">Game library</a>
           <a href="/#pricing">Rates</a>
           <a href="/#booking">Book a session</a>

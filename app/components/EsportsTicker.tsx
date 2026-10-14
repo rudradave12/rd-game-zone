@@ -9,7 +9,7 @@ const highlights = [
 
 export default function EsportsTicker() {
   return (
-    <section className="ps-play-strip" aria-label="Gaming lounge highlights">
+    <section className="ps-play-strip" aria-label="RD Game Zone highlights">
       <div className="ps-play-strip__inner">
         <span className="ps-play-strip__label"><i aria-hidden="true" /> Live at RD</span>
         <div className="ps-play-strip__items">

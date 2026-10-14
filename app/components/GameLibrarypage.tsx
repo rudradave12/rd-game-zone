@@ -43,7 +43,7 @@ function Pagination({
     <nav className="library-pagination" aria-label="Game library pages">
       <p className="library-pagination__summary" aria-live="polite">
         <FiFolder aria-hidden="true" />
-        <span>Collection <strong>page {page}</strong></span>
+        <span>Collection <strong>{page}</strong></span>
         <small>{itemsOnPage} {itemsOnPage === 1 ? "game" : "games"}</small>
       </p>
 
@@ -143,7 +143,7 @@ export default function GameLibraryPage() {
 
     if (status === "UNAVAILABLE" && category === "ALL" && !query) {
       return {
-        eyebrow: "Lounge status",
+        eyebrow: "Game zone status",
         heading: "All clear",
         title: "Everything is ready to play.",
         body: "No titles are marked unavailable right now. Explore the live library and choose your next session.",
@@ -157,7 +157,7 @@ export default function GameLibraryPage() {
         eyebrow: "Search results",
         heading: "No match yet",
         title: `Nothing matched “${query}”.`,
-        body: "Try a shorter game title, or clear the filters to browse every title in the lounge vault.",
+        body: "Try a shorter game title, or clear the filters to browse the full RD Game Zone lineup.",
         action: "Clear search and filters",
         kind: "search" as const,
       };
@@ -222,7 +222,7 @@ export default function GameLibraryPage() {
               <div>
                 <h1 className="library-title">Game library</h1>
                 <p className="library-intro">
-                  Explore every title in the lounge vault, check its availability, and watch a trailer before your visit.
+                  Explore the full RD Game Zone lineup, check availability, and watch a trailer before your visit.
                 </p>
               </div>
               <div className="library-total" aria-label={`${games.length} games in the library`}>
@@ -300,9 +300,13 @@ export default function GameLibraryPage() {
           <section className="library-results" id="library-results" aria-labelledby="library-results-title">
             <div className="library-results__heading">
               <div>
-                <p className="library-results__eyebrow">Your game vault</p>
+                <p className="library-results__eyebrow">RD Game Zone · Game library</p>
                 <h2 id="library-results-title">
-                  {filteredGames.length ? `Page ${currentPage}` : emptyState.heading}
+                  {filteredGames.length === 1
+                    ? "1 game"
+                    : filteredGames.length > 1
+                      ? `Games ${String(rangeStart).padStart(2, "0")}–${String(rangeEnd).padStart(2, "0")}`
+                      : emptyState.heading}
                 </h2>
                 {filteredGames.length > 0 && (
                   <p className="library-results__collection-copy">

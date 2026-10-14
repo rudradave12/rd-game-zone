@@ -18,7 +18,7 @@ const SECTIONS = [
     heading: "Introduction",
     content: (
       <>
-        <p>Welcome to RD Game Zone. We operate a premium gaming lounge located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004. This Privacy Policy explains how we collect, use, store, and protect your personal information when you visit our website, use our booking system, or interact with our services in-store.</p>
+        <p>Welcome to RD Game Zone. We operate a gaming and e-sports center located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004. This Privacy Policy explains how we collect, use, store, and protect your personal information when you visit our website, use our booking system, or interact with our services in-store.</p>
         <p>By accessing our website or using our services, you agree to the practices described in this policy. We are committed to handling your information with care, transparency, and respect. If you have any concerns, please reach out to us at <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
       </>
     ),

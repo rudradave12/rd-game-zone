@@ -106,7 +106,7 @@ export default function Navbar() {
       <header className={`ps-nav${scrolled ? " ps-nav--solid" : ""}`}>
         <Link to="/" className="ps-nav__brand" aria-label="RD Game Zone home">
           <span className="ps-nav__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="27" height="28" /></span>
-          <span className="ps-nav__brand-copy"><strong>RD Game Zone</strong><small>Ahmedabad gaming lounge</small></span>
+          <span className="ps-nav__brand-copy"><strong>RD Game Zone</strong><small>Ahmedabad · E-sports hub</small></span>
         </Link>
         <nav className="ps-nav__links" aria-label="Main navigation">{navigation.map((item) => renderItem(item))}</nav>
         <div className="ps-nav__actions">

@@ -8,7 +8,7 @@ export default function Experience() {
         <p className="ps-kicker">Player experience</p>
         <h2 id="experience-title">Built for a smooth session.</h2>
         <p>We are committed to providing a top-tier environment. Our facility prioritizes player comfort, high-performance gear, and a respectful community atmosphere. Enjoy gaming the way it was meant to be played.</p>
-        <Link to="/guidelines" className="ps-text-link">Read the lounge guidelines <FiChevronRight aria-hidden="true" /></Link>
+        <Link to="/guidelines" className="ps-text-link">Read the player guidelines <FiChevronRight aria-hidden="true" /></Link>
       </div>
       <div className="experience-section__cards">
         <article><FiMonitor aria-hidden="true" /><strong>High-end PCs</strong><span>Performance-first gear for every match.</span></article>
