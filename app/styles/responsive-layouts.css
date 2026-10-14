@@ -645,3 +645,32 @@ html[data-theme="dark"] .video-info__status--available { color: #8af1bd; backgro
 .featured-game__content h3 {
   font-weight: 650;
 }
+
+/* On wide screens keep the GTA policy callout a compact landscape banner;
+   its square source artwork should crop to the copy's height, not set it. */
+@media (min-width: 1101px) {
+  .guidelines-gta {
+    height: clamp(320px, 27vw, 370px);
+    grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr);
+  }
+
+  .guidelines-gta__art {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .guidelines-gta__content {
+    padding: clamp(1.25rem, 2.2vw, 2rem);
+  }
+
+  .guidelines-gta__content h2 {
+    font-size: clamp(1.35rem, 1.9vw, 1.75rem);
+  }
+
+  .guidelines-gta__content > p:not(.ps-kicker) {
+    max-width: 64ch;
+    margin-top: .6rem;
+    font-size: .94rem;
+    line-height: 1.5;
+  }
+}
