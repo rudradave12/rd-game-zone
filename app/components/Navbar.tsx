@@ -26,7 +26,6 @@ export default function Navbar() {
 
   const applyTheme = useCallback((nextTheme: Theme) => {
     document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute(
       "content",
       nextTheme === "dark" ? "#06101f" : "#f5f8ff",

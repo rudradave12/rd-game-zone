@@ -23,34 +23,13 @@ export default function VideoModal({ video, game, onClose }: Props) {
 
   useEffect(() => {
     /* ── Trailer scroll lock ──
-       Lock both root scrolling surfaces and preserve the exact offset. This
-       prevents wheel, keyboard, and iOS overscroll gestures from moving the
-       page behind the trailer while keeping the panel itself scrollable. */
+       Lock both root scrolling surfaces and remember the page offset. CSS
+       classes keep this compatible with the site's strict style-src-attr CSP. */
     const scrollY = window.scrollY;
     const root = document.documentElement;
-    const previousRootStyles = {
-      overflow: root.style.overflow,
-      height: root.style.height,
-    };
-    const previousBodyStyles = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      right: document.body.style.right,
-      left: document.body.style.left,
-      width: document.body.style.width,
-      overflow: document.body.style.overflow,
-    };
 
     root.classList.add("modal-open");
     document.body.classList.add("modal-open");
-    root.style.overflow = "hidden";
-    root.style.height = "100%";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.right = "0";
-    document.body.style.left = "0";
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
 
     /* Move focus into the dialog so keyboard and screen-reader users
        land inside it rather than behind it. */
@@ -119,14 +98,6 @@ export default function VideoModal({ video, game, onClose }: Props) {
     return () => {
       root.classList.remove("modal-open");
       document.body.classList.remove("modal-open");
-      root.style.overflow = previousRootStyles.overflow;
-      root.style.height = previousRootStyles.height;
-      document.body.style.position = previousBodyStyles.position;
-      document.body.style.top = previousBodyStyles.top;
-      document.body.style.right = previousBodyStyles.right;
-      document.body.style.left = previousBodyStyles.left;
-      document.body.style.width = previousBodyStyles.width;
-      document.body.style.overflow = previousBodyStyles.overflow;
       window.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("touchmove", stopBackgroundTouchScroll);
       document.removeEventListener("wheel", stopBackgroundWheelScroll);
