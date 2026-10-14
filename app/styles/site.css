@@ -239,7 +239,7 @@
 .rate-section { padding-top: var(--section-y); padding-bottom: var(--section-y); }
 .rate-section .ps-section-heading { padding: 0; }
 .rate-section__notice { display: flex; gap: 1rem; align-items: flex-start; max-width: var(--site-width); padding: 1rem 1.1rem; margin-top: 2.1rem; border-radius: var(--r-md); color: #704600; background: var(--amber-soft); }
-.rate-section__notice strong { color: var(--amber); font-size: .73rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.rate-section__notice strong { color: #8a4a00; font-size: .73rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
 .rate-section__notice span { font-size: .86rem; }
 .rate-section__grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: clamp(12px,2vw,22px); margin-top: 1.5rem; }
 .rate-card { position: relative; min-width: 0; padding: clamp(1.25rem, 2vw, 1.75rem); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-sm); }
