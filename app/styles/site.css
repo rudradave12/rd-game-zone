@@ -308,11 +308,11 @@
 .ps-footer__brand p { max-width: 34ch; margin-top: .55rem; color: rgba(225,239,255,.7); font-size: .8rem; line-height: 1.55; }
 .ps-footer__hours { display: inline-flex; align-items: center; gap: .4rem; margin-top: 1rem; color: #9ed4ff; font-size: .75rem; font-weight: 700; }
 .ps-footer__column h3 { margin: .2rem 0 1rem; color: #fff; font-size: .73rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-.ps-footer__column a, .ps-footer__column li { display: flex; align-items: flex-start; gap: .45rem; margin-top: .65rem; color: rgba(225,239,255,.72); font-size: .79rem; line-height: 1.4; transition: color var(--transition); }
+.ps-footer__column a, .ps-footer__column li { display: flex; align-items: flex-start; gap: .45rem; margin-top: .65rem; color: rgba(225,239,255,.84); font-size: .79rem; line-height: 1.4; transition: color var(--transition); }
 .ps-footer__column a:hover { color: #fff; }
 .ps-footer__column svg { flex: 0 0 auto; width: 1rem; height: 1rem; margin-top: .05rem; color: #8bcaff; }
 .ps-footer__column--contact a span { min-width: 0; }
-.ps-footer__bottom { display: flex; justify-content: space-between; gap: 1rem; max-width: var(--site-width); padding: 1.2rem var(--page-x); margin-inline: auto; border-top: 1px solid rgba(255,255,255,.12); color: rgba(225,239,255,.57); font-size: .68rem; line-height: 1.45; }
+.ps-footer__bottom { display: flex; justify-content: space-between; gap: 1rem; max-width: var(--site-width); padding: 1.2rem var(--page-x); margin-inline: auto; border-top: 1px solid rgba(255,255,255,.12); color: rgba(225,239,255,.8); font-size: .68rem; line-height: 1.45; }
 .ps-footer__bottom > span { max-width: 70ch; }
 .ps-footer__bottom nav { display: flex; flex: 0 0 auto; gap: 1rem; }
 .ps-footer__bottom a:hover { color: #fff; }
