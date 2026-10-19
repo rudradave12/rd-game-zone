@@ -1,5 +1,7 @@
 import { FiAlertTriangle } from "react-icons/fi";
 
+export const gtaOnlinePolicyText = "GTA Online gameplay maintains a strict policy regarding in-game content. Adult-themed environments and bar-style locations are restricted. Violation will result in immediate termination of the session without refund.";
+
 export default function GTAOnlinePolicy() {
   return (
     <section className="guidelines-gta" aria-labelledby="gta-policy-title">
@@ -22,7 +24,7 @@ export default function GTAOnlinePolicy() {
           <h2 id="gta-policy-title">GTA 5 Online play policy</h2>
           <p className="ps-kicker"><FiAlertTriangle aria-hidden="true" /> Content warning</p>
         </div>
-        <p>GTA Online gameplay maintains a strict policy regarding in-game content. Adult-themed environments and bar-style locations are restricted. Violation will result in immediate termination of the session without refund.</p>
+        <p>{gtaOnlinePolicyText}</p>
       </div>
     </section>
   );

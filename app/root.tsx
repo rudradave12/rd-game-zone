@@ -11,6 +11,8 @@ import {
 } from "@remix-run/react";
 import { useEffect } from "react";
 import Navbar from "~/components/Navbar";
+import gameCatalogStyles from "~/styles/game-catalog.css?url";
+import gameDetailStyles from "~/styles/game-detail.css?url";
 
 /* ================= STYLES ================= */
 /* The aggregate preserves CSS order while avoiding multiple blocking fetches. */
@@ -21,6 +23,97 @@ import appStyles from "~/styles/app.css?url";
    strict CSP, so it remains a narrowly scoped inline style. */
 const criticalDocumentStyles =
   "html{min-height:100%;overflow-x:hidden}body{min-width:0;min-height:100dvh;margin:0;overflow-x:hidden}body:not(.app-ready){visibility:hidden}body:not(.app-ready) .app-loading__main{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;min-height:100dvh;overflow:hidden;visibility:visible;background:#f5f8ff;color:#061238}body:not(.app-ready) .app-loading__content{position:relative;z-index:1;display:grid;min-height:100dvh;place-items:center;align-content:center;text-align:center}body:not(.app-ready) .app-loading__mark{display:grid;width:64px;height:64px;place-items:center;border-radius:21px}body:not(.app-ready) .app-loading__mark img{width:40px;height:41px}body:not(.app-ready) .app-loading__main p{margin-top:1rem;font-size:1rem;line-height:1.6}body:not(.app-ready) .app-loading__main span{margin-top:.2rem;font-size:.78rem;line-height:1.6}html[data-theme=dark] body:not(.app-ready) .app-loading__main{background:#020711;color:#f7f9ff}body.app-ready .app-loading__main{display:none}";
+
+/* Keep theme selection and the critical artwork hint inline in the document.
+   This script runs before the stylesheet links, so it must not add a separate
+   network round-trip that delays both CSS discovery and the LCP image. */
+const preHydrationScript = `(() => {
+  try {
+    const theme = localStorage.getItem("rd-game-zone-theme") === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+  } catch {
+    document.documentElement.dataset.theme = "light";
+  }
+
+  const addImageHint = (href, imageSrcset, imageSizes, imageType) => {
+    const preload = document.createElement("link");
+    preload.rel = "preload";
+    preload.as = "image";
+    preload.href = href;
+    if (imageSrcset) preload.imageSrcset = imageSrcset;
+    if (imageSizes) preload.imageSizes = imageSizes;
+    if (imageType) preload.type = imageType;
+    preload.fetchPriority = "high";
+    document.head.appendChild(preload);
+  };
+  const addStyleHint = (href) => {
+    const preload = document.createElement("link");
+    preload.rel = "preload";
+    preload.as = "style";
+    preload.href = href;
+    preload.fetchPriority = "high";
+    document.head.appendChild(preload);
+  };
+
+  const path = window.location.pathname;
+  if (path === "/" || path === "/index.html") {
+    const isPortrait = window.matchMedia("(max-width: 1100px) and (orientation: portrait)").matches;
+    addImageHint(isPortrait ? "/images/valorant-mobile-portraite.jpg" : "/images/hero/valorant.jpg");
+  }
+
+  if (path === "/games") {
+    addStyleHint("${gameCatalogStyles}");
+    addImageHint(
+      "/images/cards/gta-online.avif",
+      "/images/cards/320/gta-online.avif 320w, /images/cards/gta-online.avif 640w",
+      "(max-width: 760px) 74vw, (max-width: 1200px) 32vw, 25vw",
+      "image/avif"
+    );
+  }
+
+  const gameArt = {
+    "grand-theft-auto-vi": "/images/gta-vi-cover-optimized.webp",
+    "call-of-duty-black-ops-7": "/images/cod-blackops-7-optimized.webp",
+    "gta-online": "/images/gta-5online.jpeg",
+    "valorant": "/images/valorant.jpg",
+    "counter-strike-2": "/images/cs-go-2-optimized.webp",
+    "apex-legends": "/images/apex-legends-optimized.webp",
+    "fortnite": "/images/fortnite-optimized.webp",
+    "call-of-duty-cold-war": "/images/cod-blackops-coldwar-optimized.webp",
+    "call-of-duty-black-ops-iii": "/images/cod-blackops-3-optimized.webp",
+    "back-4-blood": "/images/back-4-blood-optimized.webp",
+    "black-myth-wukong": "/images/black-myth-wukong.jpeg",
+    "god-war-ragnarok": "/images/god-of-war- regnarok-optimized.webp",
+    "ghost-of-tsushima": "/images/ghost-of-tsushima-optimized.webp",
+    "ea-sports-fc-27": "/images/fc-27-optimized.webp",
+    "f1-25": "/images/f1-25.webp",
+    "nfs-heat": "/images/nfs-heat.jpg",
+    "nfs-hot-pursuit-remastered": "/images/nfs-hot-pursuit-remastered-optimized.webp",
+    "asphalt-legends-unite": "/images/asphalt.jpeg",
+    "cricket-26": "/images/cricket-26.jpeg",
+    "tekken-8": "/images/tekken-8-optimized.webp",
+    "mortal-kombat-1": "/images/mortal-kombat-1-optimized.webp",
+    "wwe-2k25": "/images/wwe-2k25-optimized.webp",
+    "wwe-2k26": "/images/wwe-2k26-optimized.webp",
+    "far-cry-6": "/images/farcry-6-optimized.webp",
+    "stray": "/images/stray-optimized.webp",
+  };
+  const gameSlug = path.match(/^\\/games\\/([^/]+)$/)?.[1];
+  if (gameSlug) {
+    addStyleHint("${gameCatalogStyles}");
+    addStyleHint("${gameDetailStyles}");
+  }
+  const isPortrait = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
+  const isFcPortrait = gameSlug === "ea-sports-fc-27" && isPortrait;
+  const gameImage = isFcPortrait
+    ? "/images/fc-27-mobile-480.webp"
+    : gameSlug && gameArt[gameSlug];
+  const gameImageSrcset = isFcPortrait
+    ? "/images/fc-27-mobile-480.webp 480w, /images/fc-27-mobile.webp 640w"
+    : undefined;
+  if (gameImage) addImageHint(gameImage, gameImageSrcset, isFcPortrait ? "100vw" : undefined);
+
+})();`;
 
 /* ================================================================
    SEO: MetaFunction — Advanced
@@ -108,6 +201,8 @@ export const links: LinksFunction = () => [
   /* ── Icons ── */
   { rel: "icon", href: "/icons/logo.svg", type: "image/svg+xml" },
   { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "ard", href: "/.well-known/ard.json", type: "application/ld+json" },
+  { rel: "ai-catalog", href: "/.well-known/ai-catalog.json", type: "application/json" },
 
   /* ── Canonical (static, home page) ── */
   { rel: "canonical", href: "https://rdgamezone.com/" },
@@ -315,9 +410,8 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <style>{criticalDocumentStyles}</style>
-        <script src="/theme-init.js" />
-
         <Meta />
+        <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
         <Links />
 
         {/* ── Local Business JSON-LD ── */}
@@ -373,8 +467,8 @@ export function HydrateFallback() {
       <head>
         <meta charSet="utf-8" />
         <style>{criticalDocumentStyles}</style>
-        <script src="/theme-init.js" />
         <Meta />
+        <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
         <Links />
         <script
           type="application/ld+json"

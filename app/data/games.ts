@@ -1,5 +1,8 @@
 import type { Game } from "../components/types";
 
+export const gameSlug = (title: string) =>
+  title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
 export const games: Game[] = [
   {
     id: 41,
@@ -10,7 +13,7 @@ export const games: Game[] = [
     platforms: ["PS5"],
     status: "upcoming",
     adult: true,
-    image: "/images/gta-vi-cover-art.jpg",
+    image: "/images/gta-vi-cover-optimized.webp",
     video: {
       type: "youtube",
       id: "QdBZY2fkU-0",
@@ -24,7 +27,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/cod-blackops-7.jpg",
+    image: "/images/cod-blackops-7-optimized.webp",
     video: {
       type: "youtube",
       id: "ynivqJZJOH4",
@@ -67,7 +70,7 @@ export const games: Game[] = [
     playerType: "ONLINE 5v5",
     platforms: ["PC"],
     status: "available",
-    image: "/images/cs-go-2.png",
+    image: "/images/cs-go-2-optimized.webp",
     video: {
       type: "youtube",
       id: "c80dVYcL69E",
@@ -80,8 +83,8 @@ export const games: Game[] = [
     category: "SHOOTING",
     playerType: "ONLINE MULTIPLAYER",
     platforms: ["PC"],
-    status: "available",
-    image: "/images/apex-legends.jpg",
+    status: "unavailable",
+    image: "/images/apex-legends-optimized.webp",
     video: {
       type: "youtube",
       id: "hg0_PBw1OMI",
@@ -95,7 +98,7 @@ export const games: Game[] = [
     playerType: "ONLINE MULTIPLAYER",
     platforms: ["PS4", ],
     status: "available",
-    image: "/images/fortnite.jpg",
+    image: "/images/fortnite-optimized.webp",
     video: {
       type: "youtube",
       id: "Tv2zM8jI4gU",
@@ -109,7 +112,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: [ "PS4",],
     status: "available",
-    image: "/images/cod-blackops-coldwar.jpg",
+    image: "/images/cod-blackops-coldwar-optimized.webp",
     video: {
       type: "youtube",
       id: "3iSBx_m9ej8",
@@ -123,7 +126,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5", "PS4", ],
     status: "available",
-    image: "/images/cod-blackops-3.jpg",
+    image: "/images/cod-blackops-3-optimized.webp",
     video: {
       type: "youtube",
       id: "qAUYNIDEJ6o",
@@ -137,7 +140,7 @@ export const games: Game[] = [
     playerType: "SINGLE PLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/back-4-blood.jpg",
+    image: "/images/back-4-blood-optimized.webp",
     video: {
       type: "youtube",
       id: "piY-dwt4eCw",
@@ -155,20 +158,6 @@ export const games: Game[] = [
     video: {
       type: "youtube",
       id: "d3ciw_v7MF0",
-    },
-  },
-  {
-    id: 11,
-    title: "MARVEL RIVALS",
-    subtitle: "Super Hero Team-Based PVP",
-    category: "SHOOTING",
-    playerType: "ONLINE 5v5",
-    platforms: [ "PC"],
-    status: "available",
-    image: "/images/marvel-rivals.jpeg",
-    video: {
-      type: "youtube",
-      id: "DA4iVv4MARE",
     },
   },
   {
@@ -193,7 +182,7 @@ export const games: Game[] = [
     playerType: "SINGLE PLAYER",
     platforms: ["PS5","PS4",],
     status: "available",
-    image: "/images/god-of-war- regnarok.jpg",
+    image: "/images/god-of-war- regnarok-optimized.webp",
     video: {
       type: "youtube",
       id: "EE-4GvjKcfs",
@@ -221,7 +210,7 @@ export const games: Game[] = [
     playerType: "SINGLE PLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/ghost-of-tsushima.jpg",
+    image: "/images/ghost-of-tsushima-optimized.webp",
     video: {
       type: "youtube",
       id: "kSAvzeopPC8",
@@ -249,7 +238,7 @@ export const games: Game[] = [
     playerType: "LAN & ONLINE",
     platforms: ["PS4",],
     status: "available",
-    image: "/images/nfs-hot-persuit -remastered.jpg",
+    image: "/images/nfs-hot-pursuit-remastered-optimized.webp",
     video: {
       type: "youtube",
       id: "HLiY6wwfGX4",
@@ -257,16 +246,16 @@ export const games: Game[] = [
   },
   {
     id: 18,
-    title: "F1 23",
-    subtitle: "Be the Last to Brake",
+    title: "F1 25",
+    subtitle: "This Story Is Yours",
     category: "RACING",
     playerType: "ONLINE MULTIPLAYER",
-    platforms: ["PS4",],
+    platforms: ["PS5",],
     status: "available",
-    image: "/images/f1-23.jpg",
+    image: "/images/f1-25.webp",
     video: {
       type: "youtube",
-      id: "ewOZTzM3vUY",
+      id: "u5rWBgBjDsc",
     },
   },
   {
@@ -291,7 +280,7 @@ export const games: Game[] = [
     playerType: "LAN & ONLINE",
     platforms: [ "PS4",],
     status: "available",
-    image: "/images/the-crew-2.jpg",
+    image: "/images/the-crew-2-optimized.webp",
     video: {
       type: "youtube",
       id: "vrVS9dgsn70",
@@ -319,7 +308,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/speedstorm.jpeg",
+    image: "/images/speedstorm-optimized.webp",
     video: {
       type: "youtube",
       id: "bXOd3Pue-NA",
@@ -333,7 +322,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/road-redumption.jpg",
+    image: "/images/road-redumption-optimized.webp",
     video: {
       type: "youtube",
       id: "BNQsy_X0C7o",
@@ -341,16 +330,28 @@ export const games: Game[] = [
   },
   {
     id: 24,
-    title: "FC 25",
-    subtitle: "For the Club",
+    title: "EA SPORTS FC 27",
+    subtitle: "The World's Game",
     category: "SPORTS",
     playerType: "MULTIPLAYER",
-    platforms: ["PS5",],
+    platforms: ["PS5", "PS4"],
     status: "available",
-    image: "/images/fc-25.jpg",
+    image: "/images/fc-27-optimized.webp",
+    screenshots: [
+      {
+        src: "/images/screenshots/fc27-the-grounds.avif",
+        thumbSrc: "/images/screenshots/thumbs/fc27-the-grounds.avif",
+        alt: "FC 27 gameplay in The Grounds, a street football playground.",
+      },
+      {
+        src: "/images/screenshots/fc27-gameplay.avif",
+        thumbSrc: "/images/screenshots/thumbs/fc27-gameplay.avif",
+        alt: "FC 27 match gameplay with Jamal Musiala challenging for possession.",
+      },
+    ],
     video: {
       type: "youtube",
-      id: "pBM2xyco_Kg",
+      id: "MOclJJ7IpSY",
     },
   },
   {
@@ -403,7 +404,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/wwe-2k25.jpg",
+    image: "/images/wwe-2k25-optimized.webp",
     video: {
       type: "youtube",
       id: "i7ZGSUP7wws",
@@ -417,7 +418,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5", "PS4",],
     status: "available",
-    image: "/images/rocket-league.jpg",
+    image: "/images/rocket-league-optimized.webp",
     video: {
       type: "youtube",
       id: "OSZi1duGpIQ",
@@ -459,7 +460,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/tekken-8.png",
+    image: "/images/tekken-8-optimized.webp",
     video: {
       type: "youtube",
       id: "2hPuRQz6IlM",
@@ -473,7 +474,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/mortal-kombat-1.webp",
+    image: "/images/mortal-kombat-1-optimized.webp",
     video: {
       type: "youtube",
       id: "lBYvt1_t6Q4",
@@ -515,24 +516,10 @@ export const games: Game[] = [
     playerType: "SINGLE PLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/farcry-6.jpg",
+    image: "/images/farcry-6-optimized.webp",
     video: {
       type: "youtube",
       id: "-IJuKT1mHO8",
-    },
-  },
-  {
-    id: 37,
-    title: "UNCHARTED LEGACY OF THIEVES",
-    subtitle: "The Next Chapter in the Uncharted Saga",
-    category: "ADVENTURE",
-    playerType: "SINGLE PLAYER",
-    platforms: ["PS5",],
-    status: "available",
-    image: "/images/uncharted.jpeg",
-    video: {
-      type: "youtube",
-      id: "F3Wl-OiZCO4",
     },
   },
   {
@@ -543,7 +530,7 @@ export const games: Game[] = [
     playerType: "SINGLE PLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/stray.jpg",
+    image: "/images/stray-optimized.webp",
     video: {
       type: "youtube",
       id: "u84hRUQlaio",
@@ -557,7 +544,7 @@ export const games: Game[] = [
     playerType: "MULTIPLAYER",
     platforms: ["PS5",],
     status: "available",
-    image: "/images/riders-republic.jpeg",
+    image: "/images/riders-republic-optimized.webp",
     video: {
       type: "youtube",
       id: "pqiGmaXiSDo",
@@ -571,10 +558,56 @@ export const games: Game[] = [
     playerType: "ONLINE MULTIPLAYER",
     platforms: ["PS4",],
     status: "available",
-    image: "/images/minecraft-legacy.jpeg",
+    image: "/images/minecraft-legacy-optimized.webp",
     video: {
       type: "youtube",
       id: "lw6f-tJKoao",
     },
   },
+  {
+    id: 42,
+    title: "CALL OF DUTY: MODERN WARFARE III",
+    subtitle: "The Fight Is Closer Than Ever",
+    category: "SHOOTING",
+    playerType: "MULTIPLAYER",
+    platforms: ["PS5"],
+    status: "available",
+    image: "/images/hero/modern-warfare-iii-desktop.webp",
+    video: {
+      type: "youtube",
+      id: "i3IsLrPeZG8",
+    },
+  },
+  {
+    id: 43,
+    title: "DISNEY EPIC MICKEY: REBRUSHED",
+    subtitle: "Paint Your Own Adventure",
+    category: "ADVENTURE",
+    playerType: "SINGLE PLAYER",
+    platforms: ["PS5"],
+    status: "available",
+    image: "/images/epic-mickey-rebrushed.webp",
+    video: {
+      type: "youtube",
+      id: "uI5t2oXQSAg",
+    },
+  },
+  {
+    id: 44,
+    title: "WWE 2K26",
+    subtitle: "The show never stops",
+    category: "SPORTS",
+    playerType: "MULTIPLAYER",
+    platforms: ["PS5"],
+    status: "available",
+    image: "/images/wwe-2k26-optimized.webp",
+    video: {
+      type: "youtube",
+      id: "oYd6rXOrz7E",
+    },
+  },
 ];
+
+/** Resolve a detail route using the same canonical slug function used by links. */
+export const gameForSlug = (slug: string | undefined) =>
+  slug ? games.find((game) => gameSlug(game.title) === slug) : undefined;

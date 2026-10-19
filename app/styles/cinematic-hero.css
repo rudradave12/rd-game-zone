@@ -46,7 +46,7 @@
   height: 100dvh;
   min-height: 100svh;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--canvas-strong);
 }
 
 @supports (-webkit-touch-callout: none) {
@@ -118,6 +118,7 @@
 .cin-layer--desktop   { display: block; }
 .cin-layer--portrait  { display: none; }
 .cin-layer--landscape { display: none; }
+.cin-layer--static    { display: block; }
 
 /* Portrait mobile ≤ 1024px, taller than wide */
 @media (max-width: 1024px) and (orientation: portrait) {
@@ -140,13 +141,13 @@
   z-index: 3;
   background:
     linear-gradient(to right,
-      rgba(3,5,8,0.92) 0%,
-      rgba(3,5,8,0.55) 42%,
-      rgba(3,5,8,0.12) 72%,
+      rgba(3,12,26,0.84) 0%,
+      rgba(3,12,26,0.48) 42%,
+      rgba(3,12,26,0.12) 72%,
       transparent       100%),
     linear-gradient(to top,
-      rgba(3,5,8,0.78) 0%,
-      rgba(3,5,8,0.22) 28%,
+      rgba(3,12,26,0.72) 0%,
+      rgba(3,12,26,0.2) 28%,
       transparent       55%);
 }
 

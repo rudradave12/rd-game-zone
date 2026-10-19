@@ -22,6 +22,7 @@ export default function Navbar() {
   const isHome = location.pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(!isHome);
+  const [navHidden, setNavHidden] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
 
   const applyTheme = useCallback((nextTheme: Theme) => {
@@ -42,11 +43,24 @@ export default function Navbar() {
   }, [applyTheme]);
 
   useEffect(() => {
-    const update = () => setScrolled(!isHome || window.scrollY > 18);
+    let previousY = window.scrollY;
+    const update = () => {
+      const currentY = Math.max(0, window.scrollY);
+      setScrolled(!isHome || currentY > 18);
+
+      if (menuOpen || currentY < 96) {
+        setNavHidden(false);
+      } else if (currentY - previousY > 5) {
+        setNavHidden(true);
+      } else if (previousY - currentY > 5) {
+        setNavHidden(false);
+      }
+      previousY = currentY;
+    };
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, [isHome]);
+  }, [isHome, menuOpen]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -102,8 +116,19 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`ps-nav${scrolled ? " ps-nav--solid" : ""}`}>
-        <Link to="/" className="ps-nav__brand" aria-label="RD Game Zone home">
+      <header className={`ps-nav${scrolled ? " ps-nav--solid" : ""}${navHidden && !menuOpen ? " ps-nav--hidden" : ""}`} inert={navHidden && !menuOpen}>
+        <Link
+          to="/"
+          className="ps-nav__brand"
+          aria-label="RD Game Zone home"
+          onClick={(event) => {
+            setMenuOpen(false);
+            if (location.pathname === "/") {
+              event.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+        >
           <span className="ps-nav__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="27" height="28" /></span>
           <span className="ps-nav__brand-copy"><strong>RD Game Zone</strong><small>Ahmedabad · E-sports hub</small></span>
         </Link>

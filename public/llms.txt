@@ -1,0 +1,15 @@
+# RD Game Zone
+
+> RD Game Zone is a gaming lounge in Shahibaug, Ahmedabad, with PS5, PS4, and PC gaming sessions.
+
+## Important pages
+
+- [Home](https://rdgamezone.com/): Lounge overview, featured games, and visiting information.
+- [Game library](https://rdgamezone.com/games): Browse the listed games, availability, genres, and game details.
+- [Rates](https://rdgamezone.com/#pricing): Hourly gaming rates and screen options.
+- [Visit](https://rdgamezone.com/#visit): Address, directions, and contact details.
+- [Guidelines](https://rdgamezone.com/#guidelines): Age, safety, equipment, and session rules.
+
+## About the game library
+
+Game availability and platforms are shown on each title's page. Grand Theft Auto VI is listed as coming soon; availability for other titles may change, so check the current library before visiting.

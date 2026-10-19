@@ -51,17 +51,17 @@
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --canvas: #020711;
-  --canvas-strong: #06101b;
-  --surface: #08172b;
-  --surface-muted: #0d2440;
-  --surface-blue: #0a2a50;
+  --canvas: #071321;
+  --canvas-strong: #0b1a2b;
+  --surface: #102238;
+  --surface-muted: #172d48;
+  --surface-blue: #123354;
   --ink: #edf5ff;
   --ink-strong: #ffffff;
   --text: #d8e6f8;
   --muted: #a4b8d4;
-  --line: rgba(159, 199, 255, .14);
-  --line-strong: rgba(121, 202, 255, .32);
+  --line: rgba(159, 199, 255, .16);
+  --line-strong: rgba(121, 202, 255, .34);
 
   /* Bright blues are reserved for reading on night surfaces. Components that
      carry white text use the dedicated, darker action treatment in site.css. */

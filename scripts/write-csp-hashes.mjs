@@ -1,12 +1,28 @@
 import { createHash } from "node:crypto";
-import { readFile, writeFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const clientDir = resolve(process.cwd(), "build", "client");
 const indexPath = resolve(clientDir, "index.html");
 const headersPath = resolve(clientDir, "_headers");
-const index = await readFile(indexPath, "utf8");
+let index = await readFile(indexPath, "utf8");
 const headers = await readFile(headersPath, "utf8");
+
+// The static SPA shell is also returned for deep links. Preload the small
+// route modules used by the library and game details so route discovery does
+// not postpone first paint on direct visits (notably the key-art LCP image).
+const clientAssets = await readdir(resolve(clientDir, "assets"));
+const routeModules = clientAssets
+  .filter((file) => /^games\._(?:index|slug)-[\w-]+\.js$/.test(file))
+  .sort();
+const routePreloads = routeModules
+  .map((file) => `<link rel="modulepreload" href="/assets/${file}"/>`)
+  .filter((link) => !index.includes(link));
+if (routePreloads.length > 0) {
+  if (!index.includes("</head>")) throw new Error("Could not find </head> in the static SPA shell.");
+  index = index.replace("</head>", `${routePreloads.join("")}\n</head>`);
+  await writeFile(indexPath, index, "utf8");
+}
 
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 const stylePattern = /<style\b[^>]*>([\s\S]*?)<\/style>/gi;

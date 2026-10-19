@@ -1,86 +1,56 @@
-import { FaDesktop, FaPlay, FaPlaystation } from "react-icons/fa";
+import { Link } from "@remix-run/react";
+import { FiPlay } from "react-icons/fi";
+import { gameSlug } from "../data/games";
 import type { Game } from "./types";
 
 type Props = {
   game: Game;
-  onPlay: () => void;
+  rank?: number;
 };
 
-const statusLabels = {
-  available: "Available",
-  upcoming: "Coming soon",
-  unavailable: "Unavailable",
-} as const;
-
-export default function GameCard({ game, onPlay }: Props) {
-  // Coming-soon titles can still have an official reveal trailer even though
-  // they are not yet playable at RD Game Zone.
-  const canWatchTrailer = Boolean(game.video);
-  const trailerLabel = canWatchTrailer ? "Watch trailer" : "Trailer unavailable";
+export default function GameCard({ game, rank }: Props) {
+  const slug = gameSlug(game.title);
+  const cardImage = `/images/cards/${slug}.webp`;
+  const cardImageSet = `/images/cards/320/${slug}.webp 320w, ${cardImage} 640w`;
+  const cardImageSizes = rank
+    ? "(max-width: 760px) 74vw, (max-width: 1200px) 32vw, 25vw"
+    : "(max-width: 760px) 44vw, (max-width: 1200px) 24vw, 20vw";
 
   return (
-    <div className={`game-card status-${game.status}`}>
-      <div className="game-card__media">
-        <img src={game.image} alt={game.title} loading="lazy" decoding="async" />
-        <div className="game-card__media-overlay" aria-hidden="true" />
-
-        <div className="game-card__media-topline">
-          <span className={`game-card__status game-card__status--${game.status}`}>
-            <span aria-hidden="true" />
-            {statusLabels[game.status]}
+    <Link
+      to={`/games/${slug}`}
+      className={`game-card-link${rank ? " game-card-link--ranked" : ""}`}
+      data-game-slug={slug}
+    >
+      <div className="game-card">
+        {rank && <span className="game-card__rank" aria-hidden="true">{rank}</span>}
+        <div className="game-card__media">
+          <picture>
+            <source
+              type="image/avif"
+              srcSet={`/images/cards/320/${slug}.avif 320w, /images/cards/${slug}.avif 640w`}
+              sizes={cardImageSizes}
+            />
+            <img
+              src={cardImage}
+              srcSet={cardImageSet}
+              sizes={cardImageSizes}
+              alt=""
+              loading={rank === 1 ? "eager" : "lazy"}
+              fetchPriority={rank === 1 ? "high" : "auto"}
+              decoding="async"
+              draggable={false}
+            />
+          </picture>
+          <span className="game-card__media-overlay" aria-hidden="true" />
+          <span className="game-card__label">
+            <strong>{game.title}</strong>
+            <span>{game.subtitle}</span>
           </span>
-        </div>
-
-        {game.adult && <span className="game-card__age">18+</span>}
-
-        {canWatchTrailer && (
-          <button
-            type="button"
-            className="game-card__media-play"
-            onClick={onPlay}
-            aria-label={`Watch ${game.title} trailer`}
-          >
-            <FaPlay aria-hidden="true" />
-          </button>
-        )}
-      </div>
-
-      <div className="game-card__body">
-        <div className="game-card__copy">
-          <h3 className="game-card__title">{game.title}</h3>
-          <p className="game-card__subtitle">{game.subtitle}</p>
-        </div>
-
-        <div className="game-card__chips" aria-label="Game details">
-          <span>{game.category}</span>
-          <span>{game.playerType}</span>
-        </div>
-
-        <div className="game-card__footer">
-          <div className="game-card__platforms" aria-label={`Platforms: ${game.platforms.join(", ")}`}>
-            {game.platforms.includes("PS5") && (
-              <span title="PlayStation 5"><FaPlaystation aria-hidden="true" /> PS5</span>
-            )}
-            {game.platforms.includes("PS4") && (
-              <span title="PlayStation 4"><FaPlaystation aria-hidden="true" /> PS4</span>
-            )}
-            {game.platforms.includes("PC") && (
-              <span title="PC"><FaDesktop aria-hidden="true" /> PC</span>
-            )}
-          </div>
-
-          <button
-            type="button"
-            className="game-card__trailer"
-            onClick={onPlay}
-            disabled={!canWatchTrailer}
-            aria-label={`${trailerLabel} for ${game.title}`}
-          >
-            <FaPlay aria-hidden="true" />
-            <span>{canWatchTrailer ? "Trailer" : "Unavailable"}</span>
-          </button>
+          <span className="game-card__preview" aria-hidden="true"><FiPlay /></span>
         </div>
       </div>
-    </div>
+      {rank && <span className="sr-only">Rank {rank}</span>}
+    </Link>
   );
 }

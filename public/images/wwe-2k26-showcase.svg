@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">WWE 2K26 at RD Game Zone</title>
+  <desc id="desc">Original red-lit arena artwork with a wrestling ring and WWE 2K26 title.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07080d"/><stop offset=".53" stop-color="#271014"/><stop offset="1" stop-color="#08090e"/></linearGradient>
+    <radialGradient id="spot"><stop stop-color="#ff3145" stop-opacity=".6"/><stop offset="1" stop-color="#ff3145" stop-opacity="0"/></radialGradient>
+    <linearGradient id="steel" x2="0" y2="1"><stop stop-color="#f0f2f6"/><stop offset="1" stop-color="#7d8492"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="22"/></filter>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h1600v900H0z"/>
+  <ellipse cx="790" cy="420" rx="650" ry="540" fill="url(#spot)"/>
+  <path d="M210 0 520 620M1380 0 1080 620" stroke="#ff243d" stroke-opacity=".34" stroke-width="52" filter="url(#glow)"/>
+  <path d="M230 0 510 585M1370 0 1090 585" stroke="#ff3347" stroke-opacity=".42" stroke-width="4"/>
+  <g opacity=".72" fill="#d9e4f4"><circle cx="300" cy="240" r="3"/><circle cx="390" cy="180" r="2"/><circle cx="1210" cy="208" r="3"/><circle cx="1300" cy="280" r="2"/><circle cx="510" cy="130" r="2"/><circle cx="1090" cy="145" r="2"/></g>
+  <path d="M160 548 800 385l640 163-640 210z" fill="#10131a" stroke="#aeb7c8" stroke-opacity=".62" stroke-width="8"/>
+  <path d="m245 555 555-140 555 140-555 147z" fill="#161b24" stroke="#ff3448" stroke-width="6"/>
+  <path d="M245 555v174m1110-174v174M340 531v177m920-177v177" stroke="#b6c2d3" stroke-width="13"/>
+  <path d="m245 584 555 141 555-141M245 630l555 142 555-142M340 562l460 120 460-120M340 615l460 119 460-119" fill="none" stroke="#dfe4ed" stroke-opacity=".72" stroke-width="7"/>
+  <path d="m310 739 490 126 490-126" fill="none" stroke="#ff263e" stroke-width="8" opacity=".8"/>
+  <text x="800" y="245" fill="#e9edf4" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="14" text-anchor="middle">STEP INTO THE ARENA</text>
+  <text x="800" y="344" fill="#fff" font-family="Arial,sans-serif" font-size="88" font-weight="900" letter-spacing="-4" text-anchor="middle">WWE <tspan fill="#ff3448">2K26</tspan></text>
+  <path d="M0 0h1600v900H0z" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="2"/>
+</svg>

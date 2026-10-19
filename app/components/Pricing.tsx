@@ -29,11 +29,6 @@ export default function Pricing() {
         <p>All sessions are charged strictly on an hourly basis. Half-hour extension pricing is available only at the store and is not displayed online.</p>
       </div>
 
-      <div className="rate-section__notice">
-        <strong>Important</strong>
-        <span>If a customer extends playtime beyond one hour, the same hourly rate continues to apply for the extended duration.</span>
-      </div>
-
       <div className="rate-section__grid">
         {plans.map((plan) => (
           <article key={plan.title} className={`rate-card${plan.featured ? " rate-card--featured" : ""}`}>

@@ -1,10 +1,8 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiFolder, FiSearch, FiX } from "react-icons/fi";
+import { useMemo, useRef, useState } from "react";
+import type { KeyboardEvent, MouseEvent, WheelEvent } from "react";
+import { FiCheckCircle, FiChevronLeft, FiChevronRight, FiSearch, FiX } from "react-icons/fi";
 import GameCard from "./GameCard";
-import type { Game } from "./types";
-import { games } from "../data/games";
-
-const VideoModal = lazy(() => import("./VideoModal"));
+import { gameSlug, games } from "../data/games";
 
 const CATEGORIES = [
   "ALL",
@@ -18,81 +16,19 @@ const CATEGORIES = [
 ] as const;
 
 const STATUSES = ["ALL", "AVAILABLE", "UPCOMING", "UNAVAILABLE"] as const;
-const PAGE_SIZE = 10;
+const TOP_TEN_IDS = [2, 24, 42, 3, 4, 19, 27, 44, 32, 33];
+const GAME_LANES = [
+  ["Shooters", "SHOOTING"],
+  ["Action", "ACTION"],
+  ["Racing", "RACING"],
+  ["Sports", "SPORTS"],
+  ["Fighting", "FIGHTING"],
+  ["Adventure", "ADVENTURE"],
+  ["Open world", "OPEN WORLD"],
+] as const;
 
 type Category = (typeof CATEGORIES)[number];
 type Status = (typeof STATUSES)[number];
-
-type PaginationProps = {
-  page: number;
-  totalPages: number;
-  totalItems: number;
-  onChange: (nextPage: number) => void;
-};
-
-function Pagination({
-  page,
-  totalPages,
-  totalItems,
-  onChange,
-}: PaginationProps) {
-  if (totalItems === 0) return null;
-  const itemsOnPage = Math.min(PAGE_SIZE, totalItems - (page - 1) * PAGE_SIZE);
-
-  return (
-    <nav className="library-pagination" aria-label="Game library pages">
-      <p className="library-pagination__summary" aria-live="polite">
-        <FiFolder aria-hidden="true" />
-        <span>Collection <strong>{page}</strong></span>
-        <small>{itemsOnPage} {itemsOnPage === 1 ? "game" : "games"}</small>
-      </p>
-
-      <div className="library-pagination__controls">
-        <button
-          type="button"
-          className="pagination-button pagination-button--previous"
-          onClick={() => onChange(page - 1)}
-          disabled={page === 1}
-          aria-label="Show previous page"
-        >
-          <FiArrowLeft aria-hidden="true" />
-          <span>Previous</span>
-        </button>
-
-        <div className="pagination-pages" aria-label={`Page ${page} of ${totalPages}`}>
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => {
-            const start = (pageNumber - 1) * PAGE_SIZE + 1;
-            const end = Math.min(pageNumber * PAGE_SIZE, totalItems);
-            const isCurrent = pageNumber === page;
-            return (
-              <button
-                key={pageNumber}
-                type="button"
-                className={`pagination-page ${isCurrent ? "pagination-page--active" : ""}`}
-                onClick={() => onChange(pageNumber)}
-                aria-current={isCurrent ? "page" : undefined}
-                aria-label={`Show page ${pageNumber}, games ${start} to ${end}`}
-              >
-                <span className="pagination-page__label">{pageNumber}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          type="button"
-          className="pagination-button pagination-button--next"
-          onClick={() => onChange(page + 1)}
-          disabled={page === totalPages}
-          aria-label="Show next page"
-        >
-          <span>Next</span>
-          <FiArrowRight aria-hidden="true" />
-        </button>
-      </div>
-    </nav>
-  );
-}
 
 function buildSchema() {
   return {
@@ -107,17 +43,17 @@ function buildSchema() {
       "@type": "ListItem",
       position: index + 1,
       name: game.title,
-      url: `https://rdgamezone.com/games#${game.id}`,
+      url: `https://rdgamezone.com/games/${gameSlug(game.title)}`,
     })),
   };
 }
 
 export default function GameLibraryPage() {
-  const [activeGame, setActiveGame] = useState<Game | null>(null);
   const [category, setCategory] = useState<Category>("ALL");
   const [status, setStatus] = useState<Status>("ALL");
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const rankedTrackRef = useRef<HTMLDivElement>(null);
+  const rankedDragRef = useRef({ dragging: false, startX: 0, startScrollLeft: 0, moved: false });
 
   const filteredGames = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -131,12 +67,6 @@ export default function GameLibraryPage() {
     });
   }, [category, search, status]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredGames.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const visibleGames = filteredGames.slice(startIndex, startIndex + PAGE_SIZE);
-  const rangeStart = filteredGames.length ? startIndex + 1 : 0;
-  const rangeEnd = Math.min(startIndex + PAGE_SIZE, filteredGames.length);
   const hasFilters = category !== "ALL" || status !== "ALL" || Boolean(search);
   const emptyState = useMemo(() => {
     const query = search.trim();
@@ -173,23 +103,6 @@ export default function GameLibraryPage() {
     };
   }, [category, search, status]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [category, status, search]);
-
-  const goToPage = (nextPage: number) => {
-    const safePage = Math.max(1, Math.min(nextPage, totalPages));
-    if (safePage === currentPage) return;
-
-    setPage(safePage);
-    window.requestAnimationFrame(() => {
-      document.getElementById("library-results")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
-  };
-
   const clearFilters = () => {
     setCategory("ALL");
     setStatus("ALL");
@@ -207,6 +120,57 @@ export default function GameLibraryPage() {
     setStatus(nextStatus);
   };
 
+  const startRankedDrag = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    rankedDragRef.current = {
+      dragging: true,
+      startX: event.clientX,
+      startScrollLeft: event.currentTarget.scrollLeft,
+      moved: false,
+    };
+  };
+
+  const moveRankedDrag = (event: MouseEvent<HTMLDivElement>) => {
+    const drag = rankedDragRef.current;
+    if (!drag.dragging) return;
+    const distance = event.clientX - drag.startX;
+    if (Math.abs(distance) > 5) drag.moved = true;
+    if (drag.moved) event.currentTarget.scrollLeft = drag.startScrollLeft - distance;
+  };
+
+  const finishRankedDrag = () => {
+    rankedDragRef.current.dragging = false;
+  };
+
+  const scrollRankedByKey = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const card = event.currentTarget.querySelector<HTMLElement>(".game-card-link--ranked");
+    const distance = card ? card.getBoundingClientRect().width + 16 : event.currentTarget.clientWidth * 0.8;
+    event.currentTarget.scrollLeft += event.key === "ArrowRight" ? distance : -distance;
+  };
+
+  const scrollRanked = (direction: -1 | 1) => {
+    const track = rankedTrackRef.current;
+    if (!track) return;
+    const card = track.querySelector<HTMLElement>(".game-card-link--ranked");
+    const distance = card ? card.getBoundingClientRect().width + 16 : track.clientWidth * 0.8;
+    track.scrollBy({ left: direction * distance, behavior: "smooth" });
+  };
+
+  const scrollRankedWithWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+    event.preventDefault();
+    event.currentTarget.scrollLeft += event.deltaY;
+  };
+
+  const suppressDraggedClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!rankedDragRef.current.moved) return;
+    event.preventDefault();
+    event.stopPropagation();
+    rankedDragRef.current.moved = false;
+  };
+
   return (
     <>
       <script
@@ -222,12 +186,8 @@ export default function GameLibraryPage() {
               <div>
                 <h1 className="library-title">Game library</h1>
                 <p className="library-intro">
-                  Explore the full RD Game Zone lineup, check availability, and watch a trailer before your visit.
+                  Find your next game. Open any artwork for its trailer, platform, and session details.
                 </p>
-              </div>
-              <div className="library-total" aria-label={`${games.length} games in the library`}>
-                <strong>{games.length}</strong>
-                <span>games</span>
               </div>
             </div>
           </header>
@@ -301,16 +261,10 @@ export default function GameLibraryPage() {
             <div className="library-results__heading">
               <div>
                 <p className="library-results__eyebrow">RD Game Zone · Game library</p>
-                <h2 id="library-results-title">
-                  {filteredGames.length === 1
-                    ? "1 game"
-                    : filteredGames.length > 1
-                      ? `Games ${String(rangeStart).padStart(2, "0")}–${String(rangeEnd).padStart(2, "0")}`
-                      : emptyState.heading}
-                </h2>
+                <h2 id="library-results-title">{hasFilters ? "Matching games" : "Choose your next game"}</h2>
                 {filteredGames.length > 0 && (
                   <p className="library-results__collection-copy">
-                    {visibleGames.length} {visibleGames.length === 1 ? "game" : "games"} ready to explore in this collection.
+                    {hasFilters ? "Open a title for its details and embedded trailer." : "Browse featured picks or explore the full collection by genre."}
                   </p>
                 )}
                 {filteredGames.length === 0 && (
@@ -328,39 +282,62 @@ export default function GameLibraryPage() {
               )}
             </div>
 
-            <Pagination
-              page={currentPage}
-              totalPages={totalPages}
-              totalItems={filteredGames.length}
-              onChange={goToPage}
-            />
-
-            {visibleGames.length > 0 ? (
-              <div
-                className="game-grid"
-                aria-label={`Showing games ${rangeStart} to ${rangeEnd} of ${filteredGames.length}`}
-                aria-live="polite"
-              >
-                {visibleGames.map((game, index) => {
-                  const catalogPosition = startIndex + index + 1;
-
-                  return (
-                    <article
-                      key={game.id}
-                      id={String(game.id)}
-                      itemScope
-                      itemType="https://schema.org/VideoGame"
+            {!hasFilters ? (
+              <div className="library-lanes">
+                <section className="library-lane" aria-labelledby="library-top-ten-title">
+                  <div className="library-lane__heading">
+                    <div><h3 id="library-top-ten-title">Top 10 at RD Game Zone</h3></div>
+                  </div>
+                  <div className="library-lane__carousel">
+                    <button type="button" className="library-carousel-arrow library-carousel-arrow--left" onClick={() => scrollRanked(-1)} aria-label="Show previous top games"><FiChevronLeft aria-hidden="true" /></button>
+                    <div
+                      ref={rankedTrackRef}
+                      className="library-lane__track library-lane__track--top-ten"
+                      role="region"
+                      aria-label="Top 10 games. Drag to browse, or use the left and right arrow keys."
+                      tabIndex={0}
+                      onMouseDown={startRankedDrag}
+                      onMouseMove={moveRankedDrag}
+                      onMouseUp={finishRankedDrag}
+                      onMouseLeave={finishRankedDrag}
+                      onClickCapture={suppressDraggedClick}
+                      onKeyDown={scrollRankedByKey}
+                      onWheel={scrollRankedWithWheel}
                     >
-                      <meta itemProp="name" content={game.title} />
-                      <meta itemProp="description" content={game.subtitle} />
-                      <meta itemProp="position" content={String(catalogPosition)} />
-                      <GameCard
-                        game={game}
-                        onPlay={() => game.video && setActiveGame(game)}
-                      />
-                    </article>
+                      {TOP_TEN_IDS.map((id, index) => {
+                        const game = games.find((candidate) => candidate.id === id);
+                        return game ? <GameCard key={game.id} game={game} rank={index + 1} /> : null;
+                      })}
+                    </div>
+                    <button type="button" className="library-carousel-arrow library-carousel-arrow--right" onClick={() => scrollRanked(1)} aria-label="Show more top games"><FiChevronRight aria-hidden="true" /></button>
+                  </div>
+                </section>
+
+                {GAME_LANES.map(([title, laneCategory]) => {
+                  const laneGames = games.filter((game) => game.category === laneCategory);
+                  if (!laneGames.length) return null;
+                  return (
+                    <section className="library-lane" key={laneCategory} aria-labelledby={`lane-${gameSlug(title)}`}>
+                      <div className="library-lane__heading">
+                        <div><p className="library-results__eyebrow">Browse by genre</p><h3 id={`lane-${gameSlug(title)}`}>{title}</h3></div>
+                      </div>
+                      <div className="library-lane__track">
+                        {laneGames.map((game) => <GameCard key={game.id} game={game} />)}
+                      </div>
+                    </section>
                   );
                 })}
+              </div>
+            ) : filteredGames.length > 0 ? (
+              <div className="game-grid" aria-label={`${filteredGames.length} matching games`} aria-live="polite">
+                {filteredGames.map((game, index) => (
+                  <article key={game.id} itemScope itemType="https://schema.org/VideoGame">
+                    <meta itemProp="name" content={game.title} />
+                    <meta itemProp="description" content={game.subtitle} />
+                    <meta itemProp="position" content={String(index + 1)} />
+                    <GameCard game={game} />
+                  </article>
+                ))}
               </div>
             ) : (
               <div className={`library-empty library-empty--${emptyState.kind}`} role="status" aria-live="polite">
@@ -377,26 +354,10 @@ export default function GameLibraryPage() {
                 </button>
               </div>
             )}
-
-            <Pagination
-              page={currentPage}
-              totalPages={totalPages}
-              totalItems={filteredGames.length}
-              onChange={goToPage}
-            />
           </section>
         </div>
       </main>
 
-      {activeGame?.video && (
-        <Suspense fallback={null}>
-          <VideoModal
-            video={activeGame.video}
-            game={activeGame}
-            onClose={() => setActiveGame(null)}
-          />
-        </Suspense>
-      )}
     </>
   );
 }

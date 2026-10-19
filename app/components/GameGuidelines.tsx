@@ -1,14 +1,14 @@
 import type { IconType } from "react-icons";
 import { FiAlertTriangle, FiClock, FiEye, FiLock, FiShield, FiUserCheck, FiWind, FiZap } from "react-icons/fi";
 
-type Guideline = {
+export type Guideline = {
   icon: IconType;
   title: string;
   subtitle: string;
   points: string[];
 };
 
-const guidelines: Guideline[] = [
+export const guidelines: Guideline[] = [
   { icon: FiUserCheck, title: "Age & entry", subtitle: "Strictly 11+ only", points: ["No children under 11 allowed.", "Maintain maturity at all times."] },
   { icon: FiShield, title: "Zero tolerance", subtitle: "Respect the zone", points: ["No profanity allowed.", "No alcohol or smoking.", "No outside food or drinks."] },
   { icon: FiWind, title: "Environment", subtitle: "Clean & safe", points: ["Strictly smoke-free zone.", "Clean environment maintained.", "Gameplay responsibility lies with the gamer."] },

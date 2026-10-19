@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "@context": "https://agenticresourcediscovery.org/context/v1",
+      "identifier": "urn:air:rdgamezone.com:web:game-library",
+      "displayName": "RD Game Zone Game Library",
+      "type": "text/html",
+      "url": "https://rdgamezone.com/games",
+      "description": "The RD Game Zone game library lists game genres, availability, platforms, and title details for the Ahmedabad gaming lounge.",
+      "representativeQueries": [
+        "Which games can I play at RD Game Zone in Ahmedabad?",
+        "Is a particular game available at RD Game Zone?",
+        "What platforms are available at RD Game Zone?"
+      ],
+      "tags": ["gaming", "Ahmedabad", "game library", "PS5", "PS4", "PC"]
+    }
+  ]
+}

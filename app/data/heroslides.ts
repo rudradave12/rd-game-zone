@@ -63,16 +63,16 @@ export const HERO_SLIDES: HeroSlide[] = [
 
   {
     id: 3,
-    title: "BLACK MYTH WUKONG",
-    tagline: "RECLAIM THE LEGEND",
-    category: "ACTION ADVENTURE",
+    title: "CALL OF DUTY: MODERN WARFARE III",
+    tagline: "THE FIGHT IS CLOSER THAN EVER",
+    category: "FPS ACTION",
 
-    imageDesktop:         "/images/hero/black-myth-wukong.jpg",
-    imageMobilePortrait:  "/images/hero/black-myth-wukong-portrait.jpg",
-    imageMobileLandscape: "/images/hero/black-myth-wukong.jpg",
+    imageDesktop:         "/images/hero/modern-warfare-iii-desktop.webp",
+    imageMobilePortrait:  "/images/hero/modern-warfare-iii-mobile.webp",
+    imageMobileLandscape: "/images/hero/modern-warfare-iii-desktop.webp",
 
     btn1: "BEST GAME",
-    btn2: "ACTION ADVENTURE",
+    btn2: "MULTIPLAYER",
   },
 
   {
@@ -91,15 +91,15 @@ export const HERO_SLIDES: HeroSlide[] = [
 
   {
     id: 5,
-    title: "GTA ONLINE",
-    tagline: "BUILD YOUR CRIMINAL EMPIRE",
+    title: "GRAND THEFT AUTO VI",
+    tagline: "A NEW ERA AWAITS IN LEONIDA",
     category: "OPEN WORLD",
 
-    imageDesktop:         "/images/hero/gta-online.jpg",
-    imageMobilePortrait:  "/images/gta-5online-mobile-portrait.jpeg",
-    imageMobileLandscape: "/images/hero/gta-online.jpg",
+    imageDesktop:         "/images/gta-vi-cover.webp",
+    imageMobilePortrait:  "/images/hero/gta-vi-mobile.webp",
+    imageMobileLandscape: "/images/gta-vi-cover.webp",
 
-    btn1: "OPEN WORLD",
-    btn2: "MULTIPLAYER",
+    btn1: "COMING SOON",
+    btn2: "OPEN WORLD",
   },
 ];
