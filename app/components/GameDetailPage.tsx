@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { FaDesktop, FaPlaystation } from "react-icons/fa";
 import { FiAlertTriangle, FiArrowLeft, FiArrowUpRight, FiChevronLeft, FiChevronRight, FiPause, FiPlay, FiVolume2, FiVolumeX, FiX } from "react-icons/fi";
 import GameCard from "./GameCard";
@@ -31,6 +31,48 @@ const statusLabels = {
 } as const;
 
 type SessionTip = { title: string; detail: string };
+
+function DeferredContent({
+  children,
+  className,
+  placeholderHeight,
+}: {
+  children: ReactNode;
+  className: string;
+  placeholderHeight: string;
+}) {
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    if (!("IntersectionObserver" in window)) {
+      setIsNearViewport(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsNearViewport(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "360px 0px" });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className={className}
+      style={isNearViewport ? undefined : { minHeight: placeholderHeight }}
+      aria-busy={!isNearViewport}
+    >
+      {isNearViewport ? children : null}
+    </div>
+  );
+}
 
 const sessionTips: Record<number, SessionTip> = {
   1: { title: "Black Ops 7 · Squad setup", detail: "Pick a multiplayer mode, agree on team size, and settle your loadouts before the first round." },
@@ -409,15 +451,21 @@ export default function GameDetailPage({ game }: Props) {
 
         <GameScreenshotGallery game={game} selected={selectedArtwork} onSelect={setSelectedArtwork} />
 
-        <section className="game-detail-info" aria-label={`${game.title} session details`}>
-          <article><span className="game-detail-info__label">Genre</span><strong>{game.category}</strong></article>
-          <article><span className="game-detail-info__label">Session type</span><strong>{game.playerType}</strong></article>
-          <article><span className="game-detail-info__label">Platforms here</span><strong>{game.platforms.join(" · ")}</strong></article>
-          <article><span className="game-detail-info__label">{sessionTip.title}</span><strong>{sessionTip.detail}</strong></article>
-        </section>
-        <GamePolicy game={game} />
-        <p className="game-detail__fineprint">Ask our team to confirm this game and platform are ready before you book. Please follow the age and play rules listed on this page during your session.</p>
-        <DailyPopularRail currentGame={game} />
+        <DeferredContent className="game-detail-deferred game-detail-deferred--info" placeholderHeight="12rem">
+          <section className="game-detail-info" aria-label={`${game.title} session details`}>
+            <article><span className="game-detail-info__label">Genre</span><strong>{game.category}</strong></article>
+            <article><span className="game-detail-info__label">Session type</span><strong>{game.playerType}</strong></article>
+            <article><span className="game-detail-info__label">Platforms here</span><strong>{game.platforms.join(" · ")}</strong></article>
+            <article><span className="game-detail-info__label">{sessionTip.title}</span><strong>{sessionTip.detail}</strong></article>
+          </section>
+        </DeferredContent>
+        <DeferredContent className="game-detail-deferred game-detail-deferred--policy" placeholderHeight="28rem">
+          <GamePolicy game={game} />
+          <p className="game-detail__fineprint">Ask our team to confirm this game and platform are ready before you book. Please follow the age and play rules listed on this page during your session.</p>
+        </DeferredContent>
+        <DeferredContent className="game-detail-deferred game-detail-deferred--popular" placeholderHeight="26rem">
+          <DailyPopularRail currentGame={game} />
+        </DeferredContent>
       </div>
     </main>
   );
