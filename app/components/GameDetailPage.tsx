@@ -419,6 +419,14 @@ export default function GameDetailPage({ game }: Props) {
               {game.id === 24 && selectedArtwork === game.image && (
                 <source
                   media="(max-width: 700px) and (orientation: portrait)"
+                  srcSet="/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
+                  sizes="100vw"
+                  type="image/avif"
+                />
+              )}
+              {game.id === 24 && selectedArtwork === game.image && (
+                <source
+                  media="(max-width: 700px) and (orientation: portrait)"
                   srcSet="/images/fc-27-mobile-480.webp 480w, /images/fc-27-mobile.webp 640w"
                   sizes="100vw"
                   type="image/webp"

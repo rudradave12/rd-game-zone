@@ -106,12 +106,12 @@ const preHydrationScript = `(() => {
   const isPortrait = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
   const isFcPortrait = gameSlug === "ea-sports-fc-27" && isPortrait;
   const gameImage = isFcPortrait
-    ? "/images/fc-27-mobile-480.webp"
+    ? "/images/fc-27-mobile-480.avif"
     : gameSlug && gameArt[gameSlug];
   const gameImageSrcset = isFcPortrait
-    ? "/images/fc-27-mobile-480.webp 480w, /images/fc-27-mobile.webp 640w"
+    ? "/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
     : undefined;
-  const gameImageType = gameSlug === "ea-sports-fc-27" && !isPortrait ? "image/avif" : undefined;
+  const gameImageType = gameSlug === "ea-sports-fc-27" ? "image/avif" : undefined;
   if (gameImage) addImageHint(gameImage, gameImageSrcset, isFcPortrait ? "100vw" : undefined, gameImageType);
 
 })();`;
