@@ -382,6 +382,9 @@ export default function GameDetailPage({ game }: Props) {
                   type="image/webp"
                 />
               )}
+              {game.id === 24 && selectedArtwork === game.image && (
+                <source srcSet="/images/fc-27-optimized.avif" type="image/avif" />
+              )}
               <img src={selectedArtwork} alt={`${game.title} artwork`} fetchpriority="high" decoding="async" />
             </picture>
           </div>

@@ -85,7 +85,7 @@ const preHydrationScript = `(() => {
     "black-myth-wukong": "/images/black-myth-wukong.jpeg",
     "god-war-ragnarok": "/images/god-of-war- regnarok-optimized.webp",
     "ghost-of-tsushima": "/images/ghost-of-tsushima-optimized.webp",
-    "ea-sports-fc-27": "/images/fc-27-optimized.webp",
+    "ea-sports-fc-27": "/images/fc-27-optimized.avif",
     "f1-25": "/images/f1-25.webp",
     "nfs-heat": "/images/nfs-heat.jpg",
     "nfs-hot-pursuit-remastered": "/images/nfs-hot-pursuit-remastered-optimized.webp",
@@ -111,7 +111,8 @@ const preHydrationScript = `(() => {
   const gameImageSrcset = isFcPortrait
     ? "/images/fc-27-mobile-480.webp 480w, /images/fc-27-mobile.webp 640w"
     : undefined;
-  if (gameImage) addImageHint(gameImage, gameImageSrcset, isFcPortrait ? "100vw" : undefined);
+  const gameImageType = gameSlug === "ea-sports-fc-27" && !isPortrait ? "image/avif" : undefined;
+  if (gameImage) addImageHint(gameImage, gameImageSrcset, isFcPortrait ? "100vw" : undefined, gameImageType);
 
 })();`;
 
