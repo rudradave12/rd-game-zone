@@ -14,6 +14,33 @@ export const games: Game[] = [
     status: "upcoming",
     adult: true,
     image: "/images/gta-vi-cover-optimized.webp",
+    screenshots: [
+      {
+        src: "/images/screenshots/gta-vi-vice-city-09.webp",
+        thumbSrc: "/images/screenshots/thumbs/gta-vi-vice-city-09.webp",
+        alt: "Grand Theft Auto VI street scene beneath a colourful Vice City overpass.",
+      },
+      {
+        src: "/images/screenshots/gta-vi-vice-city-10.webp",
+        thumbSrc: "/images/screenshots/thumbs/gta-vi-vice-city-10.webp",
+        alt: "Grand Theft Auto VI waterfront skyline in Vice City.",
+      },
+      {
+        src: "/images/screenshots/gta-vi-safehouse.webp",
+        thumbSrc: "/images/screenshots/thumbs/gta-vi-safehouse.webp",
+        alt: "Grand Theft Auto VI Ultimate Edition safehouse and vehicle collection artwork.",
+      },
+      {
+        src: "/images/screenshots/gta-vi-squalo.webp",
+        thumbSrc: "/images/screenshots/thumbs/gta-vi-squalo.webp",
+        alt: "Grand Theft Auto VI Ultimate Edition Squalo boat artwork.",
+      },
+      {
+        src: "/images/screenshots/gta-vi-wyman-collection.webp",
+        thumbSrc: "/images/screenshots/thumbs/gta-vi-wyman-collection.webp",
+        alt: "Grand Theft Auto VI Ultimate Edition Wyman car collection artwork.",
+      },
+    ],
     video: {
       type: "youtube",
       id: "QdBZY2fkU-0",
@@ -347,6 +374,31 @@ export const games: Game[] = [
         src: "/images/screenshots/fc27-gameplay.avif",
         thumbSrc: "/images/screenshots/thumbs/fc27-gameplay.avif",
         alt: "FC 27 match gameplay with Jamal Musiala challenging for possession.",
+      },
+      {
+        src: "/images/screenshots/fc27-bellingham.webp",
+        thumbSrc: "/images/screenshots/thumbs/fc27-bellingham.webp",
+        alt: "EA SPORTS FC 27 gameplay with a Real Madrid player challenging for the ball.",
+      },
+      {
+        src: "/images/screenshots/fc27-mbappe.webp",
+        thumbSrc: "/images/screenshots/thumbs/fc27-mbappe.webp",
+        alt: "EA SPORTS FC 27 match action in a crowded penalty area.",
+      },
+      {
+        src: "/images/screenshots/fc27-spain.webp",
+        thumbSrc: "/images/screenshots/thumbs/fc27-spain.webp",
+        alt: "EA SPORTS FC 27 international match gameplay with Spain on the attack.",
+      },
+      {
+        src: "/images/screenshots/fc27-the-grounds-pose.webp",
+        thumbSrc: "/images/screenshots/thumbs/fc27-the-grounds-pose.webp",
+        alt: "EA SPORTS FC 27 players gathering at The Grounds street football venue.",
+      },
+      {
+        src: "/images/screenshots/fc27-authenticity.webp",
+        thumbSrc: "/images/screenshots/thumbs/fc27-authenticity.webp",
+        alt: "EA SPORTS FC 27 authenticity showcase in a packed stadium.",
       },
     ],
     video: {
