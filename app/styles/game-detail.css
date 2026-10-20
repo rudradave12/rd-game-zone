@@ -895,3 +895,171 @@ html[data-theme="dark"] .game-detail-page .game-popular .game-detail__eyebrow {
     line-height: 1.48 !important;
   }
 }
+
+/* Responsive streaming-style key art.  The image remains a true 16:9 source;
+   the desktop/tablet stage is shorter, while portrait phones show the whole
+   artwork above the lower information fade instead of enlarging and cropping
+   it to fill a tall panel. */
+.game-detail-page .game-detail-shell .game-detail-hero {
+  height: clamp(25rem, 43vw, 38rem) !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+}
+
+.game-detail-page .game-detail-shell .game-detail-hero__art img {
+  object-position: center top !important;
+}
+
+.game-detail-page .game-detail-shell .game-detail-hero__art::after {
+  background:
+    linear-gradient(90deg, rgba(1, 3, 8, .94) 0%, rgba(1, 3, 8, .8) 34%, rgba(1, 3, 8, .35) 63%, rgba(1, 3, 8, .04) 100%),
+    linear-gradient(0deg, rgba(1, 3, 8, .58) 0%, rgba(1, 3, 8, .12) 38%, transparent 70%) !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+.game-detail-page .game-detail-shell .game-detail-hero__copy {
+  padding: clamp(2.6rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3.5rem) clamp(1.2rem, 3vw, 2.4rem) !important;
+}
+
+.game-detail-page .game-detail-shell .game-detail-hero__copy h1 {
+  font-size: clamp(1.9rem, 4vw, 3.75rem) !important;
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  .game-detail-page .game-detail-shell .game-detail-hero {
+    height: clamp(21rem, 46vw, 29rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy {
+    width: min(59%, 42rem) !important;
+    max-width: 59% !important;
+    padding: clamp(2.5rem, 5vw, 3.5rem) clamp(1.15rem, 3.2vw, 2.2rem) clamp(1rem, 2.5vw, 1.6rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy h1 {
+    font-size: clamp(1.75rem, 4.2vw, 3rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__description {
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    margin: .55rem 0 .7rem !important;
+    font-size: .86rem !important;
+    line-height: 1.48 !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms { margin-top: .45rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__actions { margin-top: .65rem !important; }
+}
+
+@media (max-width: 700px) and (orientation: portrait) {
+  .game-detail-page .game-detail-shell .game-detail-hero {
+    display: flex !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    flex-direction: column !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__art {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__art img {
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__art::after {
+    background: linear-gradient(180deg, transparent 35%, rgba(1, 3, 8, .14) 60%, #030509 100%) !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: -2.8rem 0 0 !important;
+    padding: 3.2rem clamp(.95rem, 5vw, 1.3rem) 1.15rem !important;
+    background: linear-gradient(180deg, rgba(3, 5, 9, 0) 0%, #030509 2.6rem) !important;
+    background-image: linear-gradient(180deg, rgba(3, 5, 9, 0) 0%, #030509 2.6rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__eyebrow {
+    margin-bottom: .35rem !important;
+    font-size: .62rem !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy h1 {
+    font-size: clamp(1.7rem, 8vw, 2.45rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__description {
+    display: block !important;
+    overflow: visible !important;
+    margin: .48rem 0 .68rem !important;
+    font-size: .84rem !important;
+    line-height: 1.48 !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__meta { gap: .38rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__status,
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms span {
+    padding: .38rem .55rem !important;
+    font-size: .68rem !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms { gap: .38rem !important; margin-top: .38rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__actions { margin-top: .65rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__watch { width: auto !important; min-height: 2.75rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero > .game-detail__back { top: .75rem !important; left: .75rem !important; }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .game-detail-page .game-detail-shell .game-detail-hero {
+    height: min(78svh, 24rem) !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy {
+    width: min(62%, 38rem) !important;
+    max-width: 62% !important;
+    padding: clamp(2rem, 6vh, 3rem) clamp(.9rem, 3vw, 1.5rem) clamp(.8rem, 3vh, 1.2rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy h1 {
+    font-size: clamp(1.45rem, 4vw, 2.3rem) !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__description {
+    display: -webkit-box !important;
+    overflow: hidden !important;
+    margin: .42rem 0 .52rem !important;
+    font-size: .77rem !important;
+    line-height: 1.4 !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__status,
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms span {
+    padding: .32rem .48rem !important;
+    font-size: .64rem !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms { margin-top: .32rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__actions { margin-top: .5rem !important; }
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__watch { min-height: 2.55rem !important; }
+}

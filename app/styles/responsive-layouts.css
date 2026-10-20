@@ -443,6 +443,35 @@ body.modal-open {
   .library-empty__icon { margin-inline: auto; }
 }
 
+/* Home catalogue: give tablet portrait artwork enough room to read while
+   keeping the existing three-across rhythm in tablet landscape. */
+@media (min-width: 701px) and (max-width: 1100px) and (orientation: portrait) {
+  .featured-library__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 2.2vw, 22px);
+  }
+
+  .featured-game:nth-child(n) {
+    grid-column: span 1;
+  }
+
+  .featured-game__media { aspect-ratio: 16 / 9; }
+  .featured-game__content { padding: clamp(.8rem, 1.8vw, 1.1rem); }
+}
+
+@media (min-width: 701px) and (max-width: 1100px) and (orientation: landscape) {
+  .featured-library__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.8vw, 18px);
+  }
+
+  .featured-game:nth-child(n) {
+    grid-column: span 1;
+  }
+
+  .featured-game__media { aspect-ratio: 16 / 9; }
+}
+
 /* Dark mode uses the same blue interaction language and retains contrast for
    yellow warnings, filtered cards, and small body copy. */
 html[data-theme="dark"] .library-empty {
