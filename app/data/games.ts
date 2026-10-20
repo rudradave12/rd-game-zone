@@ -70,6 +70,12 @@ export const games: Game[] = [
     status: "available",
     adult: true,
     image: "/images/gta-5online.jpeg",
+    screenshots: [
+      {
+        src: "/images/screenshots/gta-online-store.avif",
+        alt: "Grand Theft Auto V gameplay screenshot from the PC store edition.",
+      },
+    ],
     video: {
       type: "youtube",
       id: "olEGtoYs_8A",
