@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, MouseEvent, WheelEvent } from "react";
 import { FiCheckCircle, FiChevronLeft, FiChevronRight, FiSearch, FiX } from "react-icons/fi";
 import GameCard from "./GameCard";
 import { gameSlug, games } from "../data/games";
+import { TOP_TEN_GAME_IDS } from "../data/top-ten-game-highlights";
 
 const CATEGORIES = [
   "ALL",
@@ -16,7 +17,6 @@ const CATEGORIES = [
 ] as const;
 
 const STATUSES = ["ALL", "AVAILABLE", "UPCOMING", "UNAVAILABLE"] as const;
-const TOP_TEN_IDS = [2, 24, 42, 3, 4, 19, 27, 44, 32, 33];
 const GAME_LANES = [
   ["Shooters", "SHOOTING"],
   ["Action", "ACTION"],
@@ -29,6 +29,34 @@ const GAME_LANES = [
 
 type Category = (typeof CATEGORIES)[number];
 type Status = (typeof STATUSES)[number];
+
+function DeferredLaneCards({ laneGames }: { laneGames: typeof games }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || !("IntersectionObserver" in window)) {
+      setShouldRender(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setShouldRender(true);
+      observer.disconnect();
+    }, { rootMargin: "100px 0px" });
+
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={trackRef} className="library-lane__track library-lane__track--deferred" aria-busy={!shouldRender}>
+      {shouldRender && laneGames.map((game) => <GameCard key={game.id} game={game} />)}
+    </div>
+  );
+}
 
 function normalizeFilterValue(value: string) {
   return value
@@ -121,8 +149,8 @@ export default function GameLibraryPage() {
 
   const selectAvailability = (nextStatus: Status) => {
     /* “Coming soon” is a dedicated collection. Resetting other filters keeps
-       GTA VI discoverable instead of silently intersecting it with a stale
-       genre or search selection. */
+       upcoming titles discoverable instead of silently intersecting them with
+       a stale genre or search selection. */
     if (nextStatus === "UPCOMING") {
       setCategory("ALL");
       setSearch("");
@@ -314,7 +342,7 @@ export default function GameLibraryPage() {
                       onKeyDown={scrollRankedByKey}
                       onWheel={scrollRankedWithWheel}
                     >
-                      {TOP_TEN_IDS.map((id, index) => {
+                      {TOP_TEN_GAME_IDS.map((id, index) => {
                         const game = games.find((candidate) => candidate.id === id);
                         return game ? <GameCard key={game.id} game={game} rank={index + 1} /> : null;
                       })}
@@ -331,9 +359,7 @@ export default function GameLibraryPage() {
                       <div className="library-lane__heading">
                         <div><p className="library-results__eyebrow">Browse by genre</p><h3 id={`lane-${gameSlug(title)}`}>{title}</h3></div>
                       </div>
-                      <div className="library-lane__track">
-                        {laneGames.map((game) => <GameCard key={game.id} game={game} />)}
-                      </div>
+                      <DeferredLaneCards laneGames={laneGames} />
                     </section>
                   );
                 })}

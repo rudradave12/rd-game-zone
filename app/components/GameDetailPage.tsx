@@ -5,8 +5,10 @@ import { FiAlertTriangle, FiArrowLeft, FiArrowUpRight, FiChevronLeft, FiChevronR
 import GameCard from "./GameCard";
 import type { Game } from "./types";
 import { gameSlug, games } from "../data/games";
+import { topTenGameHighlights, type TopTenGameId } from "../data/top-ten-game-highlights";
 import { guidelines } from "./GameGuidelines";
 import { gtaOnlinePolicyText } from "./GTAOnlinePolicy";
+import { GameAbout, TopTenSpotlight } from "./GameDetailExperience";
 
 type Props = { game: Game };
 
@@ -22,6 +24,17 @@ const editorialDescriptions: Record<number, string> = {
   33: "Enter the Mortal Kombat 1 arena for cinematic one-on-one combat. Select a fighter, find your rhythm, and challenge a friend to a dramatic set where sharp reactions and smart decisions make the difference.",
   44: "Make your entrance in WWE 2K26 and build a show-stopping match in the ring. Choose your superstar, set the pace, and take turns in a lively head-to-head session packed with wrestling spectacle and big-match moments.",
   41: "Return to Vice City in the next Grand Theft Auto adventure, a new open-world chapter from Rockstar Games. GRAND THEFT AUTO VI is marked as coming soon at RD Game Zone; its availability will be updated when the title is ready for sessions.",
+  45: "Discover Japan in Forza Horizon 6, an open-world racing adventure built around a huge Horizon Festival, scenic mountain roads, and high-speed city runs. Its PS5 release is scheduled for January 26, 2027, and the game is marked as coming soon at RD Game Zone.",
+  46: "Take a road trip through The Crew Motorfest, an open-world festival celebrating cars and driving culture. Build your collection, explore the island, and take on a changing lineup of races and playlists.",
+  47: "Journey into Pandora's Western Frontier in Avatar: Frontiers of Pandora. Explore a vibrant alien world, discover your Na'vi heritage, and push back against the RDA on your own or with a friend.",
+  48: "Call of Duty: Modern Warfare 4 returns to the Modern Warfare series with a new campaign and competitive multiplayer. Its PS5 launch is scheduled for October 23, 2026, so this title remains marked as coming soon until release.",
+  49: "Climb, leap, and fight your way through Villedor in Dying Light 2: Stay Human. Explore the city by day, face its dangers after dark, and team up for co-op missions and challenges.",
+  50: "Enter the lawless frontier in Hunt: Showdown 1896, where rival hunter teams track dangerous targets through a hostile world. Stay alert, work together, and decide when to push for the bounty or make your escape.",
+  51: "Join Cody and May for a playful adventure built entirely around cooperation. Every chapter brings new abilities and surprising challenges, so communication and teamwork are the key to making it through together.",
+  52: "Find your line in San Vansterdam in skate., an evolving skateboarding world for exploring spots, landing tricks, and linking up with other skaters online.",
+  53: "Travel through a haunting land inspired by late Ming-dynasty China in WUCHANG: Fallen Feathers. Master fast, deliberate combat and uncover the truth behind a mysterious affliction.",
+  54: "Fight through the hive city of Tertium in Warhammer 40,000: Darktide. Balance ranged and melee combat, build your character, and rely on your strike team to survive the Inquisition's missions.",
+  55: "Join Task Force One in Call of Duty: Vanguard and fight across four major theaters of World War II. Choose your role, take on the campaign, or coordinate with friends in multiplayer.",
 };
 
 const statusLabels = {
@@ -29,8 +42,6 @@ const statusLabels = {
   upcoming: "Coming soon",
   unavailable: "Currently unavailable",
 } as const;
-
-type SessionTip = { title: string; detail: string };
 
 function DeferredContent({
   children,
@@ -74,63 +85,7 @@ function DeferredContent({
   );
 }
 
-const sessionTips: Record<number, SessionTip> = {
-  1: { title: "Black Ops 7 · Squad setup", detail: "Pick a multiplayer mode, agree on team size, and settle your loadouts before the first round." },
-  2: { title: "GTA Online · Session plan", detail: "Choose a heist, race, or free-roam goal together, then agree when to pass the controller." },
-  3: { title: "VALORANT · Team briefing", detail: "Choose agents and team roles before queuing; use voice chat to coordinate each round." },
-  4: { title: "Counter-Strike 2 · Round plan", detail: "Agree on sides and roles, then coordinate your utility and buys at the start of each round." },
-  5: { title: "Apex Legends · Availability", detail: "Apex Legends is temporarily unavailable here. Check with the team for current alternatives." },
-  6: { title: "Fortnite · Drop plan", detail: "Choose Battle Royale or Zero Build, set your squad size, and pick a landing spot together." },
-  7: { title: "Cold War · Match setup", detail: "Choose the mode and map before starting, then take turns between matches." },
-  8: { title: "Black Ops III · Match setup", detail: "Agree on the mode and map, then rotate players after each match to keep the session fair." },
-  9: { title: "Back 4 Blood · Team plan", detail: "Choose a campaign chapter and difficulty, then decide who takes the lead between missions." },
-  10: { title: "World War Z · Squad plan", detail: "Pick an episode and difficulty before launching; regroup at each chapter transition." },
-  12: { title: "Black Myth: Wukong · Turn plan", detail: "Take turns at a checkpoint or after a boss encounter so each player gets a clear run." },
-  13: { title: "God of War Ragnarök · Turn plan", detail: "Agree on a chapter or checkpoint for hand-offs, especially before longer story encounters." },
-  14: { title: "Spider-Man 2 · Play plan", detail: "Choose a mission or character to start with, then swap at the next mission break." },
-  15: { title: "Ghost of Tsushima · Play plan", detail: "Pick a tale or activity, and hand over at a checkpoint so everyone gets time in the world." },
-  16: { title: "NFS Heat · Race setup", detail: "Pick a car and event, then alternate drivers between races or after each run." },
-  17: { title: "Hot Pursuit · Race setup", detail: "Choose racer or cop, set the event, and switch roles for the next pursuit." },
-  18: { title: "F1 25 · Grand Prix setup", detail: "Choose a circuit and race distance before lights out; rotate drivers between events." },
-  19: { title: "Asphalt · Race setup", detail: "Select a car and event together, then take turns chasing the next clean finish." },
-  20: { title: "The Crew 2 · Event setup", detail: "Choose a vehicle discipline and event, then switch drivers when the next event begins." },
-  21: { title: "Beach Buggy Racing 2 · Race setup", detail: "Pick a track and kart, agree on the power-up rules, and swap drivers after each race." },
-  22: { title: "Speedstorm · Race setup", detail: "Choose racers and a track before the start, then rotate drivers between races." },
-  23: { title: "Road Redemption · Race setup", detail: "Choose a route and race together; pass the controller between events or at a safe stop." },
-  24: { title: "FC 27 · Match setup", detail: "Choose your teams, match length, and sides before kickoff; switch controllers between fixtures." },
-  25: { title: "FC 26 · Match setup", detail: "Choose your teams and half length before kickoff, then take turns playing each fixture." },
-  26: { title: "Cricket 24 · Match setup", detail: "Choose teams and match format before the toss; swap batting and bowling turns by innings." },
-  27: { title: "Cricket 26 · Match setup", detail: "Set the teams and overs before play starts, then agree who bats and bowls each innings." },
-  28: { title: "WWE 2K25 · Match setup", detail: "Choose superstars and match rules before the bell, then trade turns between bouts." },
-  29: { title: "Rocket League · Match setup", detail: "Choose 1v1 or team play and set the match length before kickoff." },
-  30: { title: "NBA 2K25 · Match setup", detail: "Pick your teams and quarter length before tip-off, then switch sides for the next game." },
-  31: { title: "TopSpin 2K25 · Match setup", detail: "Choose your players and set length, then alternate serves and switch ends as you play." },
-  32: { title: "Tekken 8 · 1v1 bout", detail: "Pick your fighters and agree on the number of rounds; swap controllers after each match." },
-  33: { title: "Mortal Kombat 1 · 1v1 bout", detail: "Choose fighters and a round count, then take turns between each head-to-head bout." },
-  34: { title: "UFC 5 · 1v1 bout", detail: "Choose fighters and bout length before the walkout, then switch controllers after each fight." },
-  35: { title: "Red Dead Redemption 2 · Play plan", detail: "Choose a story chapter or free-roam activity, and hand over at the next checkpoint." },
-  36: { title: "Far Cry 6 · Mission plan", detail: "Agree on a mission and loadout before heading out; take turns at the next checkpoint." },
-  38: { title: "Stray · Chapter plan", detail: "Pick a chapter and pass the controller at a checkpoint or puzzle so everyone can explore." },
-  39: { title: "Riders Republic · Event setup", detail: "Choose a sport and event first, then rotate riders between events." },
-  40: { title: "Minecraft Legends · Play plan", detail: "Choose a campaign objective and take turns leading the next defense or expedition." },
-  41: { title: "GTA VI · Coming soon", detail: "This game is not available for sessions yet. We’ll update this page when its status changes." },
-  42: { title: "Modern Warfare III · Squad setup", detail: "Choose a mode and map, agree on team roles, and rotate players between matches." },
-  43: { title: "Epic Mickey · Chapter plan", detail: "Choose an area to explore and hand over at the next objective or checkpoint." },
-  44: { title: "WWE 2K26 · Match setup", detail: "Choose superstars and match rules before the bell, then take turns between bouts." },
-};
-
-function getSessionTip(game: Game): SessionTip {
-  const tip = sessionTips[game.id];
-  if (tip) return tip;
-  return {
-    title: `${game.title} · Session tip`,
-    detail: game.playerType.includes("MULTIPLAYER")
-      ? `Choose a mode and team setup for ${game.title} together before starting.`
-      : `Choose a mission and session length for ${game.title}, and agree on a checkpoint for hand-offs.`,
-  };
-}
-
-function DailyPopularRail({ currentGame }: Props) {
+function DailyPopularRail({ currentGame }: { currentGame: Game }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const dailyGames = useMemo(() => {
     const candidates = games.filter((candidate) => candidate.id !== currentGame.id && candidate.status !== "unavailable");
@@ -320,7 +275,11 @@ function GameTrailer({ game }: Props) {
     return <div className="game-trailer"><video src={game.video.src} controls playsInline controlsList="nodownload noremoteplayback" /></div>;
   }
 
-  return <div className="game-trailer"><iframe src={`https://drive.google.com/file/d/${game.video.id}/preview`} title={`${game.title} trailer`} allow="autoplay; fullscreen" allowFullScreen sandbox="allow-scripts allow-same-origin allow-presentation" /></div>;
+  if ("id" in game.video) {
+    return <div className="game-trailer"><iframe src={`https://drive.google.com/file/d/${game.video.id}/preview`} title={`${game.title} trailer`} allow="autoplay; fullscreen" allowFullScreen sandbox="allow-scripts allow-same-origin allow-presentation" /></div>;
+  }
+
+  return <p className="game-detail__no-trailer">A trailer is not available for this title yet.</p>;
 }
 
 function getRelevantGuidelines(game: Game) {
@@ -364,6 +323,11 @@ function GamePolicy({ game }: Props) {
 }
 
 type GalleryItem = { src: string; alt: string; label: string; thumbSrc?: string };
+const keyArtThumbnails: Record<number, string> = {
+  3: "/images/cards/320/valorant.avif",
+  24: "/images/screenshots/thumbs/fc27-keyart.webp",
+  45: "/images/screenshots/thumbs/forza-horizon-6-key-art.webp",
+};
 
 function GameScreenshotGallery({ game, selected, onSelect }: Props & {
   selected: string;
@@ -376,7 +340,7 @@ function GameScreenshotGallery({ game, selected, onSelect }: Props & {
   const screenshots: GalleryItem[] = [
     {
       src: game.image,
-      thumbSrc: game.id === 24 ? "/images/screenshots/thumbs/fc27-keyart.webp" : undefined,
+      thumbSrc: keyArtThumbnails[game.id],
       alt: `${game.title} key artwork`,
       label: "Key art",
     },
@@ -474,7 +438,7 @@ function GameScreenshotGallery({ game, selected, onSelect }: Props & {
 export default function GameDetailPage({ game }: Props) {
   const [selectedArtwork, setSelectedArtwork] = useState(game.image);
   const description = editorialDescriptions[game.id] ?? game.subtitle;
-  const sessionTip = getSessionTip(game);
+  const isForzaDefaultArtwork = game.id === 45 && selectedArtwork === game.image;
 
   useEffect(() => setSelectedArtwork(game.image), [game.id, game.image]);
 
@@ -485,6 +449,14 @@ export default function GameDetailPage({ game }: Props) {
           <Link to="/games" className="game-detail__back" aria-label="Back to all games" title="Back to all games"><FiArrowLeft aria-hidden="true" /></Link>
           <div className={`game-detail-hero__art${game.id === 32 ? " game-detail-hero__art--tekken" : ""}`}>
             <picture>
+              {game.id === 3 && selectedArtwork === game.image && (
+                <source
+                  media="(max-width: 700px)"
+                  srcSet="/images/cards/320/valorant.avif 320w, /images/cards/valorant.avif 640w"
+                  sizes="100vw"
+                  type="image/avif"
+                />
+              )}
               {game.id === 2 && selectedArtwork === game.image && (
                 <source
                   srcSet="/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
@@ -511,16 +483,25 @@ export default function GameDetailPage({ game }: Props) {
               {game.id === 24 && selectedArtwork === game.image && (
                 <source srcSet="/images/fc-27-optimized.avif" type="image/avif" />
               )}
-              <img src={selectedArtwork} alt={`${game.title} artwork`} fetchpriority="high" decoding="async" />
+              <img
+                src={isForzaDefaultArtwork ? "/images/forza-horizon-6-800.webp" : selectedArtwork}
+                srcSet={isForzaDefaultArtwork
+                  ? "/images/forza-horizon-6-480.webp 480w, /images/forza-horizon-6-800.webp 800w, /images/forza-horizon-6-1280.webp 1280w, /images/forza-horizon-6-optimized.webp 1920w"
+                  : undefined}
+                sizes={isForzaDefaultArtwork ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px" : undefined}
+                alt={`${game.title} artwork`}
+                fetchPriority="high"
+                decoding="async"
+              />
             </picture>
           </div>
           <div className="game-detail-hero__copy">
             <p className="game-detail__eyebrow">RD GAME ZONE · {game.category}</p>
             <h1 id="game-detail-title">{game.title}</h1>
-            <p className="game-detail__description">{description}</p>
+            <p className="game-detail__description">{game.subtitle}</p>
             <div className="game-detail__meta">
               <span className={`game-detail__status game-detail__status--${game.status}`}><i aria-hidden="true" />{statusLabels[game.status]}</span>
-              <div className="game-detail__platforms" aria-label={`Platforms available at RD Game Zone: ${game.platforms.join(", ")}`}>
+              <div className="game-detail__platforms" aria-label={`Game platforms: ${game.platforms.join(", ")}`}>
                 {game.platforms.map((platform) => <span className={`game-platform-mark game-platform-mark--${platform.toLowerCase()}`} key={platform}>
                   {platform === "PC" ? <FaDesktop aria-hidden="true" /> : <FaPlaystation aria-hidden="true" />}
                   <strong>{platform}</strong>
@@ -535,14 +516,14 @@ export default function GameDetailPage({ game }: Props) {
 
         <GameScreenshotGallery game={game} selected={selectedArtwork} onSelect={setSelectedArtwork} />
 
-        <DeferredContent className="game-detail-deferred game-detail-deferred--info" placeholderHeight="12rem">
-          <section className="game-detail-info" aria-label={`${game.title} session details`}>
-            <article><span className="game-detail-info__label">Genre</span><strong>{game.category}</strong></article>
-            <article><span className="game-detail-info__label">Session type</span><strong>{game.playerType}</strong></article>
-            <article><span className="game-detail-info__label">Platforms here</span><strong>{game.platforms.join(" · ")}</strong></article>
-            <article><span className="game-detail-info__label">{sessionTip.title}</span><strong>{sessionTip.detail}</strong></article>
-          </section>
+        <DeferredContent className="game-detail-deferred game-detail-deferred--about" placeholderHeight="18rem">
+          <GameAbout game={game} description={description} />
         </DeferredContent>
+        {topTenGameHighlights[game.id as TopTenGameId] && (
+          <DeferredContent className="game-detail-deferred game-detail-deferred--spotlight" placeholderHeight="20rem">
+            <TopTenSpotlight game={game} />
+          </DeferredContent>
+        )}
         <DeferredContent className="game-detail-deferred game-detail-deferred--policy" placeholderHeight="28rem">
           <GamePolicy game={game} />
           <p className="game-detail__fineprint">Ask our team to confirm this game and platform are ready before you book. Please follow the age and play rules listed on this page during your session.</p>

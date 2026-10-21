@@ -12,8 +12,9 @@ export default function GameCard({ game, rank }: Props) {
   const slug = gameSlug(game.title);
   const cardImage = `/images/cards/${slug}.webp`;
   const cardImageSet = `/images/cards/320/${slug}.webp 320w, ${cardImage} 640w`;
+  const cardAvifSet = `/images/cards/320/${slug}.avif 320w, /images/cards/520/${slug}.avif 520w, /images/cards/${slug}.avif 640w`;
   const cardImageSizes = rank
-    ? "(max-width: 760px) 74vw, (max-width: 1200px) 32vw, 25vw"
+    ? "(max-width: 760px) 70vw, (max-width: 1200px) 24vw, 25vw"
     : "(max-width: 760px) 44vw, (max-width: 1200px) 24vw, 20vw";
 
   return (
@@ -28,7 +29,7 @@ export default function GameCard({ game, rank }: Props) {
           <picture>
             <source
               type="image/avif"
-              srcSet={`/images/cards/320/${slug}.avif 320w, /images/cards/${slug}.avif 640w`}
+              srcSet={cardAvifSet}
               sizes={cardImageSizes}
             />
             <img
@@ -38,7 +39,7 @@ export default function GameCard({ game, rank }: Props) {
               alt=""
               loading={rank === 1 ? "eager" : "lazy"}
               fetchPriority={rank === 1 ? "high" : "auto"}
-              decoding={rank === 1 ? "sync" : "async"}
+              decoding="async"
               draggable={false}
             />
           </picture>

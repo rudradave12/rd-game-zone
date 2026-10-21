@@ -49,10 +49,6 @@ for (const match of index.matchAll(stylePattern)) {
 if (hashes.size === 0) {
   throw new Error("No inline executable scripts were found for the Content-Security-Policy.");
 }
-if (styleHashes.size === 0) {
-  throw new Error("No critical inline styles were found for the Content-Security-Policy.");
-}
-
 const output = headers
   .replace("__CSP_SCRIPT_HASHES__", [...hashes].join(" "))
   .replace("__CSP_STYLE_HASHES__", [...styleHashes].join(" "));

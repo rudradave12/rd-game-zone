@@ -13,16 +13,11 @@ import { useEffect } from "react";
 import Navbar from "~/components/Navbar";
 import gameCatalogStyles from "~/styles/game-catalog.css?url";
 import gameDetailStyles from "~/styles/game-detail.css?url";
+import gameLibraryShellStyles from "~/styles/game-library-shell.css?url";
 
 /* ================= STYLES ================= */
 /* The aggregate preserves CSS order while avoiding multiple blocking fetches. */
 import appStyles from "~/styles/app.css?url";
-
-/* Establish stable document geometry before the full stylesheet can be
-   reattached during SPA route hydration. The build hashes this block into the
-   strict CSP, so it remains a narrowly scoped inline style. */
-const criticalDocumentStyles =
-  "html{min-height:100%;overflow-x:hidden}body{min-width:0;min-height:100dvh;margin:0;overflow-x:hidden}body:not(.app-ready){visibility:hidden}body:not(.app-ready) .app-loading__main{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;min-height:100dvh;overflow:hidden;visibility:visible;background:#f5f8ff;color:#061238}body:not(.app-ready) .app-loading__content{position:relative;z-index:1;display:grid;min-height:100dvh;place-items:center;align-content:center;text-align:center}body:not(.app-ready) .app-loading__mark{display:grid;width:64px;height:64px;place-items:center;border-radius:21px}body:not(.app-ready) .app-loading__mark img{width:40px;height:41px}body:not(.app-ready) .app-loading__main p{margin-top:1rem;font-size:1rem;line-height:1.6}body:not(.app-ready) .app-loading__main span{margin-top:.2rem;font-size:.78rem;line-height:1.6}html[data-theme=dark] body:not(.app-ready) .app-loading__main{background:#020711;color:#f7f9ff}body.app-ready .app-loading__main{display:none}";
 
 /* Keep theme selection and the critical artwork hint inline in the document.
    This script runs before the stylesheet links, so it must not add a separate
@@ -64,6 +59,7 @@ const preHydrationScript = `(() => {
   };
 
   const path = window.location.pathname;
+  addStyleHint(path === "/games" ? "${gameLibraryShellStyles}" : "${appStyles}");
   if (path === "/games") addModuleHint("__RD_GAMES_INDEX_MODULE__");
   else if (/^\\/games\\/[^/]+$/.test(path)) addModuleHint("__RD_GAMES_SLUG_MODULE__");
 
@@ -76,8 +72,8 @@ const preHydrationScript = `(() => {
     addStyleHint("${gameCatalogStyles}");
     addImageHint(
       "/images/cards/gta-online.avif",
-      "/images/cards/320/gta-online.avif 320w, /images/cards/gta-online.avif 640w",
-      "(max-width: 760px) 74vw, (max-width: 1200px) 32vw, 25vw",
+      "/images/cards/320/gta-online.avif 320w, /images/cards/520/gta-online.avif 520w, /images/cards/gta-online.avif 640w",
+      "(max-width: 760px) 70vw, (max-width: 1200px) 24vw, 25vw",
       "image/avif"
     );
   }
@@ -108,6 +104,7 @@ const preHydrationScript = `(() => {
     "wwe-2k26": "/images/wwe-2k26-optimized.webp",
     "far-cry-6": "/images/farcry-6-optimized.webp",
     "stray": "/images/stray-optimized.webp",
+    "forza-horizon-6": "/images/forza-horizon-6-800.webp",
   };
   const gameSlug = path.match(/^\\/games\\/([^/]+)$/)?.[1];
   if (gameSlug) {
@@ -116,17 +113,29 @@ const preHydrationScript = `(() => {
   }
   const isPortrait = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
   const isFcPortrait = gameSlug === "ea-sports-fc-27" && isPortrait;
+  const isValorantSmall = gameSlug === "valorant" && window.matchMedia("(max-width: 700px)").matches;
   const isGtaOnline = gameSlug === "gta-online";
+  const isForza = gameSlug === "forza-horizon-6";
   const gameImage = isFcPortrait
     ? "/images/fc-27-mobile-480.avif"
+    : isValorantSmall
+      ? "/images/cards/valorant.avif"
     : gameSlug && gameArt[gameSlug];
-  const gameImageSrcset = isFcPortrait
-    ? "/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
+  const gameImageSrcset = isForza
+    ? "/images/forza-horizon-6-480.webp 480w, /images/forza-horizon-6-800.webp 800w, /images/forza-horizon-6-1280.webp 1280w, /images/forza-horizon-6-optimized.webp 1920w"
+    : isFcPortrait
+      ? "/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
+    : isValorantSmall
+      ? "/images/cards/320/valorant.avif 320w, /images/cards/valorant.avif 640w"
     : isGtaOnline
       ? "/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
       : undefined;
-  const gameImageSizes = isFcPortrait || isGtaOnline ? "100vw" : undefined;
-  const gameImageType = gameSlug === "ea-sports-fc-27" || isGtaOnline ? "image/avif" : undefined;
+  const gameImageSizes = isForza
+    ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px"
+    : isFcPortrait || isValorantSmall || isGtaOnline
+      ? "100vw"
+      : undefined;
+  const gameImageType = gameSlug === "ea-sports-fc-27" || isValorantSmall || isGtaOnline ? "image/avif" : undefined;
   if (gameImage) addImageHint(gameImage, gameImageSrcset, gameImageSizes, gameImageType);
 
 })();`;
@@ -204,16 +213,6 @@ export const meta: MetaFunction = () => [
    LINKS — Preload, Fonts, Stylesheets, Icons
    ================================================================ */
 export const links: LinksFunction = () => [
-  /* ── Core styles ── */
-  { rel: "preload", as: "style", href: appStyles },
-  { rel: "stylesheet", href: appStyles },
-
-  /* ── Home page ── */
-
-  /* ── Game Library ── */
-
-  /* ── Extra ── */
-
   /* ── Icons ── */
   { rel: "icon", href: "/icons/logo.svg", type: "image/svg+xml" },
   { rel: "manifest", href: "/manifest.webmanifest" },
@@ -371,63 +370,22 @@ function HashScrollHandler() {
   return null;
 }
 
-function AppReadyHandler() {
-  useEffect(() => {
-    let active = true;
-    let completed = false;
-    let fallbackTimer = 0;
-    const stylesheet = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')]
-      .find((link) => link.href.includes("/assets/app-"));
-
-    const revealApp = () => {
-      if (!active || completed) return;
-      completed = true;
-      window.clearTimeout(fallbackTimer);
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          if (active) document.body.classList.add("app-ready");
-        });
-      });
-    };
-
-    let stylesheetIsReady = false;
-    try {
-      stylesheetIsReady = Boolean(stylesheet?.sheet && stylesheet.sheet.cssRules.length > 0);
-    } catch {
-      // A stylesheet that cannot be inspected is still covered by its load event.
-    }
-
-    if (!stylesheet || stylesheetIsReady) revealApp();
-    else {
-      stylesheet.addEventListener("load", revealApp, { once: true });
-      stylesheet.addEventListener("error", revealApp, { once: true });
-      fallbackTimer = window.setTimeout(revealApp, 2500);
-    }
-
-    return () => {
-      active = false;
-      window.clearTimeout(fallbackTimer);
-      stylesheet?.removeEventListener("load", revealApp);
-      stylesheet?.removeEventListener("error", revealApp);
-    };
-  }, []);
-
-  return null;
-}
-
 /* ================================================================
    APP ROOT
    ✅ Static / Cloudflare Pages compatible (no SSR exports needed)
    ✅ JSON-LD injected inline in <head>
    ================================================================ */
 export default function App() {
+  const location = useLocation();
+  const pageStyles = location.pathname === "/games" ? gameLibraryShellStyles : appStyles;
+
   return (
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
-        <style>{criticalDocumentStyles}</style>
         <Meta />
         <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
+        <link rel="stylesheet" href={pageStyles} />
         <Links />
 
         {/* ── Local Business JSON-LD ── */}
@@ -450,14 +408,6 @@ export default function App() {
       </head>
 
       <body>
-        <AppReadyHandler />
-        <main className="app-loading__main" aria-label="Loading RD Game Zone">
-          <div className="app-loading__content">
-            <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
-            <p>RD Game Zone</p>
-            <span>Loading your next session</span>
-          </div>
-        </main>
         <HashScrollHandler />
         <Navbar />
         <Outlet />
@@ -475,14 +425,12 @@ export default function App() {
    whenever a route throws or a URL doesn't match, so bad URLs stop
    silently rendering the homepage. Cloudflare config is unaffected.
    ================================================================ */
-/* SPA mode generates the Cloudflare Pages index from this component. Keeping
-   it branded prevents a blank/system loading document while route modules load. */
+/* SPA mode generates the Cloudflare Pages index from this component. */
 export function HydrateFallback() {
   return (
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
-        <style>{criticalDocumentStyles}</style>
         <Meta />
         <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
         <Links />
@@ -500,13 +448,6 @@ export function HydrateFallback() {
         />
       </head>
       <body>
-        <main className="app-loading__main" aria-label="Loading RD Game Zone">
-          <div className="app-loading__content">
-            <div className="app-loading__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="40" height="41" /></div>
-            <p>RD Game Zone</p>
-            <span>Loading your next session</span>
-          </div>
-        </main>
         <Scripts />
       </body>
     </html>
