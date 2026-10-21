@@ -46,7 +46,7 @@ export default function GameLibraryHome() {
   }, []);
 
   return (
-    <section id="game-library" className="featured-library" aria-labelledby="featured-library-title">
+    <section className="featured-library" aria-labelledby="featured-library-title">
       <div className="ps-section-heading featured-library__heading">
         <div>
           <p className="ps-kicker">The RD Game Zone lineup</p>

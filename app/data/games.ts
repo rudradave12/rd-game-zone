@@ -73,7 +73,42 @@ export const games: Game[] = [
     screenshots: [
       {
         src: "/images/screenshots/gta-online-store.avif",
-        alt: "Grand Theft Auto V gameplay screenshot from the PC store edition.",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 001.",
+      },
+      {
+        src: "/images/screenshots/gta-online-store-002.avif",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 002.",
+      },
+      {
+        src: "/images/screenshots/gta-online-store-004.avif",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 004.",
+      },
+      {
+        src: "/images/screenshots/gta-online-standalone-montage.avif",
+        thumbSrc: "/images/screenshots/thumbs/gta-online-standalone-montage.webp",
+        alt: "Grand Theft Auto Online standalone edition gameplay montage.",
+      },
+      {
+        src: "/images/screenshots/gta-online-faster-loading.avif",
+        thumbSrc: "/images/screenshots/thumbs/gta-online-faster-loading.webp",
+        alt: "Grand Theft Auto Online faster-loading update gameplay screenshot.",
+      },
+      {
+        src: "/images/screenshots/gta-online-gen9-vista.avif",
+        thumbSrc: "/images/screenshots/thumbs/gta-online-gen9-vista.webp",
+        alt: "Grand Theft Auto Online current-generation Vista update screenshot.",
+      },
+      {
+        src: "/images/screenshots/gta-online-store-011.avif",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 011.",
+      },
+      {
+        src: "/images/screenshots/gta-online-store-012.avif",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 012.",
+      },
+      {
+        src: "/images/screenshots/gta-online-store-013.avif",
+        alt: "Grand Theft Auto V PC store gameplay screenshot 013.",
       },
     ],
     video: {
@@ -286,6 +321,20 @@ export const games: Game[] = [
     platforms: ["PS5",],
     status: "available",
     image: "/images/f1-25.webp",
+    screenshots: [
+      {
+        src: "/images/screenshots/f1-25-collab-events.avif",
+        alt: "F1 25 collaboration events",
+      },
+      {
+        src: "/images/screenshots/f1-25-steering-wheel.avif",
+        alt: "F1 25 cockpit and steering-wheel view",
+      },
+      {
+        src: "/images/screenshots/f1-25-race-grid.jpg",
+        alt: "F1 25 cars lined up on a race starting grid",
+      },
+    ],
     video: {
       type: "youtube",
       id: "u5rWBgBjDsc",

@@ -795,7 +795,6 @@ body.modal-open { position: fixed; width: 100%; overflow: hidden; }
 .game-card__media picture img { transition: transform 520ms cubic-bezier(.2,.8,.2,1),filter 520ms ease; }
 .game-card:hover .game-card__media picture img { filter: saturate(1.08); transform: scale(1.06); }
 .game-card__media-overlay { background: linear-gradient(0deg,rgba(1,17,55,.7),rgba(1,17,55,.03) 60%); }
-.game-card__media::after { position: absolute; width: 40%; aspect-ratio: 1; top: -30%; right: -10%; border-radius: 50%; content: ""; pointer-events: none; opacity: .7; background: radial-gradient(circle,rgba(255,255,255,.42),transparent 68%); }
 .game-card__media-topline { justify-content: flex-end; }
 .game-card__status { gap: .3rem; padding: .3rem .48rem; background: rgba(2,15,45,.7); box-shadow: 0 4px 15px rgba(0,0,0,.13); backdrop-filter: blur(8px); }
 .game-card__age { width: 30px; height: 30px; box-shadow: 0 4px 12px rgba(207,41,70,.35); }

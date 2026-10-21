@@ -11,7 +11,7 @@ const bookingRules = [
 
 export default function Booking() {
   return (
-    <section id="booking" className="booking-section" aria-labelledby="booking-title">
+    <section className="booking-section" aria-labelledby="booking-title">
       <div className="booking-section__intro">
         <p className="ps-kicker">Reservations & contact</p>
         <h2 id="booking-title">Ready when you are.</h2>

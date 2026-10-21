@@ -8,21 +8,22 @@ const headersPath = resolve(clientDir, "_headers");
 let index = await readFile(indexPath, "utf8");
 const headers = await readFile(headersPath, "utf8");
 
-// The static SPA shell is also returned for deep links. Preload the small
-// route modules used by the library and game details so route discovery does
-// not postpone first paint on direct visits (notably the key-art LCP image).
+// The static SPA shell is also returned for deep links. Resolve route-module
+// hints into the path-aware early script so only the route being opened is
+// fetched; the homepage should not compete with game-detail chunks.
 const clientAssets = await readdir(resolve(clientDir, "assets"));
 const routeModules = clientAssets
   .filter((file) => /^games\._(?:index|slug)-[\w-]+\.js$/.test(file))
   .sort();
-const routePreloads = routeModules
-  .map((file) => `<link rel="modulepreload" href="/assets/${file}"/>`)
-  .filter((link) => !index.includes(link));
-if (routePreloads.length > 0) {
-  if (!index.includes("</head>")) throw new Error("Could not find </head> in the static SPA shell.");
-  index = index.replace("</head>", `${routePreloads.join("")}\n</head>`);
-  await writeFile(indexPath, index, "utf8");
+const gamesIndexModule = routeModules.find((file) => file.startsWith("games._index-"));
+const gamesSlugModule = routeModules.find((file) => file.startsWith("games._slug-"));
+if (!gamesIndexModule || !gamesSlugModule) {
+  throw new Error("Could not resolve the game library and detail route modules.");
 }
+index = index
+  .replaceAll("__RD_GAMES_INDEX_MODULE__", `/assets/${gamesIndexModule}`)
+  .replaceAll("__RD_GAMES_SLUG_MODULE__", `/assets/${gamesSlugModule}`);
+await writeFile(indexPath, index, "utf8");
 
 const scriptPattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 const stylePattern = /<style\b[^>]*>([\s\S]*?)<\/style>/gi;

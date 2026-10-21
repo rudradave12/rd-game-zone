@@ -20,7 +20,7 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="rate-section" aria-labelledby="rates-title">
+    <section className="rate-section" aria-labelledby="rates-title">
       <div className="ps-section-heading">
         <div>
           <p className="ps-kicker">Simple hourly rates</p>

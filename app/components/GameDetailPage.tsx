@@ -369,6 +369,10 @@ function GameScreenshotGallery({ game, selected, onSelect }: Props & {
   selected: string;
   onSelect: (src: string) => void;
 }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const screenshots: GalleryItem[] = [
     {
       src: game.image,
@@ -382,21 +386,86 @@ function GameScreenshotGallery({ game, selected, onSelect }: Props & {
     })),
   ];
 
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const updateScrollState = () => {
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      setHasOverflow(maxScroll > 2);
+      setCanScrollLeft(track.scrollLeft > 2);
+      setCanScrollRight(maxScroll - track.scrollLeft > 2);
+    };
+
+    updateScrollState();
+    track.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    const observer = typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateScrollState) : null;
+    observer?.observe(track);
+    return () => {
+      track.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+      observer?.disconnect();
+    };
+  }, [screenshots.length]);
+
+  const scrollScreenshots = (direction: -1 | 1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollBy({
+      left: direction * track.clientWidth * 0.82,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    });
+  };
+
+  const galleryId = `game-screenshots-${game.id}`;
+
   return (
     <section className="game-screenshots" aria-label={`${game.title} artwork and screenshots`}>
-      <div className="game-screenshots__thumbs" role="group" aria-label={`Choose ${game.title} artwork or screenshot`}>
-        {screenshots.map((screenshot) => (
-          <button
-            key={screenshot.src}
-            className={`game-screenshots__thumb${selected === screenshot.src ? " is-selected" : ""}`}
-            type="button"
-            onClick={() => onSelect(screenshot.src)}
-            aria-label={`Show ${screenshot.label}: ${screenshot.alt}`}
-            aria-pressed={selected === screenshot.src}
-          >
-            <img src={screenshot.thumbSrc ?? screenshot.src} alt="" loading="lazy" decoding="async" />
-          </button>
-        ))}
+      <div className="game-screenshots__rail">
+        <button
+          type="button"
+          className="game-screenshots__nav game-screenshots__nav--left"
+          onClick={() => scrollScreenshots(-1)}
+          disabled={!canScrollLeft}
+          hidden={!hasOverflow}
+          aria-label={`Show previous ${game.title} screenshots`}
+          aria-controls={galleryId}
+        >
+          <FiChevronLeft aria-hidden="true" />
+        </button>
+        <div
+          ref={trackRef}
+          id={galleryId}
+          className="game-screenshots__thumbs"
+          role="region"
+          tabIndex={0}
+          aria-label={`Choose ${game.title} artwork or screenshot`}
+        >
+          {screenshots.map((screenshot) => (
+            <button
+              key={screenshot.src}
+              className={`game-screenshots__thumb${selected === screenshot.src ? " is-selected" : ""}`}
+              type="button"
+              onClick={() => onSelect(screenshot.src)}
+              aria-label={`Show ${screenshot.label}: ${screenshot.alt}`}
+              aria-pressed={selected === screenshot.src}
+            >
+              <img src={screenshot.thumbSrc ?? screenshot.src} alt="" loading="lazy" decoding="async" />
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="game-screenshots__nav game-screenshots__nav--right"
+          onClick={() => scrollScreenshots(1)}
+          disabled={!canScrollRight}
+          hidden={!hasOverflow}
+          aria-label={`Show more ${game.title} screenshots`}
+          aria-controls={galleryId}
+        >
+          <FiChevronRight aria-hidden="true" />
+        </button>
       </div>
     </section>
   );
@@ -416,6 +485,13 @@ export default function GameDetailPage({ game }: Props) {
           <Link to="/games" className="game-detail__back" aria-label="Back to all games" title="Back to all games"><FiArrowLeft aria-hidden="true" /></Link>
           <div className={`game-detail-hero__art${game.id === 32 ? " game-detail-hero__art--tekken" : ""}`}>
             <picture>
+              {game.id === 2 && selectedArtwork === game.image && (
+                <source
+                  srcSet="/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
+                  sizes="100vw"
+                  type="image/avif"
+                />
+              )}
               {game.id === 24 && selectedArtwork === game.image && (
                 <source
                   media="(max-width: 700px) and (orientation: portrait)"

@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "@remix-run/react";
 import { useCallback, useEffect, useState } from "react";
 import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
-import { games } from "~/data/games";
 
 type SectionId = "about" | "pricing" | "booking";
 type Theme = "light" | "dark";
@@ -154,7 +153,7 @@ export default function Navbar() {
         <div id="mobile-navigation" className="ps-menu__panel" role="dialog" aria-modal="true" aria-label="Mobile navigation">
           <p className="ps-menu__eyebrow">Explore RD Game Zone</p>
           <nav className="ps-menu__links" aria-label="Mobile navigation">{navigation.map((item) => renderItem(item, true))}</nav>
-          <Link to="/games" className="ps-button ps-button--primary ps-menu__cta" onClick={() => setMenuOpen(false)}>View all {games.length} games</Link>
+          <Link to="/games" className="ps-button ps-button--primary ps-menu__cta" onClick={() => setMenuOpen(false)}>View all games</Link>
         </div>
         <button type="button" className="ps-menu__backdrop" aria-label="Close navigation" onClick={() => setMenuOpen(false)} />
       </div>

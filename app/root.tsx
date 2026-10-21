@@ -54,8 +54,19 @@ const preHydrationScript = `(() => {
     preload.fetchPriority = "high";
     document.head.appendChild(preload);
   };
+  const addModuleHint = (href) => {
+    if (!href || href.startsWith("__RD_")) return;
+    const preload = document.createElement("link");
+    preload.rel = "modulepreload";
+    preload.href = href;
+    preload.fetchPriority = "high";
+    document.head.appendChild(preload);
+  };
 
   const path = window.location.pathname;
+  if (path === "/games") addModuleHint("__RD_GAMES_INDEX_MODULE__");
+  else if (/^\\/games\\/[^/]+$/.test(path)) addModuleHint("__RD_GAMES_SLUG_MODULE__");
+
   if (path === "/" || path === "/index.html") {
     const isPortrait = window.matchMedia("(max-width: 1100px) and (orientation: portrait)").matches;
     addImageHint(isPortrait ? "/images/valorant-mobile-portraite.jpg" : "/images/hero/valorant.jpg");
@@ -74,7 +85,7 @@ const preHydrationScript = `(() => {
   const gameArt = {
     "grand-theft-auto-vi": "/images/gta-vi-cover-optimized.webp",
     "call-of-duty-black-ops-7": "/images/cod-blackops-7-optimized.webp",
-    "gta-online": "/images/gta-5online.jpeg",
+    "gta-online": "/images/gta-online-hero-900.avif",
     "valorant": "/images/valorant.jpg",
     "counter-strike-2": "/images/cs-go-2-optimized.webp",
     "apex-legends": "/images/apex-legends-optimized.webp",
@@ -105,14 +116,18 @@ const preHydrationScript = `(() => {
   }
   const isPortrait = window.matchMedia("(max-width: 700px) and (orientation: portrait)").matches;
   const isFcPortrait = gameSlug === "ea-sports-fc-27" && isPortrait;
+  const isGtaOnline = gameSlug === "gta-online";
   const gameImage = isFcPortrait
     ? "/images/fc-27-mobile-480.avif"
     : gameSlug && gameArt[gameSlug];
   const gameImageSrcset = isFcPortrait
     ? "/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
-    : undefined;
-  const gameImageType = gameSlug === "ea-sports-fc-27" ? "image/avif" : undefined;
-  if (gameImage) addImageHint(gameImage, gameImageSrcset, isFcPortrait ? "100vw" : undefined, gameImageType);
+    : isGtaOnline
+      ? "/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
+      : undefined;
+  const gameImageSizes = isFcPortrait || isGtaOnline ? "100vw" : undefined;
+  const gameImageType = gameSlug === "ea-sports-fc-27" || isGtaOnline ? "image/avif" : undefined;
+  if (gameImage) addImageHint(gameImage, gameImageSrcset, gameImageSizes, gameImageType);
 
 })();`;
 

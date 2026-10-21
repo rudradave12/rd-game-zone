@@ -38,7 +38,7 @@ export default function GameCard({ game, rank }: Props) {
               alt=""
               loading={rank === 1 ? "eager" : "lazy"}
               fetchPriority={rank === 1 ? "high" : "auto"}
-              decoding="async"
+              decoding={rank === 1 ? "sync" : "async"}
               draggable={false}
             />
           </picture>

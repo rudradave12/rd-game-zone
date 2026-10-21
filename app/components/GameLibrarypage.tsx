@@ -30,6 +30,16 @@ const GAME_LANES = [
 type Category = (typeof CATEGORIES)[number];
 type Status = (typeof STATUSES)[number];
 
+function normalizeFilterValue(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .trim()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .toLocaleUpperCase();
+}
+
 function buildSchema() {
   return {
     "@context": "https://schema.org",
@@ -59,8 +69,8 @@ export default function GameLibraryPage() {
     const query = search.trim().toLowerCase();
 
     return games.filter((game) => {
-      const matchesCategory = category === "ALL" || game.category.toUpperCase() === category;
-      const matchesStatus = status === "ALL" || game.status.toUpperCase() === status;
+      const matchesCategory = category === "ALL" || normalizeFilterValue(game.category) === category;
+      const matchesStatus = status === "ALL" || normalizeFilterValue(game.status) === status;
       const matchesSearch = !query || game.title.toLowerCase().includes(query);
 
       return matchesCategory && matchesStatus && matchesSearch;
@@ -314,7 +324,7 @@ export default function GameLibraryPage() {
                 </section>
 
                 {GAME_LANES.map(([title, laneCategory]) => {
-                  const laneGames = games.filter((game) => game.category === laneCategory);
+                  const laneGames = games.filter((game) => normalizeFilterValue(game.category) === laneCategory);
                   if (!laneGames.length) return null;
                   return (
                     <section className="library-lane" key={laneCategory} aria-labelledby={`lane-${gameSlug(title)}`}>

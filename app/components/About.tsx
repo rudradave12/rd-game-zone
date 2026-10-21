@@ -7,7 +7,7 @@ const standards = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="lounge-intro" aria-labelledby="about-title">
+    <section className="lounge-intro" aria-labelledby="about-title">
       <div className="lounge-intro__grid">
         <div className="lounge-intro__copy">
           <p className="ps-kicker">Made for players</p>

@@ -105,6 +105,26 @@ body.modal-open {
   }
 }
 
+/* Keep below-the-fold home sections out of the initial React mount while
+   reserving a predictable scroll range until each section is near view. */
+.home-deferred[id] { scroll-margin-top: calc(var(--nav-height) + 1rem); }
+.home-deferred--ticker:not(.home-deferred--loaded) { min-height: 62px; }
+.home-deferred--about:not(.home-deferred--loaded) { min-height: 52rem; }
+.home-deferred--library:not(.home-deferred--loaded) { min-height: 50rem; }
+.home-deferred--pricing:not(.home-deferred--loaded) { min-height: 38rem; }
+.home-deferred--booking:not(.home-deferred--loaded) { min-height: 48rem; }
+.home-deferred--experience:not(.home-deferred--loaded) { min-height: 34rem; }
+.home-deferred--footer:not(.home-deferred--loaded) { min-height: 42rem; }
+
+@media (max-width: 700px) {
+  .home-deferred--about:not(.home-deferred--loaded) { min-height: 56rem; }
+  .home-deferred--library:not(.home-deferred--loaded) { min-height: 55rem; }
+  .home-deferred--pricing:not(.home-deferred--loaded) { min-height: 43rem; }
+  .home-deferred--booking:not(.home-deferred--loaded) { min-height: 53rem; }
+  .home-deferred--experience:not(.home-deferred--loaded) { min-height: 33rem; }
+  .home-deferred--footer:not(.home-deferred--loaded) { min-height: 39rem; }
+}
+
 /* Keep links and service labels legible on the deep-blue footer even when
    browser default anchor colors or the quiet-button surface are inherited. */
 .ps-footer .ps-footer__column a[href],
@@ -443,12 +463,12 @@ body.modal-open {
   .library-empty__icon { margin-inline: auto; }
 }
 
-/* Home catalogue: give tablet portrait artwork enough room to read while
-   keeping the existing three-across rhythm in tablet landscape. */
+/* Keep the home catalogue on the same compact, multi-card rhythm as desktop
+   across tablet orientations; no single poster should take over the row. */
 @media (min-width: 701px) and (max-width: 1100px) and (orientation: portrait) {
   .featured-library__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(14px, 2.2vw, 22px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.8vw, 18px);
   }
 
   .featured-game:nth-child(n) {
@@ -456,7 +476,22 @@ body.modal-open {
   }
 
   .featured-game__media { aspect-ratio: 16 / 9; }
-  .featured-game__content { padding: clamp(.8rem, 1.8vw, 1.1rem); }
+  .featured-game__content { padding: clamp(.65rem, 1.3vw, .95rem); }
+}
+
+/* Narrow tablet/split-screen portrait widths should keep the compact tablet
+   catalogue instead of letting one featured wallpaper dominate the row. */
+@media (min-width: 600px) and (max-width: 700px) and (orientation: portrait) {
+  .featured-library__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .65rem;
+  }
+
+  .featured-game:nth-child(n) { grid-column: span 1; }
+  .featured-game__media { aspect-ratio: 16 / 9; }
+  .featured-game__content { padding: .65rem; }
+  .featured-game__content h3 { font-size: .82rem; }
+  .featured-game__content span { display: block; font-size: .62rem; }
 }
 
 @media (min-width: 701px) and (max-width: 1100px) and (orientation: landscape) {

@@ -806,11 +806,11 @@ html[data-theme="light"] .game-detail-hero__copy { background: none !important; 
   padding-inline: 1.2rem !important;
   border: 1px solid rgba(255, 255, 255, .25) !important;
   color: #fff !important;
-  background: #157bd1 !important;
+  background: #0b67b6 !important;
   box-shadow: 0 10px 26px rgba(2, 17, 37, .38), inset 0 1px rgba(255, 255, 255, .24) !important;
 }
 .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__watch:hover {
-  background: #2b94e9 !important;
+  background: #0b5fa8 !important;
 }
 .game-detail-page .game-policy .game-detail__eyebrow,
 .game-detail-page .game-popular .game-detail__eyebrow {
@@ -1062,4 +1062,74 @@ html[data-theme="dark"] .game-detail-page .game-popular .game-detail__eyebrow {
   .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms { margin-top: .32rem !important; }
   .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__actions { margin-top: .5rem !important; }
   .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__watch { min-height: 2.55rem !important; }
+}
+
+/* A Steam-like thumbnail rail: count visible art by available width, with
+   glass-steel paging controls on precise-pointer devices and native swiping
+   left intact for touch screens. */
+.game-screenshots__rail { position: relative; min-width: 0; }
+.game-screenshots__thumbs { scroll-padding-inline: .2rem; }
+.game-screenshots__nav[hidden] { display: none !important; }
+.game-screenshots__nav {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  display: none;
+  width: 2.85rem;
+  height: 2.85rem;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(219, 237, 255, .52);
+  border-radius: 50%;
+  color: #f7fbff;
+  background: linear-gradient(145deg, rgba(27, 54, 83, .92), rgba(5, 18, 34, .88));
+  box-shadow: 0 10px 28px rgba(1, 10, 23, .3), inset 0 1px rgba(255, 255, 255, .18), 0 0 0 4px rgba(255, 255, 255, .08);
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 180ms ease, box-shadow 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+.game-screenshots__nav--left { left: .45rem; }
+.game-screenshots__nav--right { right: .45rem; }
+.game-screenshots__nav svg { width: 1.22rem; height: 1.22rem; stroke-width: 2.25; }
+.game-screenshots__nav:hover:not(:disabled),
+.game-screenshots__nav:focus-visible:not(:disabled) {
+  background: linear-gradient(145deg, #147de1, #0755b2);
+  box-shadow: 0 12px 30px rgba(0, 93, 198, .38), inset 0 1px rgba(255, 255, 255, .24), 0 0 0 4px rgba(33, 139, 255, .16);
+  transform: translateY(-50%) scale(1.05);
+}
+.game-screenshots__nav:disabled { opacity: .38; cursor: default; }
+.game-screenshots__nav:focus-visible { outline: 2px solid #a9d8ff; outline-offset: 3px; }
+
+@media (min-width: 1200px) {
+  .game-screenshots__thumb { flex-basis: calc((100% - 6 * .65rem) / 7); }
+}
+@media (min-width: 901px) and (max-width: 1199px) {
+  .game-screenshots__thumb { flex-basis: calc((100% - 5 * .65rem) / 6); }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .game-screenshots__thumb { flex-basis: calc((100% - 4 * .55rem) / 5); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .game-screenshots__nav { display: grid; }
+}
+
+/* Tablet info cards use two roomy columns so long game-specific setup notes
+   wrap into short, readable blocks instead of tall, narrow slivers. */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .game-detail-page .game-detail-info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: clamp(.65rem, 1.35vw, 1rem);
+  }
+
+  .game-detail-page .game-detail-info article {
+    min-height: 7.2rem;
+    padding: clamp(.85rem, 1.8vw, 1.15rem);
+    gap: .55rem;
+  }
+
+  .game-detail-page .game-detail-info__label { font-size: .66rem; }
+  .game-detail-page .game-detail-info strong { font-size: .88rem; line-height: 1.45; }
 }
