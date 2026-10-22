@@ -3,7 +3,7 @@ import { FiArrowUpRight, FiClock, FiCreditCard, FiMapPin, FiMessageCircle, FiPho
 const bookingRules = [
   { icon: FiMapPin, title: "Store visit or call", description: "Book via store visit or phone call." },
   { icon: FiCreditCard, title: "Advance payment", description: "Advance payment confirms your slot immediately." },
-  { icon: FiShield, title: "Non-refundable", description: "Payments are strictly non-refundable." },
+  { icon: FiShield, title: "Customer cancellations", description: "Advance payments are non-refundable for customer cancellations." },
   { icon: FiTag, title: "Exclusive slot", description: "Reserved slots are exclusive and cannot be taken by others." },
   { icon: FiClock, title: "Skip the wait", description: "Pay in advance to skip the wait." },
   { icon: FiClock, title: "Hourly billing", description: "Sessions are charged strictly on an hourly basis only." },

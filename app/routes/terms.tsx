@@ -6,11 +6,15 @@ import { useEffect } from "react";
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => [
-  { title: "Terms & Conditions — RD Game Zone" },
-  { name: "description", content: "Read the RD Game Zone Terms & Conditions covering website usage, gaming center rules, booking policy, and intellectual property protection." },
+  { title: "Terms & Conditions — RD Game Zone™" },
+  { name: "description", content: "Terms for using the RD Game Zone™ website and Ahmedabad gaming venue, including sessions, original brand content, and third-party game trademarks." },
 ];
 
-const EMAIL = "support@rdgamezone.com";
+const EMAIL = "rdgamezoneofficial@gmail.com";
+const CONTACT_PHONE = "+91 76655 33991";
+const CONTACT_TEL = "+917665533991";
+const CONTACT_WHATSAPP = "https://wa.me/917665533991";
+const CONTACT_LINK = <a href={CONTACT_WHATSAPP} className="legal-link" target="_blank" rel="noopener noreferrer">WhatsApp or call {CONTACT_PHONE}</a>;
 
 const SECTIONS = [
   {
@@ -25,17 +29,27 @@ const SECTIONS = [
     ),
   },
   {
+    id: "about-rd-game-zone",
+    heading: "About RD Game Zone",
+    content: (
+      <>
+        <p>RD Game Zone™ is the public-facing brand for an independent gaming and e-sports venue in Shahibag, Ahmedabad. This website shares information about the venue, gaming sessions, rates, game library, guidelines, and ways to contact or visit us.</p>
+        <p>This is not an online game store, marketplace, publisher, or game-download service. The game library identifies titles that may be available to play at the venue; availability can change, so please contact us before visiting if a particular title matters to your plans. RD Game Zone does not sell or transfer ownership of video games through this website.</p>
+      </>
+    ),
+  },
+  {
     id: "website-usage",
     heading: "Website Usage",
     content: (
       <>
-        <p>You agree to use this website only for lawful purposes and in a manner consistent with all applicable laws and regulations. You must not:</p>
+        <p>You may access and use this website to learn about RD Game Zone and its venue services. Use the site lawfully and in a way that does not interfere with other visitors or our systems. You must not:</p>
         <ul className="legal-list">
           <li>Use the site in any way that violates any applicable local, national, or international law or regulation.</li>
           <li>Transmit any unsolicited or unauthorized advertising, promotional material, or any other form of spam.</li>
           <li>Attempt to gain unauthorized access to any part of our website, servers, or related systems or networks.</li>
           <li>Engage in conduct that restricts or inhibits anyone's use or enjoyment of the website, or which may harm RD Game Zone or other users.</li>
-          <li>Reproduce, duplicate, copy, sell, resell, or exploit any portion of the website without our express written permission.</li>
+          <li>Reproduce or commercially exploit RD Game Zone-owned website material or branding except as permitted by law or the Brand &amp; Original Content section below.</li>
         </ul>
         <p>RD Game Zone reserves the right to suspend or terminate access to the website for any user who violates these terms.</p>
       </>
@@ -65,13 +79,13 @@ const SECTIONS = [
     heading: "Booking & Cancellation Policy",
     content: (
       <>
-        <p>The following policies govern all bookings made through our website, in-store, or via phone:</p>
+        <p>Bookings are arranged by phone, WhatsApp, or in person; the website does not accept booking details or payments. The following terms apply to those sessions:</p>
         <ul className="legal-list">
-          <li><strong>Booking Confirmation:</strong> A booking is confirmed only upon receipt of confirmation from RD Game Zone via SMS, email, or verbal confirmation in-store.</li>
+          <li><strong>Booking Confirmation:</strong> A booking is confirmed only after RD Game Zone confirms it by phone, WhatsApp, SMS, email, or in person.</li>
           <li><strong>Walk-In Sessions:</strong> Available subject to station availability. We cannot guarantee availability without a prior booking during peak hours.</li>
-          <li><strong>Cancellations:</strong> Cancellations made at least 2 hours before the scheduled session will not incur any penalty. Late cancellations may result in forfeiture of any advance payment.</li>
-          <li><strong>No-Shows:</strong> Customers who do not arrive within 15 minutes of their booked session start time without prior notice may have their session reassigned without refund.</li>
-          <li><strong>Refunds:</strong> Refunds, where applicable, are processed at management's discretion and may take up to 7 business days.</li>
+          <li><strong>Cancellations:</strong> Please give at least 2 hours’ notice to avoid a late-cancellation charge. Advance payments remain non-refundable for customer cancellations; late cancellations may also result in the session being released.</li>
+          <li><strong>No-Shows:</strong> Customers who do not arrive within 15 minutes of their booked session start time without prior notice may have their session reassigned. Advance payments are non-refundable.</li>
+          <li><strong>Refunds:</strong> Advance payments are non-refundable for customer-initiated cancellations and no-shows. If RD Game Zone cancels a confirmed session because of technical failure or another operational issue, we will offer a full refund or reschedule.</li>
           <li><strong>Rescheduling:</strong> Requests to reschedule must be made at least 1 hour in advance and are subject to availability.</li>
         </ul>
         <p>RD Game Zone reserves the right to cancel any booked session in the event of technical failure, unforeseen circumstances, or force majeure. A full refund or reschedule will be offered in such cases.</p>
@@ -113,17 +127,13 @@ const SECTIONS = [
   },
   {
     id: "intellectual-property",
-    heading: "Intellectual Property",
+    heading: "RD Game Zone Brand & Original Content",
     content: (
       <>
-        <p>All original content on the RD Game Zone website — including the brand name, logo, website design, layout, graphics, text, and visual assets — is the exclusive intellectual property of RD Game Zone and is protected under applicable copyright and trademark law.</p>
-        <p>You agree that you will not:</p>
-        <ul className="legal-list">
-          <li>Copy, reproduce, distribute, or create derivative works based on our website content without prior written permission.</li>
-          <li>Use the RD Game Zone name, logo, or brand identity in any commercial or promotional context without authorization.</li>
-          <li>Scrape, crawl, or systematically extract data from our website for commercial purposes.</li>
-        </ul>
-        <p>Requests for permission to use our content may be directed to <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
+        <p>RD Game Zone™ is the public-facing brand used by the venue operator; these terms do not state or imply a particular legal entity form or that the mark is registered. RD Game Zone claims rights only in its original branding and website content that it owns. © {new Date().getFullYear()} RD Game Zone. All rights reserved in RD Game Zone-owned original material, subject to rights and exceptions provided by law.</p>
+        <p>Game titles, publisher and platform names, characters, logos, screenshots, box art, other game artwork, and trailers may be owned or controlled by third parties, including publishers, developers, and platform holders. They are shown to identify or describe the relevant games and possible venue offerings. RD Game Zone does not claim to own them, and this notice does not grant permission or a licence to reuse them. Their use remains subject to the applicable rights, licences, and law. User-supplied or externally sourced media does not become RD Game Zone property merely because it appears on this website.</p>
+        <p>Except where permitted by law or an applicable licence, you may not reproduce, republish, distribute, adapt, remove attribution from, or commercially exploit RD Game Zone-owned original content or branding without prior written permission. You may link to public pages if the link does not misrepresent an affiliation or endorsement. For permissions or rights concerns about RD-owned material, email <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a> or use {CONTACT_LINK}. Rights holders may contact us about third-party material appearing on the site.</p>
+        <p>Nothing in this notice limits any rights or remedies available under applicable law.</p>
       </>
     ),
   },
@@ -132,8 +142,8 @@ const SECTIONS = [
     heading: "Third-Party Trademarks",
     content: (
       <>
-        <p>All game titles, characters, logos, brand names, and trademarks referenced on our website or displayed on our premises are the property of their respective owners. This includes trademarks owned by Sony Interactive Entertainment (PlayStation®, PS5®, PS4®), Microsoft Corporation, and individual game publishers and developers.</p>
-        <p>The use of these names on our website is purely for informational and descriptive purposes and does not imply any affiliation, endorsement, or sponsorship by the respective trademark holders. RD Game Zone is an independent business not affiliated with or endorsed by any game publisher unless explicitly stated.</p>
+        <p>Game titles, characters, platform and publisher names, logos, screenshots, artwork, and trailers shown on this website belong to their respective rights holders. They are presented to identify or describe games and venue offerings; their appearance here does not transfer any rights to RD Game Zone. A rights notice or disclaimer is not a substitute for a licence or other required permission.</p>
+        <p>RD Game Zone is independently operated and is not sponsored, endorsed, or officially affiliated with Sony Interactive Entertainment, Microsoft, or any game publisher unless expressly stated. Third-party names and marks are used only to identify their respective products and services.</p>
       </>
     ),
   },
@@ -155,8 +165,8 @@ const SECTIONS = [
         <p>For questions or concerns related to these Terms &amp; Conditions, please contact us:</p>
         <div className="legal-contact-block">
           <div className="legal-contact-row">
-            <span className="legal-contact-label">Business</span>
-            <span className="legal-contact-value">RD Game Zone</span>
+            <span className="legal-contact-label">Brand / venue</span>
+            <span className="legal-contact-value">RD Game Zone™</span>
           </div>
           <div className="legal-contact-row">
             <span className="legal-contact-label">Address</span>
@@ -168,6 +178,10 @@ const SECTIONS = [
           <div className="legal-contact-row">
             <span className="legal-contact-label">Email</span>
             <a href={`mailto:${EMAIL}`} className="legal-contact-value legal-link">{EMAIL}</a>
+          </div>
+          <div className="legal-contact-row">
+            <span className="legal-contact-label">Phone / WhatsApp</span>
+            <a href={`tel:${CONTACT_TEL}`} className="legal-contact-value legal-link">{CONTACT_PHONE}</a>
           </div>
         </div>
       </>
@@ -194,8 +208,8 @@ export default function TermsRoute() {
           </a>
           <span className="legal-eyebrow">Legal</span>
           <h1 id="terms-title" className="legal-title">Terms &amp; Conditions</h1>
-          <p className="legal-meta">Last updated: Feb 2026</p>
-          <p className="legal-intro">These terms govern your use of the RD Game Zone website and in-store gaming services. Please read them carefully before using our services.</p>
+          <p className="legal-meta">Last updated: October 22, 2026</p>
+          <p className="legal-intro">These terms govern use of the RD Game Zone™ website and gaming sessions at our Ahmedabad venue. Please read them before using the site or arranging a session.</p>
         </div>
       </div>
 
@@ -237,7 +251,7 @@ export default function TermsRoute() {
       {/* Footer bar */}
       <div className="legal-foot">
         <div className="legal-foot__inner">
-          <span>© {new Date().getFullYear()} RD Game Zone. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved in RD Game Zone-owned original material; third-party game materials remain with their rights holders.</span>
           <nav className="legal-foot__nav">
             <a href="/privacy" className="legal-foot__link">Privacy</a>
             <span className="legal-foot__sep">|</span>

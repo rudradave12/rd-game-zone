@@ -3,10 +3,10 @@
   "entries": [
     {
       "@context": "https://agenticresourcediscovery.org/context/v1",
-      "identifier": "urn:air:rdgamezone.com:catalog:game-library",
+      "identifier": "urn:rd-game-zone:catalog:game-library",
       "displayName": "RD Game Zone Game Library Catalog",
       "type": "application/ai-catalog+json",
-      "url": "https://rdgamezone.com/.well-known/ard.json",
+      "url": "https://rd-game-zone.pages.dev/.well-known/ard.json",
       "description": "A public catalog describing the RD Game Zone game library, game availability, platforms, and visitor information.",
       "representativeQueries": [
         "Which games can I play at RD Game Zone in Ahmedabad?",

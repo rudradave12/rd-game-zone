@@ -5,10 +5,10 @@ import { FiAlertTriangle, FiArrowLeft, FiArrowUpRight, FiChevronLeft, FiChevronR
 import GameCard from "./GameCard";
 import type { Game } from "./types";
 import { gameSlug, games } from "../data/games";
-import { topTenGameHighlights, type TopTenGameId } from "../data/top-ten-game-highlights";
 import { guidelines } from "./GameGuidelines";
 import { gtaOnlinePolicyText } from "./GTAOnlinePolicy";
-import { GameAbout, TopTenSpotlight } from "./GameDetailExperience";
+import { GameAbout, GameSpotlight } from "./GameDetailExperience";
+import { getResponsiveArtwork } from "../data/game-artwork";
 
 type Props = { game: Game };
 
@@ -27,7 +27,7 @@ const editorialDescriptions: Record<number, string> = {
   45: "Discover Japan in Forza Horizon 6, an open-world racing adventure built around a huge Horizon Festival, scenic mountain roads, and high-speed city runs. Its PS5 release is scheduled for January 26, 2027, and the game is marked as coming soon at RD Game Zone.",
   46: "Take a road trip through The Crew Motorfest, an open-world festival celebrating cars and driving culture. Build your collection, explore the island, and take on a changing lineup of races and playlists.",
   47: "Journey into Pandora's Western Frontier in Avatar: Frontiers of Pandora. Explore a vibrant alien world, discover your Na'vi heritage, and push back against the RDA on your own or with a friend.",
-  48: "Call of Duty: Modern Warfare 4 returns to the Modern Warfare series with a new campaign and competitive multiplayer. Its PS5 launch is scheduled for October 23, 2026, so this title remains marked as coming soon until release.",
+  48: "Call of Duty: Modern Warfare 4 is playable on PS5 through campaign early access. The full launch adds Multiplayer and DMZ, with the PlayStation Store listing the full release for October 23, 2026.",
   49: "Climb, leap, and fight your way through Villedor in Dying Light 2: Stay Human. Explore the city by day, face its dangers after dark, and team up for co-op missions and challenges.",
   50: "Enter the lawless frontier in Hunt: Showdown 1896, where rival hunter teams track dangerous targets through a hostile world. Stay alert, work together, and decide when to push for the bounty or make your escape.",
   51: "Join Cody and May for a playful adventure built entirely around cooperation. Every chapter brings new abilities and surprising challenges, so communication and teamwork are the key to making it through together.",
@@ -228,7 +228,7 @@ function GameTrailer({ game }: Props) {
   if (!game.video) return <p className="game-detail__no-trailer">A trailer is not available for this title yet.</p>;
 
   if (game.video.type === "youtube") {
-    const origin = typeof window === "undefined" ? "https://rdgamezone.com" : window.location.origin;
+    const origin = typeof window === "undefined" ? "https://rd-game-zone.pages.dev" : window.location.origin;
     return (
       <>
         <button type="button" className="game-detail__primary game-detail__watch" onClick={startTrailer} aria-label={`Watch trailer for ${game.title} in fullscreen`}>
@@ -326,6 +326,7 @@ type GalleryItem = { src: string; alt: string; label: string; thumbSrc?: string 
 const keyArtThumbnails: Record<number, string> = {
   3: "/images/cards/320/valorant.avif",
   24: "/images/screenshots/thumbs/fc27-keyart.webp",
+  33: "/images/screenshots/thumbs/mortal-kombat-1-key-art.webp",
   45: "/images/screenshots/thumbs/forza-horizon-6-key-art.webp",
 };
 
@@ -439,6 +440,8 @@ export default function GameDetailPage({ game }: Props) {
   const [selectedArtwork, setSelectedArtwork] = useState(game.image);
   const description = editorialDescriptions[game.id] ?? game.subtitle;
   const isForzaDefaultArtwork = game.id === 45 && selectedArtwork === game.image;
+  const isDefaultArtwork = selectedArtwork === game.image;
+  const responsiveArtwork = getResponsiveArtwork(game.image);
 
   useEffect(() => setSelectedArtwork(game.image), [game.id, game.image]);
 
@@ -484,13 +487,14 @@ export default function GameDetailPage({ game }: Props) {
                 <source srcSet="/images/fc-27-optimized.avif" type="image/avif" />
               )}
               <img
-                src={isForzaDefaultArtwork ? "/images/forza-horizon-6-800.webp" : selectedArtwork}
-                srcSet={isForzaDefaultArtwork
-                  ? "/images/forza-horizon-6-480.webp 480w, /images/forza-horizon-6-800.webp 800w, /images/forza-horizon-6-1280.webp 1280w, /images/forza-horizon-6-optimized.webp 1920w"
+                src={isForzaDefaultArtwork ? "/images/forza-horizon-6-800.webp" : isDefaultArtwork ? responsiveArtwork.src : selectedArtwork}
+                srcSet={isDefaultArtwork
+                  ? isForzaDefaultArtwork
+                    ? "/images/forza-horizon-6-480.webp 480w, /images/forza-horizon-6-800.webp 800w, /images/forza-horizon-6-1280.webp 1280w, /images/forza-horizon-6-optimized.webp 1920w"
+                    : responsiveArtwork.srcSet
                   : undefined}
-                sizes={isForzaDefaultArtwork ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px" : undefined}
+                sizes={isDefaultArtwork ? "(max-width: 1480px) 100vw, 1480px" : undefined}
                 alt={`${game.title} artwork`}
-                fetchPriority="high"
                 decoding="async"
               />
             </picture>
@@ -519,11 +523,7 @@ export default function GameDetailPage({ game }: Props) {
         <DeferredContent className="game-detail-deferred game-detail-deferred--about" placeholderHeight="18rem">
           <GameAbout game={game} description={description} />
         </DeferredContent>
-        {topTenGameHighlights[game.id as TopTenGameId] && (
-          <DeferredContent className="game-detail-deferred game-detail-deferred--spotlight" placeholderHeight="20rem">
-            <TopTenSpotlight game={game} />
-          </DeferredContent>
-        )}
+        <GameSpotlight game={game} />
         <DeferredContent className="game-detail-deferred game-detail-deferred--policy" placeholderHeight="28rem">
           <GamePolicy game={game} />
           <p className="game-detail__fineprint">Ask our team to confirm this game and platform are ready before you book. Please follow the age and play rules listed on this page during your session.</p>

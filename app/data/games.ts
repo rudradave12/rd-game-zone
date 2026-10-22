@@ -638,6 +638,43 @@ export const games: Game[] = [
     platforms: ["PS5",],
     status: "available",
     image: "/images/mortal-kombat-1-optimized.webp",
+    screenshots: [
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-01.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-01-thumb.webp",
+        alt: "A Mortal Kombat 1 fighter begins a glowing special move beside a Kameo partner.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-02.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-02-thumb.webp",
+        alt: "A Mortal Kombat 1 fight unfolds beside a snowy temple arena.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-03.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-03-thumb.webp",
+        alt: "Two Mortal Kombat 1 fighters face off amid a burst of special-move effects.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-04.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-04-thumb.webp",
+        alt: "Two Mortal Kombat 1 fighters prepare for a round in a warm-lit arena.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-05.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-05-thumb.webp",
+        alt: "Three fighters appear together during a Mortal Kombat 1 match.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-06.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-06-thumb.webp",
+        alt: "A freezing special move lands during a Mortal Kombat 1 fight.",
+      },
+      {
+        src: "/images/screenshots/mortal-kombat-1-match-07.webp",
+        thumbSrc: "/images/screenshots/mortal-kombat-1-match-07-thumb.webp",
+        alt: "A blue-energy Kameo assist interrupts a Mortal Kombat 1 fight.",
+      },
+    ],
     video: {
       type: "youtube",
       id: "lBYvt1_t6Q4",
@@ -800,11 +837,11 @@ export const games: Game[] = [
   {
     id: 48,
     title: "CALL OF DUTY: MODERN WARFARE 4",
-    subtitle: "Launching on PS5 · October 23, 2026",
+    subtitle: "Campaign early access is live on PS5",
     category: "SHOOTING",
-    playerType: "MULTIPLAYER",
+    playerType: "SINGLE PLAYER / MULTIPLAYER",
     platforms: ["PS5"],
-    status: "upcoming",
+    status: "available",
     image: "/images/call-of-duty-modern-warfare-4-optimized.webp",
     video: {
       type: "youtube",

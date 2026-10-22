@@ -126,7 +126,6 @@ export default function CinematicHero() {
                   src={slide.imageDesktop}
                   alt=""
                   loading={index === 0 ? "eager" : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "auto"}
                   decoding="async"
                 />
               </picture>

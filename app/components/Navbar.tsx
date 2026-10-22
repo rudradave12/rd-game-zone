@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@remix-run/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 
 type SectionId = "about" | "pricing" | "booking";
@@ -23,6 +23,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(!isHome);
   const [navHidden, setNavHidden] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
+  const navRef = useRef<HTMLElement | null>(null);
 
   const applyTheme = useCallback((nextTheme: Theme) => {
     document.documentElement.dataset.theme = nextTheme;
@@ -64,6 +65,13 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    // React 18 does not recognize the `inert` attribute yet. Toggle the native
+    // DOM property so a hidden navigation is still removed from keyboard focus
+    // without emitting an invalid-attribute warning during render.
+    if (navRef.current) navRef.current.inert = navHidden && !menuOpen;
+  }, [menuOpen, navHidden]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -115,7 +123,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`ps-nav${scrolled ? " ps-nav--solid" : ""}${navHidden && !menuOpen ? " ps-nav--hidden" : ""}`} inert={navHidden && !menuOpen}>
+      <header ref={navRef} className={`ps-nav${scrolled ? " ps-nav--solid" : ""}${navHidden && !menuOpen ? " ps-nav--hidden" : ""}`}>
         <Link
           to="/"
           className="ps-nav__brand"
@@ -129,7 +137,7 @@ export default function Navbar() {
           }}
         >
           <span className="ps-nav__mark" aria-hidden="true"><img src="/icons/logo.svg" alt="" width="27" height="28" /></span>
-          <span className="ps-nav__brand-copy"><strong>RD Game Zone</strong><small>Ahmedabad · E-sports hub</small></span>
+          <span className="ps-nav__brand-copy"><strong>RD Game Zone™</strong><small>Ahmedabad · Gaming &amp; e-sports venue</small></span>
         </Link>
         <nav className="ps-nav__links" aria-label="Main navigation">{navigation.map((item) => renderItem(item))}</nav>
         <div className="ps-nav__actions">

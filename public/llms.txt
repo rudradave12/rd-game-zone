@@ -4,11 +4,11 @@
 
 ## Important pages
 
-- [Home](https://rdgamezone.com/): Lounge overview, featured games, and visiting information.
-- [Game library](https://rdgamezone.com/games): Browse the listed games, availability, genres, and game details.
-- [Rates](https://rdgamezone.com/#pricing): Hourly gaming rates and screen options.
-- [Visit](https://rdgamezone.com/#visit): Address, directions, and contact details.
-- [Guidelines](https://rdgamezone.com/#guidelines): Age, safety, equipment, and session rules.
+- [Home](https://rd-game-zone.pages.dev/): Venue overview, featured games, and visiting information.
+- [Game library](https://rd-game-zone.pages.dev/games): Browse listed games, availability, genres, and game details.
+- [Rates](https://rd-game-zone.pages.dev/#pricing): Hourly gaming rates and screen options.
+- [Visit](https://rd-game-zone.pages.dev/#visit): Address, directions, and contact details.
+- [Guidelines](https://rd-game-zone.pages.dev/guidelines): Age, safety, equipment, and session rules.
 
 ## About the game library
 

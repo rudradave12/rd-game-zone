@@ -75,13 +75,13 @@ function buildSchema() {
     name: "Game Library — RD Game Zone Ahmedabad",
     description:
       "Browse the PS5, PS4 and PC games available at RD Game Zone, Ahmedabad.",
-    url: "https://rdgamezone.com/games",
+    url: "https://rd-game-zone.pages.dev/games",
     numberOfItems: games.length,
     itemListElement: games.map((game, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: game.title,
-      url: `https://rdgamezone.com/games/${gameSlug(game.title)}`,
+      url: `https://rd-game-zone.pages.dev/games/${gameSlug(game.title)}`,
     })),
   };
 }

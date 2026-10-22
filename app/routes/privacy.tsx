@@ -6,11 +6,15 @@ import { useEffect } from "react";
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => [
-  { title: "Privacy Policy — RD Game Zone" },
-  { name: "description", content: "Read the RD Game Zone Privacy Policy. We explain how we collect, use, and protect your personal information." },
+  { title: "Privacy Policy — RD Game Zone™" },
+  { name: "description", content: "Learn what information RD Game Zone handles when you browse the site, arrange a gaming session, or contact us." },
 ];
 
-const EMAIL = "support@rdgamezone.com";
+const EMAIL = "rdgamezoneofficial@gmail.com";
+const CONTACT_PHONE = "+91 76655 33991";
+const CONTACT_TEL = "+917665533991";
+const CONTACT_WHATSAPP = "https://wa.me/917665533991";
+const CONTACT_LINK = <a href={CONTACT_WHATSAPP} className="legal-link" target="_blank" rel="noopener noreferrer">WhatsApp or call {CONTACT_PHONE}</a>;
 
 const SECTIONS = [
   {
@@ -18,8 +22,8 @@ const SECTIONS = [
     heading: "Introduction",
     content: (
       <>
-        <p>Welcome to RD Game Zone. We operate a gaming and e-sports center located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004. This Privacy Policy explains how we collect, use, store, and protect your personal information when you visit our website, use our booking system, or interact with our services in-store.</p>
-        <p>By accessing our website or using our services, you agree to the practices described in this policy. We are committed to handling your information with care, transparency, and respect. If you have any concerns, please reach out to us at <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
+        <p>RD Game Zone™ is the public-facing brand for an independent gaming and e-sports venue located at First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004. This Privacy Policy explains how we handle information when you browse this website, contact us, arrange a session by phone or WhatsApp, or visit the venue. The website does not collect booking forms or payments and is not an online store.</p>
+        <p>If you have questions about this policy or information you have shared with us, please email <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a> or contact us by {CONTACT_LINK}.</p>
       </>
     ),
   },
@@ -30,12 +34,11 @@ const SECTIONS = [
       <>
         <p>We collect only the information necessary to provide you with our services:</p>
         <ul className="legal-list">
-          <li><strong>Personal Identification:</strong> Your name and contact details (phone number and/or email address) when you make a booking or register with us.</li>
-          <li><strong>Booking Information:</strong> Session type (PS5, PS4, PC, LAN), preferred date and time slot, duration, and number of players.</li>
-          <li><strong>Device &amp; Usage Data:</strong> Browser type, IP address, pages visited, and time spent on our website, collected automatically via standard web analytics tools.</li>
-          <li><strong>In-Store Records:</strong> Visit history, session logs, and any feedback you choose to share during or after your visit.</li>
+          <li><strong>Contact Information:</strong> Your name, phone number, email address, or other details you choose to share when you call, message us, or visit the venue.</li>
+          <li><strong>Session Requests:</strong> The platform or session type, requested date and time, duration, and number of players you provide when arranging a visit or booking.</li>
+          <li><strong>At-Venue Records:</strong> Session or transaction records needed to provide the service, and feedback you choose to share.</li>
         </ul>
-        <p>We do <strong>not</strong> collect sensitive personal data such as Aadhaar numbers, financial account details, or government ID numbers unless explicitly required and consented to for a specific purpose.</p>
+        <p>Please do not send government ID numbers, passwords, or payment-card details through our contact channels.</p>
       </>
     ),
   },
@@ -46,11 +49,11 @@ const SECTIONS = [
       <>
         <p>The information we collect is used solely for legitimate operational purposes:</p>
         <ul className="legal-list">
-          <li>Confirming and managing your gaming session bookings.</li>
-          <li>Sending booking confirmations, reminders, or updates via SMS or email.</li>
-          <li>Providing in-store customer support and resolving service issues.</li>
-          <li>Improving our website, services, and overall customer experience.</li>
-          <li>Sending occasional promotional communications about offers or events — only if you have opted in. You may opt out at any time.</li>
+          <li>Responding to enquiries and arranging or managing gaming sessions.</li>
+          <li>Contacting you about a session or support request through the channel you used to reach us.</li>
+          <li>Providing on-site customer support and resolving service issues.</li>
+          <li>Improving the website using aggregate page-view and performance measurements.</li>
+          <li>Sending promotional messages only where you have asked to receive them; you can ask us to stop.</li>
           <li>Complying with applicable legal obligations.</li>
         </ul>
         <p>We will never use your personal information for purposes unrelated to delivering our services without your explicit consent.</p>
@@ -62,23 +65,20 @@ const SECTIONS = [
     heading: "Data Sharing & Third Parties",
     content: (
       <>
-        <p><strong>RD Game Zone does not sell, rent, trade, or share your personal information with any third party for commercial or marketing purposes.</strong></p>
-        <p>In limited circumstances, we may share information with trusted service providers who assist us in operating our website or managing bookings. These providers are bound by confidentiality obligations and may not use your data for any other purpose.</p>
+        <p><strong>RD Game Zone does not sell or rent your personal information.</strong> Our website is hosted through Cloudflare and uses Cloudflare Web Analytics to measure page views and performance. Cloudflare says Web Analytics does not collect or use visitors’ personal data; see its <a href="https://developers.cloudflare.com/web-analytics/about/" className="legal-link" target="_blank" rel="noopener noreferrer">Web Analytics overview</a>.</p>
+        <p>If you choose to message us on WhatsApp, WhatsApp handles that conversation under its own <a href="https://www.whatsapp.com/legal/privacy-policies" className="legal-link" target="_blank" rel="noopener noreferrer">privacy policy</a>. Game pages may load a trailer from YouTube or Google Drive when you choose to watch it; those services receive the request and handle information under their own policies, including Google’s <a href="https://policies.google.com/privacy" className="legal-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</p>
         <p>We may disclose information if required to do so by law, court order, or in response to a valid request from a government or regulatory authority.</p>
       </>
     ),
   },
   {
     id: "cookies-analytics",
-    heading: "Cookies & Analytics",
+    heading: "Browser Storage & Analytics",
     content: (
       <>
-        <p>Our website may use cookies — small text files stored on your device — to enhance your browsing experience and understand how visitors use our site.</p>
-        <ul className="legal-list">
-          <li><strong>Essential Cookies:</strong> Required for core site functionality such as navigation and session management.</li>
-          <li><strong>Analytics Cookies:</strong> Used to collect anonymous data about site traffic and usage patterns. No personally identifiable information is stored in analytics cookies.</li>
-        </ul>
-        <p>You can disable cookies in your browser settings at any time. Doing so may affect certain features of our website.</p>
+        <p>The site stores your light or dark theme preference in your browser’s local storage. This preference is not a cookie and you can remove it by clearing this site’s browser data.</p>
+        <p>Cloudflare Web Analytics measures page views and page-load performance using the browser Performance API. Cloudflare says it does not use visitors’ personal data and its Web Analytics beacon does not rely on analytics cookies. Read more in Cloudflare’s <a href="https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/" className="legal-link" target="_blank" rel="noopener noreferrer">data collection documentation</a>.</p>
+        <p>If you choose to play an embedded third-party trailer, the video provider may use its own storage or collect information under its privacy policy. You can manage cookies and site storage in your browser settings; clearing the theme preference returns the site to its default theme.</p>
       </>
     ),
   },
@@ -87,8 +87,8 @@ const SECTIONS = [
     heading: "Security of Your Data",
     content: (
       <>
-        <p>We implement reasonable technical and organizational measures to protect your data against unauthorized access, disclosure, alteration, or destruction. Our website is served over HTTPS to ensure encrypted communication between your browser and our servers. Access to stored customer data is restricted to authorized personnel only.</p>
-        <p>While we take every precaution, no method of transmission over the internet or electronic storage is completely secure. Please notify us immediately if you suspect any unauthorized use of your information.</p>
+        <p>We take reasonable steps to protect information we handle. Our website is served over HTTPS to encrypt communication between your browser and the site. No internet transmission or electronic storage method can be guaranteed completely secure.</p>
+        <p>If you suspect unauthorized use of information you shared with us, please contact us by <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a> or {CONTACT_LINK}.</p>
       </>
     ),
   },
@@ -97,8 +97,8 @@ const SECTIONS = [
     heading: "Data Retention",
     content: (
       <>
-        <p>We retain your personal information only for as long as necessary to fulfill the purposes for which it was collected, or as required by applicable law. Booking records are generally retained for up to 12 months for operational and accounting purposes.</p>
-        <p>You may request deletion of your personal data at any time by contacting us at <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
+        <p>We keep contact, session, and transaction records only for as long as needed to manage the service, resolve issues, maintain required business records, or meet legal obligations. Retention time depends on the record.</p>
+        <p>You can ask us to delete information you have shared, subject to records we must retain by law, by emailing <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a> or contacting us by {CONTACT_LINK}.</p>
       </>
     ),
   },
@@ -107,15 +107,12 @@ const SECTIONS = [
     heading: "Your Rights",
     content: (
       <>
-        <p>You have the right to:</p>
+        <p>You may contact us to request access to or correction or deletion of information you have shared with us. Requests are handled subject to applicable legal and record-keeping requirements.</p>
+        <p>You can also:</p>
         <ul className="legal-list">
-          <li>Access the personal information we hold about you.</li>
-          <li>Request correction of any inaccurate or incomplete data.</li>
-          <li>Request deletion of your personal data (subject to legal obligations).</li>
           <li>Withdraw consent for marketing communications at any time.</li>
-          <li>Lodge a complaint with the relevant data protection authority.</li>
         </ul>
-        <p>To exercise any of these rights, please contact us at <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a>.</p>
+        <p>To exercise any of these rights, please email <a href={`mailto:${EMAIL}`} className="legal-link">{EMAIL}</a> or contact us by {CONTACT_LINK}.</p>
       </>
     ),
   },
@@ -123,7 +120,7 @@ const SECTIONS = [
     id: "policy-updates",
     heading: "Changes to This Policy",
     content: (
-      <p>We may update this Privacy Policy from time to time. When we make material changes, we will update the "Last Updated" date at the top of this page. Continued use of our website or services after any changes constitutes your acceptance of the updated policy.</p>
+        <p>We may update this policy as our services or practices change. The date at the top shows when it was last revised. Please review the current version if you have questions about how information is handled.</p>
     ),
   },
   {
@@ -134,8 +131,8 @@ const SECTIONS = [
         <p>If you have any questions or concerns regarding this Privacy Policy, please get in touch:</p>
         <div className="legal-contact-block">
           <div className="legal-contact-row">
-            <span className="legal-contact-label">Business</span>
-            <span className="legal-contact-value">RD Game Zone</span>
+            <span className="legal-contact-label">Brand / venue</span>
+            <span className="legal-contact-value">RD Game Zone™</span>
           </div>
           <div className="legal-contact-row">
             <span className="legal-contact-label">Address</span>
@@ -147,6 +144,10 @@ const SECTIONS = [
           <div className="legal-contact-row">
             <span className="legal-contact-label">Email</span>
             <a href={`mailto:${EMAIL}`} className="legal-contact-value legal-link">{EMAIL}</a>
+          </div>
+          <div className="legal-contact-row">
+            <span className="legal-contact-label">Phone / WhatsApp</span>
+            <a href={`tel:${CONTACT_TEL}`} className="legal-contact-value legal-link">{CONTACT_PHONE}</a>
           </div>
         </div>
       </>
@@ -173,8 +174,8 @@ export default function PrivacyRoute() {
           </a>
           <span className="legal-eyebrow">Legal</span>
           <h1 id="privacy-policy-title" className="legal-title">Privacy Policy</h1>
-          <p className="legal-meta">Last updated: June 2025</p>
-          <p className="legal-intro">RD Game Zone is committed to protecting your privacy and being transparent about how we handle your information. This policy covers our website and in-store services.</p>
+          <p className="legal-meta">Last updated: October 22, 2026</p>
+          <p className="legal-intro">RD Game Zone™ is committed to handling your information responsibly and transparently. This policy covers our website and gaming-venue services.</p>
         </div>
       </div>
 
@@ -216,7 +217,7 @@ export default function PrivacyRoute() {
       {/* Footer bar */}
       <div className="legal-foot">
         <div className="legal-foot__inner">
-          <span>© {new Date().getFullYear()} RD Game Zone. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} RD Game Zone™. All rights in third-party materials remain with their respective owners.</span>
           <nav className="legal-foot__nav">
             <a href="/privacy" className="legal-foot__link legal-foot__link--active">Privacy</a>
             <span className="legal-foot__sep">|</span>

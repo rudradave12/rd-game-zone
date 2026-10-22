@@ -1,6 +1,21 @@
 .DS_Store
 .env
+.env.*
+!.env.example
 /node_modules/
+/.next/
+/.nuxt/
+/dist/
+/build/
+__pycache__/
+venv/
+*.log
+*.pem
+*.key
+credentials.json
+service-account*.json
+Thumbs.db
+.idea/
 
 # React Router
 /.react-router/

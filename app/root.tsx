@@ -14,6 +14,10 @@ import Navbar from "~/components/Navbar";
 import gameCatalogStyles from "~/styles/game-catalog.css?url";
 import gameDetailStyles from "~/styles/game-detail.css?url";
 import gameLibraryShellStyles from "~/styles/game-library-shell.css?url";
+import { gameArtworkBySlug, sourceArtworkWidths } from "~/data/game-artwork";
+
+const serializedGameArtworkBySlug = JSON.stringify(gameArtworkBySlug);
+const serializedSourceArtworkWidths = JSON.stringify(sourceArtworkWidths);
 
 /* ================= STYLES ================= */
 /* The aggregate preserves CSS order while avoiding multiple blocking fetches. */
@@ -78,33 +82,20 @@ const preHydrationScript = `(() => {
     );
   }
 
-  const gameArt = {
-    "grand-theft-auto-vi": "/images/gta-vi-cover-optimized.webp",
-    "call-of-duty-black-ops-7": "/images/cod-blackops-7-optimized.webp",
-    "gta-online": "/images/gta-online-hero-900.avif",
-    "valorant": "/images/valorant.jpg",
-    "counter-strike-2": "/images/cs-go-2-optimized.webp",
-    "apex-legends": "/images/apex-legends-optimized.webp",
-    "fortnite": "/images/fortnite-optimized.webp",
-    "call-of-duty-cold-war": "/images/cod-blackops-coldwar-optimized.webp",
-    "call-of-duty-black-ops-iii": "/images/cod-blackops-3-optimized.webp",
-    "back-4-blood": "/images/back-4-blood-optimized.webp",
-    "black-myth-wukong": "/images/black-myth-wukong.jpeg",
-    "god-war-ragnarok": "/images/god-of-war- regnarok-optimized.webp",
-    "ghost-of-tsushima": "/images/ghost-of-tsushima-optimized.webp",
-    "ea-sports-fc-27": "/images/fc-27-optimized.avif",
-    "f1-25": "/images/f1-25.webp",
-    "nfs-heat": "/images/nfs-heat.jpg",
-    "nfs-hot-pursuit-remastered": "/images/nfs-hot-pursuit-remastered-optimized.webp",
-    "asphalt-legends-unite": "/images/asphalt.jpeg",
-    "cricket-26": "/images/cricket-26.jpeg",
-    "tekken-8": "/images/tekken-8-optimized.webp",
-    "mortal-kombat-1": "/images/mortal-kombat-1-optimized.webp",
-    "wwe-2k25": "/images/wwe-2k25-optimized.webp",
-    "wwe-2k26": "/images/wwe-2k26-optimized.webp",
-    "far-cry-6": "/images/farcry-6-optimized.webp",
-    "stray": "/images/stray-optimized.webp",
-    "forza-horizon-6": "/images/forza-horizon-6-800.webp",
+  const gameArt = ${serializedGameArtworkBySlug};
+  const artworkWidths = ${serializedSourceArtworkWidths};
+  const responsiveHint = (image) => {
+    const sourceWidth = artworkWidths[image];
+    if (!sourceWidth) return { src: image, srcset: undefined };
+    const stem = image.replace(/\\.[a-z0-9]+$/i, "");
+    const candidates = [480, 800, 1280]
+      .filter((width) => sourceWidth > width)
+      .map((width) => stem + "-" + width + ".webp " + width + "w");
+    candidates.push(image + " " + sourceWidth + "w");
+    return {
+      src: sourceWidth > 800 ? stem + "-800.webp" : image,
+      srcset: candidates.join(", "),
+    };
   };
   const gameSlug = path.match(/^\\/games\\/([^/]+)$/)?.[1];
   if (gameSlug) {
@@ -115,28 +106,43 @@ const preHydrationScript = `(() => {
   const isFcPortrait = gameSlug === "ea-sports-fc-27" && isPortrait;
   const isValorantSmall = gameSlug === "valorant" && window.matchMedia("(max-width: 700px)").matches;
   const isGtaOnline = gameSlug === "gta-online";
-  const isForza = gameSlug === "forza-horizon-6";
+  const isFc = gameSlug === "ea-sports-fc-27";
+  const baseGameImage = gameSlug && gameArt[gameSlug];
   const gameImage = isFcPortrait
     ? "/images/fc-27-mobile-480.avif"
     : isValorantSmall
       ? "/images/cards/valorant.avif"
-    : gameSlug && gameArt[gameSlug];
-  const gameImageSrcset = isForza
+      : isGtaOnline
+        ? "/images/gta-online-hero-900.avif"
+        : isFc
+          ? "/images/fc-27-optimized.avif"
+          : baseGameImage;
+  const baseResponsiveHint = baseGameImage ? responsiveHint(baseGameImage) : null;
+  const gameImageSrcset = gameSlug === "forza-horizon-6"
     ? "/images/forza-horizon-6-480.webp 480w, /images/forza-horizon-6-800.webp 800w, /images/forza-horizon-6-1280.webp 1280w, /images/forza-horizon-6-optimized.webp 1920w"
     : isFcPortrait
       ? "/images/fc-27-mobile-480.avif 480w, /images/fc-27-mobile-640.avif 640w"
-    : isValorantSmall
-      ? "/images/cards/320/valorant.avif 320w, /images/cards/valorant.avif 640w"
-    : isGtaOnline
-      ? "/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
+      : isValorantSmall
+        ? "/images/cards/320/valorant.avif 320w, /images/cards/valorant.avif 640w"
+        : isGtaOnline
+          ? "/images/gta-online-hero-480.avif 480w, /images/gta-online-hero-900.avif 900w"
+          : gameImage === baseGameImage
+            ? baseResponsiveHint?.srcset
+            : undefined;
+  const gameImageSizes = isFcPortrait || isValorantSmall || isGtaOnline
+    ? "100vw"
+    : gameImage === baseGameImage
+      ? "(max-width: 1480px) 100vw, 1480px"
       : undefined;
-  const gameImageSizes = isForza
-    ? "(max-width: 700px) 100vw, (max-width: 1440px) 50vw, 720px"
-    : isFcPortrait || isValorantSmall || isGtaOnline
-      ? "100vw"
-      : undefined;
-  const gameImageType = gameSlug === "ea-sports-fc-27" || isValorantSmall || isGtaOnline ? "image/avif" : undefined;
-  if (gameImage) addImageHint(gameImage, gameImageSrcset, gameImageSizes, gameImageType);
+  const gameImageType = isFc || isValorantSmall || isGtaOnline ? "image/avif" : undefined;
+  if (gameImage) {
+    addImageHint(
+      gameImage === baseGameImage ? baseResponsiveHint?.src : gameImage,
+      gameImageSrcset,
+      gameImageSizes,
+      gameImageType
+    );
+  }
 
 })();`;
 
@@ -148,16 +154,16 @@ const preHydrationScript = `(() => {
    ================================================================ */
 export const meta: MetaFunction = () => [
   /* ── Core ── */
-  { title: "RD Game Zone | #1 Gaming Cafe in Ahmedabad – PS5, PC & LAN Gaming" },
+  { title: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
   {
     name: "description",
     content:
-      "RD Game Zone — Ahmedabad's premier gaming cafe. Play PS5, PS4, High-End PCs, 240Hz Esports displays, LAN multiplayer & top AAA titles. Book your slot now!",
+      "RD Game Zone™ is an independent gaming and e-sports venue in Shahibag, Ahmedabad. Explore session options, rates, the game library, and visit details.",
   },
   {
     name: "keywords",
     content:
-      "gaming cafe ahmedabad, ps5 gaming ahmedabad, pc gaming cafe, esports ahmedabad, lan gaming, rd game zone, gaming zone ahmedabad, best gaming cafe india, shahibag gaming zone, gaming cafe near me ahmedabad",
+      "RD Game Zone, gaming venue Ahmedabad, PS5 gaming Ahmedabad, PC gaming Ahmedabad, e-sports Ahmedabad, LAN gaming, Shahibag gaming zone",
   },
   { name: "author",  content: "RD Game Zone" },
   { name: "robots",  content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
@@ -170,22 +176,22 @@ export const meta: MetaFunction = () => [
 
   /* ── Open Graph ── */
   { property: "og:type",         content: "website" },
-  { property: "og:url",          content: "https://rdgamezone.com/" },
-  { property: "og:title",        content: "RD Game Zone | #1 Gaming Cafe in Ahmedabad" },
-  { property: "og:description",  content: "PS5, PC Gaming, 240Hz Esports displays, LAN multiplayer. Ahmedabad's best gaming experience." },
-  { property: "og:image",        content: "https://rdgamezone.com/images/cod-7-new-landscape.jpg" },
+  { property: "og:url",          content: "https://rd-game-zone.pages.dev/" },
+  { property: "og:title",        content: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
+  { property: "og:description",  content: "An independent gaming and e-sports venue in Shahibag, Ahmedabad. Explore sessions, rates, games, and visit details." },
+  { property: "og:image",        content: "https://rd-game-zone.pages.dev/images/cod-7-new-landscape.jpg" },
   { property: "og:image:width",  content: "1200" },
   { property: "og:image:height", content: "630" },
-  { property: "og:image:alt",    content: "RD Game Zone — Gaming Cafe Ahmedabad" },
+  { property: "og:image:alt",    content: "RD Game Zone gaming venue in Ahmedabad" },
   { property: "og:locale",       content: "en_IN" },
   { property: "og:site_name",    content: "RD Game Zone" },
 
   /* ── Twitter / X Card ── */
   { name: "twitter:card",        content: "summary_large_image" },
-  { name: "twitter:title",       content: "RD Game Zone | #1 Gaming Cafe Ahmedabad" },
-  { name: "twitter:description", content: "PS5, PC, 240Hz Esports, LAN Gaming in Ahmedabad." },
-  { name: "twitter:image",       content: "https://rdgamezone.com/images/cod-7-new-landscape.jpg" },
-  { name: "twitter:image:alt",   content: "RD Game Zone Gaming Cafe" },
+  { name: "twitter:title",       content: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
+  { name: "twitter:description", content: "An independent gaming and e-sports venue in Shahibag, Ahmedabad." },
+  { name: "twitter:image",       content: "https://rd-game-zone.pages.dev/images/cod-7-new-landscape.jpg" },
+  { name: "twitter:image:alt",   content: "RD Game Zone gaming venue in Ahmedabad" },
 
   /* ── Mobile / PWA ── */
   { name: "theme-color",                           content: "#f5f8ff" },
@@ -220,31 +226,30 @@ export const links: LinksFunction = () => [
   { rel: "ai-catalog", href: "/.well-known/ai-catalog.json", type: "application/json" },
 
   /* ── Canonical (static, home page) ── */
-  { rel: "canonical", href: "https://rdgamezone.com/" },
+  { rel: "canonical", href: "https://rd-game-zone.pages.dev/" },
 ];
 
 /* ================================================================
    STRUCTURED DATA — Local Business (Schema.org JSON-LD)
    ✅ Advanced: GeoCoordinates, OpeningHours, OfferCatalog,
-      AggregateRating, hasMap, amenityFeature
+      hasMap, amenityFeature
    ================================================================ */
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "EntertainmentBusiness"],
-  "@id": "https://rdgamezone.com/#business",
+  "@id": "https://rd-game-zone.pages.dev/#business",
   "name": "RD Game Zone",
-  "legalName": "RD Game Zone",
   "description":
-    "Premier gaming cafe in Ahmedabad offering PS5, PS4, High-End Gaming PCs, 240Hz esports displays, LAN multiplayer and top AAA game titles.",
-  "url": "https://rdgamezone.com",
+    "Independent gaming and e-sports venue in Shahibag, Ahmedabad, with console, PC, and LAN gaming sessions.",
+  "url": "https://rd-game-zone.pages.dev",
   "telephone": "+917665533991",
   "priceRange": "₹100 - ₹400 per hour",
   "currenciesAccepted": "INR",
   "paymentAccepted": "Cash, UPI",
   "image": [
-    "https://rdgamezone.com/images/cod-7-new-landscape.jpg"
+    "https://rd-game-zone.pages.dev/images/cod-7-new-landscape.jpg"
   ],
-  "logo": "https://rdgamezone.com/icons/logo.svg",
+  "logo": "https://rd-game-zone.pages.dev/icons/logo.svg",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "First floor, A-113, opp. Shwami Narayan temple",
@@ -328,10 +333,10 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home",         "item": "https://rdgamezone.com/"        },
-    { "@type": "ListItem", "position": 2, "name": "Game Library", "item": "https://rdgamezone.com/games"   },
-    { "@type": "ListItem", "position": 3, "name": "Pricing",      "item": "https://rdgamezone.com/#pricing" },
-    { "@type": "ListItem", "position": 4, "name": "Booking",      "item": "https://rdgamezone.com/#booking" }
+    { "@type": "ListItem", "position": 1, "name": "Home",         "item": "https://rd-game-zone.pages.dev/"        },
+    { "@type": "ListItem", "position": 2, "name": "Game Library", "item": "https://rd-game-zone.pages.dev/games"   },
+    { "@type": "ListItem", "position": 3, "name": "Pricing",      "item": "https://rd-game-zone.pages.dev/#pricing" },
+    { "@type": "ListItem", "position": 4, "name": "Booking",      "item": "https://rd-game-zone.pages.dev/#booking" }
   ]
 };
 
@@ -339,13 +344,13 @@ const breadcrumbSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://rdgamezone.com/#website",
-  "url": "https://rdgamezone.com",
+  "@id": "https://rd-game-zone.pages.dev/#website",
+  "url": "https://rd-game-zone.pages.dev",
   "name": "RD Game Zone",
-  "description": "Ahmedabad's #1 Gaming Cafe — PS5, PC, LAN & Esports",
+  "description": "Independent gaming and e-sports venue in Shahibag, Ahmedabad.",
   "inLanguage": "en-IN",
   "publisher": {
-    "@id": "https://rdgamezone.com/#business"
+    "@id": "https://rd-game-zone.pages.dev/#business"
   }
 };
 

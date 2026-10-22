@@ -69,11 +69,11 @@ function DeferredSection({ id, name, children }: DeferredSectionProps) {
 
 /* Page-level meta override (root.tsx handles the main SEO) */
 export const meta: MetaFunction = () => [
-  { title: "RD Game Zone | The Ultimate Gaming Experience" },
+  { title: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
   {
     name: "description",
     content:
-      "Play PS5, PC, 240Hz esports and LAN multiplayer at RD Game Zone in Ahmedabad. Browse the game library, rates and visit details.",
+      "Visit RD Game Zone™, an independent gaming and e-sports venue in Shahibag, Ahmedabad. Explore session options, games, rates, and directions.",
   },
 ];
 

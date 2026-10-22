@@ -1,3 +1,3 @@
-Contact: mailto:security@rdgamezone.com
-Expires: 2027-01-01T00:00:00Z
+Contact: mailto:rdgamezoneofficial@gmail.com
+Expires: 2027-10-22T00:00:00Z
 Canonical: https://rd-game-zone.pages.dev/.well-known/security.txt
