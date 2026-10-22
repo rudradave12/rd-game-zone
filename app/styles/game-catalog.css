@@ -167,3 +167,23 @@ html[data-theme="dark"] .game-card__rank { color: rgba(202, 220, 240, .72); }
   filter: none;
   transform: none;
 }
+
+/* Keep dense library labels comfortably readable on touch-sized screens. */
+@media (max-width: 800px) {
+  .game-library-page .library-eyebrow,
+  .game-library-page .library-results__eyebrow,
+  .game-library-page .library-filter-label,
+  .game-library-page .ps-kicker,
+  .game-library-page .filter-chip,
+  .game-library-page .availability-tab,
+  .game-library-page .library-results__collection-copy,
+  .game-card__label > span {
+    font-size: 12px;
+  }
+
+  .ps-footer .ps-kicker,
+  .ps-footer .ps-footer__column h3,
+  .ps-footer .ps-footer__bottom {
+    font-size: 12px;
+  }
+}

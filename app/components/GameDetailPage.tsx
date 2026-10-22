@@ -328,6 +328,7 @@ const keyArtThumbnails: Record<number, string> = {
   24: "/images/screenshots/thumbs/fc27-keyart.webp",
   33: "/images/screenshots/thumbs/mortal-kombat-1-key-art.webp",
   45: "/images/screenshots/thumbs/forza-horizon-6-key-art.webp",
+  48: "/images/cards/320/call-of-duty-modern-warfare-4.avif",
 };
 
 function GameScreenshotGallery({ game, selected, onSelect }: Props & {

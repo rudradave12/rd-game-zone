@@ -171,9 +171,6 @@ export const meta: MetaFunction = () => [
   { name: "language", content: "English" },
   { name: "rating",   content: "general" },
 
-  /* ── Viewport (notch / Dynamic Island) ── */
-  { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-
   /* ── Open Graph ── */
   { property: "og:type",         content: "website" },
   { property: "og:url",          content: "https://rd-game-zone.pages.dev/" },
@@ -388,6 +385,7 @@ export default function App() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <Meta />
         <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
         <link rel="stylesheet" href={pageStyles} />
@@ -436,6 +434,7 @@ export function HydrateFallback() {
     <html lang="en" dir="ltr">
       <head>
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <Meta />
         <script dangerouslySetInnerHTML={{ __html: preHydrationScript }} />
         <Links />

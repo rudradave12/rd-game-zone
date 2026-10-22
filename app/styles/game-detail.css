@@ -1171,3 +1171,23 @@ html[data-theme="dark"] .game-spotlight__index { color: var(--blue-dark); box-sh
   .game-experience { margin-top: 1.35rem; }
   .game-policy { margin-top: 1.5rem; }
 }
+
+/* Keep informational labels readable on mobile without resizing headings. */
+@media (max-width: 800px) {
+  .game-detail-page .game-detail__eyebrow,
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__eyebrow,
+  .game-detail-page .game-about__label,
+  .game-detail-page .game-spotlight__index,
+  .game-detail-page .game-spotlight__kind,
+  .game-detail-page .game-spotlight__item p,
+  .ps-footer .ps-kicker,
+  .ps-footer .ps-footer__column h3,
+  .ps-footer .ps-footer__bottom {
+    font-size: 12px !important;
+  }
+
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__status,
+  .game-detail-page .game-detail-shell .game-detail-hero__copy .game-detail__platforms span {
+    font-size: 12px !important;
+  }
+}

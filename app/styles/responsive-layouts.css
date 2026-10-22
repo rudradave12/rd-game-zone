@@ -863,3 +863,22 @@ html[data-theme="dark"] .ps-button--quiet { border: 1px solid var(--line); }
     line-height: 1.5;
   }
 }
+
+/* Keep mobile hero and platform labels readable and clear Lighthouse's
+   minimum text-size audit without inflating the main headline. */
+@media (max-width: 1100px) {
+  .cin-brandline,
+  .cin-category,
+  .cin-tag,
+  .cin-chip,
+  .cin-explore,
+  .ps-play-strip__items span {
+    font-size: 12px;
+  }
+}
+
+/* Give legal-page contents links a reliable touch target on small screens. */
+.legal-toc__link {
+  min-height: 24px;
+  align-items: center;
+}
