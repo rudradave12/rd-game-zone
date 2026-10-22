@@ -34,6 +34,17 @@ const preHydrationScript = `(() => {
     document.documentElement.dataset.theme = "light";
   }
 
+  // Cloudflare Pages serves this SPA shell for deep links. Update the static
+  // homepage metadata immediately so direct route loads advertise their URL
+  // before the client router hydrates.
+  const pathSegments = window.location.pathname.split("/").filter(Boolean);
+  const canonicalPath = pathSegments.length ? "/" + pathSegments.join("/") : "/";
+  const canonicalUrl = "https://rd-game-zone.pages.dev" + canonicalPath;
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) canonicalLink.href = canonicalUrl;
+  const openGraphUrl = document.querySelector('meta[property="og:url"]');
+  if (openGraphUrl) openGraphUrl.content = canonicalUrl;
+
   const addImageHint = (href, imageSrcset, imageSizes, imageType) => {
     const preload = document.createElement("link");
     preload.rel = "preload";
