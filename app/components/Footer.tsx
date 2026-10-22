@@ -4,7 +4,6 @@ const venue = {
   address: "First floor, A-113, opp. Shwami Narayan temple, Shahibag, Ahmedabad, Gujarat 380004",
   phone: "+91 7665533991",
   email: "rdgamezoneofficial@gmail.com",
-  whatsapp: "https://wa.me/917665533991",
   directions: "https://maps.app.goo.gl/MZgKwhA8TPxEJfdD7",
 };
 
@@ -63,12 +62,11 @@ export default function Footer() {
           <a href={venue.directions} target="_blank" rel="noopener noreferrer"><FiMapPin aria-hidden="true" /> <span>{venue.address}</span></a>
           <a href={`tel:${venue.phone.replace(/\s/g, "")}`}><FiPhone aria-hidden="true" /> {venue.phone}</a>
           <a href={`mailto:${venue.email}`}><FiMail aria-hidden="true" /> {venue.email}</a>
-          <a href={venue.whatsapp} target="_blank" rel="noopener noreferrer"><FiPhone aria-hidden="true" /> WhatsApp RD Game Zone</a>
         </div>
       </div>
 
       <div className="ps-footer__bottom">
-        <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved in RD Game Zone’s original branding and website content. Game titles, logos, artwork, and other third-party materials remain with their respective rights holders.</span>
+        <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved.</span>
         <nav aria-label="Legal">
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>

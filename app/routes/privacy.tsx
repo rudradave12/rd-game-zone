@@ -217,7 +217,7 @@ export default function PrivacyRoute() {
       {/* Footer bar */}
       <div className="legal-foot">
         <div className="legal-foot__inner">
-          <span>© {new Date().getFullYear()} RD Game Zone™. All rights in third-party materials remain with their respective owners.</span>
+          <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved.</span>
           <nav className="legal-foot__nav">
             <a href="/privacy" className="legal-foot__link legal-foot__link--active">Privacy</a>
             <span className="legal-foot__sep">|</span>

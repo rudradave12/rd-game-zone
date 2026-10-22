@@ -252,7 +252,7 @@ export default function TermsRoute() {
       {/* Footer bar */}
       <div className="legal-foot">
         <div className="legal-foot__inner">
-          <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved in RD Game Zone-owned original material; third-party game materials remain with their rights holders.</span>
+          <span>© {new Date().getFullYear()} RD Game Zone™. All rights reserved.</span>
           <nav className="legal-foot__nav">
             <a href="/privacy" className="legal-foot__link">Privacy</a>
             <span className="legal-foot__sep">|</span>
