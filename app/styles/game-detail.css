@@ -1191,3 +1191,29 @@ html[data-theme="dark"] .game-spotlight__index { color: var(--blue-dark); box-sh
     font-size: 12px !important;
   }
 }
+
+/* Keep the three game highlights in a readable vertical list on portrait phones
+   and compact tablets; desktop and landscape layouts retain their grid. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .game-detail-page .game-spotlight__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .8rem;
+  }
+
+  .game-detail-page .game-spotlight__item {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    align-items: start;
+    gap: .7rem;
+    min-height: 0;
+    padding: .9rem;
+  }
+
+  .game-detail-page .game-spotlight__index {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .game-detail-page .game-spotlight__item p {
+    max-width: 64ch;
+  }
+}
