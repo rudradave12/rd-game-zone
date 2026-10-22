@@ -38,7 +38,8 @@ export default function GameCard({ game, rank }: Props) {
               sizes={cardImageSizes}
               alt=""
               loading={rank === 1 ? "eager" : "lazy"}
-              decoding="async"
+              decoding={rank === 1 ? "sync" : "async"}
+              fetchPriority={rank === 1 ? "high" : "auto"}
               draggable={false}
             />
           </picture>

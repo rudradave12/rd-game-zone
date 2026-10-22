@@ -152,7 +152,11 @@ const preHydrationScript = `(() => {
    ✅ Static compatible (no loader needed)
    ✅ Cloudflare Pages compatible
    ================================================================ */
-export const meta: MetaFunction = () => [
+export const meta: MetaFunction = ({ location }) => {
+  const canonicalPath = location.pathname.replace(/\/+$/, "") || "/";
+  const canonicalUrl = `https://rd-game-zone.pages.dev${canonicalPath}`;
+
+  return [
   /* ── Core ── */
   { title: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
   {
@@ -173,7 +177,7 @@ export const meta: MetaFunction = () => [
 
   /* ── Open Graph ── */
   { property: "og:type",         content: "website" },
-  { property: "og:url",          content: "https://rd-game-zone.pages.dev/" },
+  { property: "og:url",          content: canonicalUrl },
   { property: "og:title",        content: "RD Game Zone™ | Gaming & E-sports Venue in Ahmedabad" },
   { property: "og:description",  content: "An independent gaming and e-sports venue in Shahibag, Ahmedabad. Explore sessions, rates, games, and visit details." },
   { property: "og:image",        content: "https://rd-game-zone.pages.dev/images/cod-7-new-landscape.jpg" },
@@ -182,6 +186,7 @@ export const meta: MetaFunction = () => [
   { property: "og:image:alt",    content: "RD Game Zone gaming venue in Ahmedabad" },
   { property: "og:locale",       content: "en_IN" },
   { property: "og:site_name",    content: "RD Game Zone" },
+  { tagName: "link", rel: "canonical", href: canonicalUrl },
 
   /* ── Twitter / X Card ── */
   { name: "twitter:card",        content: "summary_large_image" },
@@ -210,7 +215,8 @@ export const meta: MetaFunction = () => [
      Cloudflare Pages _headers file (see security note below).
      We only add the referrer policy here. */
   { name: "referrer", content: "strict-origin-when-cross-origin" },
-];
+  ];
+};
 
 /* ================================================================
    LINKS — Preload, Fonts, Stylesheets, Icons
@@ -222,8 +228,6 @@ export const links: LinksFunction = () => [
   { rel: "ard", href: "/.well-known/ard.json", type: "application/ld+json" },
   { rel: "ai-catalog", href: "/.well-known/ai-catalog.json", type: "application/json" },
 
-  /* ── Canonical (static, home page) ── */
-  { rel: "canonical", href: "https://rd-game-zone.pages.dev/" },
 ];
 
 /* ================================================================

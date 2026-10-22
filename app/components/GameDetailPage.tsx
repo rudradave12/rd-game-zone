@@ -496,7 +496,8 @@ export default function GameDetailPage({ game }: Props) {
                   : undefined}
                 sizes={isDefaultArtwork ? "(max-width: 1480px) 100vw, 1480px" : undefined}
                 alt={`${game.title} artwork`}
-                decoding="async"
+                decoding="sync"
+                fetchPriority="high"
               />
             </picture>
           </div>
